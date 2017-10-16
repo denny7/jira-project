@@ -1,0 +1,10 @@
+<fieldset>
+    <form>
+        <input type="text" name="username" ng-model="regData.username" placeholder="Username">
+        <input type="password" name="password" ng-model="regData.password" placeholder="password">
+        <input type="password" name="repeatPassword" ng-model="regData.repeatPassword" placeholder="Repeat Password">
+        <input type="email" name="email" ng-model="regData.email" placeholder="E-mail">
+        <button ng-click="regUser()">Log in</button>
+    </form>
+    <p>{{err}}</p>
+</fieldset>

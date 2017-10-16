@@ -2,9 +2,16 @@
 <html>
   <head>
     <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <base href="/">
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel='stylesheet' href='bower_components/bootstrap/dist/css/bootstrap.min.css' />
   </head>
-  <body>
-    {{{body}}}
+  <body ng-app='homeApp'>
+    <div ng-view></div>
+    <script src="javascripts/services/userService.js"></script>
   </body>
 </html>
