@@ -13,11 +13,20 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <link rel='stylesheet' href='bower_components/bootstrap/dist/css/bootstrap.min.css' />
     <link rel='stylesheet' href='bower_components/components-font-awesome//css/font-awesome.min.css' />
+    <script src="javascripts/menu.js"></script>
     <title>Jira Project</title>
 </head>
 
-<body ng-app="homeApp" ng-cloak>
-
+<body ng-app="homeApp" ng-controller="MainCtrl" ng-cloak>
+    <div class="parent2">
+        <a href="/dashboard">
+            <div class="test1"><i class="fa fa-home fa-2x"></i></div>
+        </a>
+        <div class="test2"><i class="fa fa-list  fa-2x"></i></div>
+        <div class="test3"><i class="fa fa-user  fa-2x"></i></div>
+        <div class="test4"><i class="fa fa-plus fa-2x"></i></div>
+        <div class="mask2"><i class="fa fa-home fa-3x"></i></div>
+    </div>
 
     <div ng-view></div>
 
@@ -25,9 +34,14 @@
     <script src="javascripts/services/mainService.js"></script>
     <script src="javascripts/services/userService.js"></script>
     <script src="javascripts/services/dashService.js"></script>
+    <script src="javascripts/services/projectService.js"></script>
+    <script src="javascripts/services/taskService.js"></script>
+    <script src="javascripts/controllers/homeController.js"></script>
     <script src="javascripts/controllers/mainController.js"></script>
     <script src="javascripts/controllers/userController.js"></script>
     <script src="javascripts/controllers/dashController.js"></script>
+    <script src="javascripts/controllers/projectController.js"></script>
+    <script src="javascripts/controllers/taskController.js"></script>
 </body>
 
 </html>
