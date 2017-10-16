@@ -1,15 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-<<<<<<< HEAD
 var sha1 = require('sha1');
 
 
-=======
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('mongodb://jira:jira@ds115625.mlab.com:15625/jira');
->>>>>>> be0b4a86348f8f758204eaed95fc9a6de18f2408
 /* GET home page. */
 // router.get('/', function(req, res, next) {
 //     // res.sendFile('login.htm', { root: path.join(__dirname, '../public/views/') });
@@ -48,10 +45,6 @@ router.post('/register', function(req, res, next) {
             res.json({ text: 'Already taken username or/and email' })
         }
     })
-
-
-
-
 });
 
 router.get('/api/logged', function(req, res) {
