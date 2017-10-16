@@ -1,6 +1,7 @@
 angular.module('homeApp')
     .controller('DashCtrl', ['$scope', '$http', '$location', 'Main', 'Dashboard', function($scope, $http, $location, Main, Dashboard) {
-        $scope.projects = [];
+        $('.parent2').show();
+
         $scope.user = {};
         Main.getLoggedUserId().then(function(res) {
             $scope.user.id = JSON.parse(res.data).userId;

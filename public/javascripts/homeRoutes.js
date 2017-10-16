@@ -4,7 +4,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     $routeProvider
         .when('/', {
             templateUrl: '../views/home.htm',
-            controller: 'MainCtrl'
+            controller: 'HomeCtrl'
         })
         .when('/dashboard', {
             templateUrl: '../views/dash.htm',
@@ -17,6 +17,19 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         .when('/register', {
             templateUrl: '../views/registration.htm',
             controller: 'UserCtrl'
+        })
+        .when('/project/:projectId', {
+            templateUrl: '../views/project.htm',
+            controller: 'ProjectCtrl'
+        })
+        .when('/project/task/:taskId', {
+            templateUrl: '../views/task.htm',
+            controller: 'TaskCtrl'
+        })
+        .otherwise({
+            templateUrl: '../views/dash.htm',
+            controller: 'DashCtrl',
+            requireAuth: true
         })
     $locationProvider.html5Mode(true);
 }]);
