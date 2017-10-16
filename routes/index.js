@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var sha1 = require('sha1');
+
 
 /* GET home page. */
 // router.get('/', function(req, res, next) {
@@ -12,7 +14,7 @@ router.post('/login', function(req, res, next) {
     var password = req.body.password;
     var db = req.db;
     var users = db.get('users');
-    users.find({ name: username, password: password }, {}).then(function(data) {
+    users.find({ name: username, password: sha1(password) }, {}).then(function(data) {
         if (data.length > 0) {
             req.session.userId = data[0]._id;
             console.log('logg')
@@ -32,7 +34,7 @@ router.post('/register', function(req, res, next) {
     var users = db.get('users');
     users.find({ $or: [{ name: username }, { email: email }] }).then(function(data) {
         if (data.length == 0) {
-            users.insert({ name: username, password: password, email: email }).then(function(data) {
+            users.insert({ name: username, password: sha1(password), email: email }).then(function(data) {
                 res.json({ register: true })
             })
         } else {
@@ -71,9 +73,10 @@ router.post('/dashboard', function(req, res) {
     var userId = req.body.id;
     var db = req.db;
     var projects = db.get('projects');
-    projects.find({ userId: userId }, {}).then(function(data) {
+    projects.find({ users: { $elemMatch: { userId: userId } } }, {}).then(function(data) {
         console.log('data sajkhfkajsf ---' + JSON.stringify(data))
         res.json(data)
     })
+
 });
 module.exports = router;
