@@ -1,3 +1,11 @@
+<div class="welcomeText row">
+    <div class="col-sm-11">
+        <h1 class="letterDrop">Welcome to your Projects</h1>
+    </div>
+    <div class="col-sm-1">
+        <button class="logOutBtn btn" ng-show="user.id" ng-click="logoutUser()"> &#x2716</button>
+    </div>
+</div>
 <div data-ng-init="getUserId()">
     <div class="row">
         <div ng-hide="projects">
@@ -26,10 +34,5 @@
                 </a>
             </div>
         </div>
-
     </div>
-
-
-
-    <button ng-show="user.id" ng-click="logoutUser()"> log out</button>
 </div>

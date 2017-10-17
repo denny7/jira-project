@@ -98,4 +98,27 @@ router.get('/api/task/:taskId', function(req, res) {
         res.json(data)
     })
 });
+
+router.post('/api/project/:projectId', function(req, res) {
+    var projectId = req.params.projectId;
+    var userId = req.body.userId;
+    var taskName = req.body.taskName;
+    var tasks = db.get('tasks');
+    var task = {
+        userId: userId,
+        projectId: projectId,
+        name: taskName,
+        createDate: Date.now(),
+        updateDate: Date.now(),
+        priority: "Middle",
+        priorityNumber: "2",
+        assignee: "not assigned",
+        description: "",
+        type: "Software"
+    }
+    tasks.insert(task).then(function(data) {
+        res.json({ createdTask: true })
+    })
+
+});
 module.exports = router;

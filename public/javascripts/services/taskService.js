@@ -4,6 +4,5 @@ angular.module('homeApp')
             getTaskInfo: function(taskId) {
                 return $http.get('/api/task/' + taskId);
             }
-
         }
     }])
