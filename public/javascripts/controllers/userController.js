@@ -6,10 +6,10 @@ angular.module('homeApp')
         $scope.logInUser = function() {
             if (!$.isEmptyObject($scope.formData)) {
                 Users.logIn($scope.formData).then(function(res) {
+                    console.log(res.data)
                     if (!res.data.text) {
                         console.log('loged in')
                         console.log(res.data);
-                        $('#signIn').modal('hide');
                         $location.path('/dashboard');
 
                     } else {
