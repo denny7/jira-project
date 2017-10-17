@@ -13,6 +13,7 @@ angular.module('homeApp')
         $scope.getUserId = function() {
             Main.getLoggedUserId().then(function(res) {
                 $scope.user.id = JSON.parse(res.data).userId;
+
                 console.log($scope.user.id);
             });
             return $scope.user.id;
