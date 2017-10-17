@@ -1,34 +1,30 @@
-<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#demo">Create task</button>
-<form name="createTask" id="demo" class="collapse">
-    <input type="text" name="nameTask" ng-model="taskName" placeholder="What's need to be done"> </input>
-
-    <button class="btn btn-default" ng-click="createTaskF()">Create issue</button>
-</form>
 <div class="row">
-    <h1>project page</h1>
-    <div ng-repeat="task in tasks" class="col-lg-3 col-md-6">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-tasks fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <h3>{{task.name}}</h3>
-                        <p> {{task.type}}</p>
+
+    <div class="col-md-3 col-sm-4 nav "></div>
+    <div class="col-md-9 col-sm-8 main-content">
+        <!--Main content code to be written here -->
+        <h1>project page</h1>
+        <div ng-repeat="task in tasks" class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-tasks fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <h3>{{task.name}}</h3>
+                            <p> {{task.type}}</p>
+                        </div>
                     </div>
                 </div>
+                <a href="/project/task/{{task._id}}">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
             </div>
-            <a href="/project/task/{{task._id}}">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
         </div>
     </div>
-
-</div>
-
 </div>

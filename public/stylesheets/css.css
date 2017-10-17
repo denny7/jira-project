@@ -1,0 +1,96 @@
+.sidebar1 {
+    position: fixed;
+    background: linear-gradient( to bottom, rgba(54, 159, 200, 1) 0%, rgba(55, 160, 200, 1) 1%, rgba(108, 193, 171, 0.92) 67%, rgba(115, 197, 160, 0.92) 71%, rgba(164, 229, 80, 0.92) 100%);
+    padding: 0px;
+    height: 100%;
+    width: 23%;
+    margin-top: -3.6em;
+    margin-left: -3em;
+}
+
+@media all and (max-width:900px) {
+    .sidebar1 {
+        position: absolute;
+        top: 0;
+        left: -15px;
+        height: auto;
+        width: 110%;
+    }
+    .main-content {
+        margin-top: 470px;
+    }
+    .sidebar1 li {
+        margin-top: 8px;
+        text-align: center;
+    }
+    .sidebar1 .left-navigation h3 {
+        text-align: center;
+    }
+    .sidebar1>.logo {
+        margin-top: 80px;
+        margin-left: 10%;
+    }
+}
+
+.list>li>a {
+    text-decoration: none;
+    color: white;
+}
+
+.sidebar1 li {
+    margin-left: 1.5em;
+    font-size: 1.3em;
+}
+
+.logo {
+    max-height: 200px;
+    margin-top: 130px;
+}
+
+.logo>img {
+    margin-top: 30px;
+    padding: 3px;
+    height: 120px;
+    max-height: 120px;
+    border: 3px solid white;
+    border-radius: 100%;
+}
+
+.list {
+    color: #fff;
+    list-style: none;
+    padding-left: 0px;
+}
+
+.list::first-line {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.list>li,
+h5 {
+    padding: 5px 0px 5px 40px;
+}
+
+.list>li:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-left: 5px solid white;
+    color: white;
+    font-weight: bolder;
+    padding-left: 35px;
+}
+
+.list>.liInput>input {
+    color: #369FC8;
+    margin-left: 4.5em;
+    margin-top: 1em;
+    padding: 5px 0px 5px 20px;
+}
+
+.createTask:hover {
+    color: #369FC8;
+    font-size: 2em;
+}
+
+.main-content {
+    text-align: center;
+}
