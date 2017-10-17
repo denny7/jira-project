@@ -24,18 +24,31 @@ angular.module('homeApp')
             })
         }
         $scope.regUser = function() {
-            if (!$.isEmptyObject($scope.regData)) {
-                Users.register($scope.regData).then(function(res) {
-                    if (res.data.register == true) {
-                        console.log('registered')
-                        console.log(res.data);
-                        // $location.path('/login');
-                        $('#signUp').modal('hide');
-                        $('#signIn').modal();
+            var patt = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/g;
+            if ($scope.regData.username.length >= 4) {
+                if ($scope.regData.password == $scope.regData.repeatPassword) {
+                    if (patt.test($scope.regData.password)) {
+                        Users.register($scope.regData).then(function(res) {
+                            if (res.data.register == true) {
+                                console.log('registered')
+                                console.log($scope.regData)
+                                console.log(res.data);
+                                // $location.path('/login');
+                                $('#signUp').modal('hide');
+                                $('#signIn').modal();
+                            } else {
+                                $scope.err = res.data.text;
+                                console.log($scope.err)
+                            }
+                        })
                     } else {
-                        $scope.err = res.data.text;
+                        $scope.err = "Password must be at least 5 symbols, and must contain at least one number!";
                     }
-                })
+                } else {
+                    $scope.err = "Repeated password is incorrect!";
+                }
+            } else {
+                $scope.err = "Username must be at least 4 symbols!";
             }
         }
     }])

@@ -9,6 +9,7 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('mongodb://jira:jira@ds115625.mlab.com:15625/jira');
 var collection = db.get('users')
+var sha1 = require('sha1');
 
 var index = require('./routes/index');
 

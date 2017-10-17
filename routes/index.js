@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var sha1 = require('sha1');
+
+
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('mongodb://jira:jira@ds115625.mlab.com:15625/jira');
@@ -16,7 +19,7 @@ router.post('/login', function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
     var users = db.get('users');
-    users.find({ name: username, password: password }, {}).then(function(data) {
+    users.find({ name: username, password: sha1(password) }, {}).then(function(data) {
         if (data.length > 0) {
             req.session.userId = data[0]._id;
             console.log('logg')
@@ -35,17 +38,13 @@ router.post('/register', function(req, res, next) {
     var users = db.get('users');
     users.find({ $or: [{ name: username }, { email: email }] }).then(function(data) {
         if (data.length == 0) {
-            users.insert({ name: username, password: password, email: email }).then(function(data) {
+            users.insert({ name: username, password: sha1(password), email: email }).then(function(data) {
                 res.json({ register: true })
             })
         } else {
             res.json({ text: 'Already taken username or/and email' })
         }
     })
-
-
-
-
 });
 
 router.get('/api/logged', function(req, res) {
@@ -77,6 +76,7 @@ router.post('/dashboard', function(req, res) {
         console.log('data sajkhfkajsf ---' + JSON.stringify(data))
         res.json(data)
     })
+
 });
 
 router.get('/api/project/:projectId', function(req, res) {

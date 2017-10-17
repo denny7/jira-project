@@ -18,7 +18,4 @@ angular.module('homeApp')
                 $scope.user = {};
             });
         }
-
-
-
     }])
