@@ -46,7 +46,9 @@ app.use(session({ secret: 'Jira' }));
 // }
 app.use('/', index);
 
-
+app.get('*', function(req, res) {
+    res.sendFile('index.html', { root: path.join(__dirname, 'public/') });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

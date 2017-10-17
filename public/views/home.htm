@@ -1,4 +1,11 @@
 <div>
+<<<<<<< HEAD
+    <div class="row text-center">
+        <div ng-controller="UserCtrl" class="col-sm-12 jumbotron jumbo ">
+            <div class="col-md-12 homepageH">
+                <div class="page-header">
+                    <h1>Welcome to JIRA</h1>
+=======
     <h1>Welcome to </h1>
     <h3>JIRA Home page</h3>
     <div class="container row">
@@ -38,28 +45,58 @@
                         <input ng-disabled="formLogin.$invalid" ng-click="logInUser()" type="button" class="btn btn-block btn-lg  btn-primary" value="Вход" />
                         <p>{{err}}</p>
                     </div>
+>>>>>>> 90e123d71c4f3074cf4abc02730972107871d1d7
                 </div>
+                <p>This is our cloud option,hosted by us.</p>
+            </div>
+            <div class="col-md-3 col-sm-4 col-md-offset-3 col-sm-offset-2">
+                <input ng-model="formData.username" type="text" class="login" placeholder="Username" autofocus/>
+            </div>
+            <div class="col-md-3 col-sm-4">
+                <input ng-model="formData.password" type="password" class="login" placeholder="Password" />
+            </div>
+            <div class="col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 text-center">
+                <input ng-click="logInUser()" type="button" class="btn btn-primary btn-filled loginBtn" value="Login" />
+            </div>
+            <div class=" col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 text-center">
+                <span class="text-white" ng-click="regModal()">Don't have an account? Register now!</span>
             </div>
         </div>
+<<<<<<< HEAD
+    </div>
+
+=======
     </form>
+>>>>>>> 90e123d71c4f3074cf4abc02730972107871d1d7
     <!-- Register -->
 
     <form name="formReg" ng-controller="UserCtrl" class="modal fade" id="signUp" role="dialog">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" id="registerForm">
                 <div class="modal-header">
-                    <h1 class="text-center">Регистрация</h1>
+                    <h1 class="text-center white">Sing up</h1>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <input ng-model="regData.username" type="text" class="form-control " placeholder="Потребител" autofocus/>
+                        <input ng-model="regData.username" type="text" class="form-control reg " placeholder="Username" autofocus/>
                     </div>
 
                     <div class="form-group">
-                        <input ng-model="regData.password" type="password" class="form-control " placeholder="Парола" />
+                        <input ng-model="regData.password" type="password" class="form-control reg " placeholder="Password" />
                     </div>
 
                     <div class="form-group">
+<<<<<<< HEAD
+                        <input ng-model="regData.repeatPassword" type="password" class="form-control reg" placeholder="Password" />
+                    </div>
+
+                    <div class="form-group">
+                        <input ng-model="regData.email" type="email" class="form-control reg " placeholder="E-mail" />
+                    </div>
+
+                    <div class="form-group text-center">
+                        <button ng-click="regUser()" type="button" class="btn btn-primary btn-filled loginBtn">Register</button>
+=======
                         <input ng-model="regData.repeatPassword" type="password" class="form-control " placeholder="Парола" required />
                     </div>
 
@@ -69,6 +106,7 @@
 
                     <div class="form-group">
                         <input ng-disabled="formReg.$invalid" ng-click="regUser()" type="button" class="btn btn-block btn-lg  btn-primary" value="Регистрация" required/>
+>>>>>>> 90e123d71c4f3074cf4abc02730972107871d1d7
                         <p>{{err}}</p>
                     </div>
                 </div>

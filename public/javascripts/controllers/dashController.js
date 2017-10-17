@@ -1,6 +1,7 @@
 angular.module('homeApp')
     .controller('DashCtrl', ['$scope', '$http', '$location', 'Main', 'Dashboard', function($scope, $http, $location, Main, Dashboard) {
-        $('.parent2').show();
+        $('.parent').show();
+        $('body').removeClass('homepage');
 
         $scope.user = {};
         Main.getLoggedUserId().then(function(res) {
