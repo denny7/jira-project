@@ -2,19 +2,10 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var sha1 = require('sha1');
-
-
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('mongodb://jira:jira@ds115625.mlab.com:15625/jira');
-/* GET home page. */
-// router.get('/', function(req, res, next) {
-//     // res.sendFile('login.htm', { root: path.join(__dirname, '../public/views/') });
-
-// });
-
-
-
+// --------------------------------------------------
 router.post('/login', function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
@@ -48,7 +39,6 @@ router.post('/register', function(req, res, next) {
 
 router.get('/api/logged', function(req, res) {
     var user;
-
     if (req.session.userId != undefined) {
         var users = db.get('users');
         users.find({ _id: req.session.userId }, {}).then(function(data) {
@@ -71,7 +61,6 @@ router.post('/dashboard', function(req, res) {
     projects.find({ users: { $elemMatch: { userId: userId } } }, {}).then(function(data) {
         res.json(data)
     })
-
 });
 
 router.get('/api/project/:projectId', function(req, res) {
@@ -84,7 +73,6 @@ router.get('/api/project/:projectId', function(req, res) {
             izprati.push(data, pr);
             res.json(izprati)
         })
-
     })
 });
 
@@ -121,8 +109,6 @@ router.post('/api/project/:projectId', function(req, res) {
 router.put('/api/task/:taskId', function(req, res) {
     var taskId = req.params.taskId;
     var tasks = db.get('tasks');
-    console.log("------------------------")
-    console.log(req.body)
     tasks.update({ _id: taskId }, req.body).then(function(data) {
         res.json(data)
     })

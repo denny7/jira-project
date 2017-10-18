@@ -55,7 +55,7 @@
                     <p class="addDescription">{{task.description}} <i class="fa fa-pencil pencilDescription" aria-hidden="true"></i></p>
                 </div>
                 <textarea ng-model="task.description" class="descriptionArea">
-                    {{description}}
+                    {{task.description}}
                 </textarea>
             </div>
             <div class="col-md-4 col-sm-5 people">
@@ -64,7 +64,7 @@
                 <p>{{task.assignee}}</p>
                 <p>Assign to me</p>
                 <h3>Reporter</h3>
-                <p>{{task.userId}}</p>
+                <p>{{user.fullName}}</p>
                 <h3>Dates</h3>
                 <p>Created</p>
                 <p>{{createDate}}</p>

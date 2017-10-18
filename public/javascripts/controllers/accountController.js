@@ -5,6 +5,12 @@ angular.module('homeApp')
         $scope.changePass = {};
         $scope.text = '';
         $scope.dataText = '';
+        $scope.logOutUser = function() {
+            Main.logoutUser().then(function(res) {
+                $location.path('/');
+                $scope.user = {};
+            });
+        }
         Main.getLoggedUserId().then(function(res) {
             $scope.user = res.data;
             $scope.userData = {
@@ -48,5 +54,11 @@ angular.module('homeApp')
                     $scope.text = 'Your new password is invalid !';
                 }
             }
+        })
+        $(".logoutHolder").on("mouseover", function() {
+            $(".logOutText").show();
+        })
+        $(".logoutHolder").on("mouseleave", function() {
+            $(".logOutText").hide();
         })
     }])
