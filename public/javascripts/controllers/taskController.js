@@ -1,5 +1,6 @@
 angular.module('homeApp')
     .controller('TaskCtrl', ['$scope', '$http', '$routeParams', '$location', 'Main', 'Task', function($scope, $http, $routeParams, $location, Main, Task) {
+
         $scope.task;
         $scope.user = {};
         $scope.taskId = $routeParams.taskId;

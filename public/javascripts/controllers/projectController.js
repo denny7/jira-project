@@ -1,8 +1,10 @@
 angular.module('homeApp')
     .controller('ProjectCtrl', ['$scope', '$http', '$route', '$routeParams', '$location', 'Main', 'Project', function($scope, $http, $route, $routeParams, $location, Main, Project) {
+
         $scope.tasks = [];
         $scope.user = {};
         $scope.taskName = "";
+        $scope.project;
         var projectId = $routeParams.projectId;
         console.log(JSON.stringify(projectId))
         Main.getLoggedUserId().then(function(res) {
@@ -10,7 +12,9 @@ angular.module('homeApp')
         })
 
         Project.getTasks(projectId).then(function(res) {
-            $scope.tasks = res.data;
+            $scope.tasks = res.data[0];
+            $scope.project = res.data[1][0]
+            console.log('project from ctrl' + JSON.stringify($scope.project.name))
         })
         $scope.createTaskF = function() {
             var data = {

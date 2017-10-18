@@ -1,9 +1,3 @@
-<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#demo">Create task</button>
-<form name="createTask" id="demo" class="collapse">
-    <input type="text" name="nameTask" ng-model="taskName" placeholder="What's need to be done"> </input>
-
-    <button class="btn btn-default" ng-click="createTaskF()">Create issue</button>
-</form>
 <div class="row">
     <h1>project page</h1>
     <div ng-repeat="task in tasks" class="col-lg-3 col-md-6">
@@ -29,17 +23,14 @@
                         <p> {{task.type}}</p>
                     </div>
                 </div>
+                <a href="/project/task/{{task._id}}">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
             </div>
-            <a href="/project/task/{{task._id}}">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
         </div>
     </div>
-
-</div>
-
 </div>

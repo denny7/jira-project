@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/css.css' />
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-route/angular-route.min.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -26,6 +27,28 @@
         <div class="userIcon"><i class="fa fa-user  fa-2x"></i></div>
         <div class="plusIcon"><i class="fa fa-plus fa-2x"></i></div>
         <div class="home"><i class="fa fa-home fa-3x"></i></div>
+    </div>
+    <div ng-if="currentPath == 'project'" ng-controller="ProjectCtrl" class="sidebar1">
+        <div class="logo">
+            <img src="http://lorempixel.com/output/people-q-g-64-64-1.jpg" class="img-responsive center-block" alt="Logo">
+        </div>
+        <br>
+        <div class="left-navigation">
+            <ul class="list">
+                <h3 class="text-center" ng-if="project"><strong>{{project.name}}</strong></h3>
+                <li><a>All Tasks</a></li>
+                <li><a>Active Sprints</a></li>
+                <li data-toggle="collapse" data-target="#demo">Create new task</li>
+                <div id="demo" class="collapse liInput ">
+                    <input type="text" ng-model="taskName" placeholder="What's need to be done"> </input>
+                    <span class="createTask"><i  ng-click="createTaskF()" class="fa fa-check"></i></span>
+                </div>
+                <br/>
+                <br/>
+
+                <li><a>People</a></li>
+            </ul>
+        </div>
     </div>
 
     <div ng-view></div>

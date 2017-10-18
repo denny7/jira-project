@@ -1,6 +1,7 @@
 angular.module('homeApp')
     .controller('DashCtrl', ['$scope', '$http', '$location', 'Main', 'Dashboard', function($scope, $http, $location, Main, Dashboard) {
         $('.parent').show();
+
         $('body').removeClass('homepage');
         $('footer').show();
 

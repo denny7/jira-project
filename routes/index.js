@@ -80,11 +80,18 @@ router.post('/dashboard', function(req, res) {
 });
 
 router.get('/api/project/:projectId', function(req, res) {
+    var izprati = [];
     var projectId = req.params.projectId;
     var tasks = db.get('tasks');
+    var projects = db.get('projects')
     console.log('project id ' + projectId)
     tasks.find({ projectId: projectId }, {}).then(function(data) {
-        res.json(data)
+        projects.find({ _id: projectId }, {}).then(function(pr) {
+            izprati.push(data, pr);
+            console.log('pr prp rpr' + pr)
+            res.json(izprati)
+        })
+
     })
 });
 
