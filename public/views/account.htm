@@ -1,0 +1,57 @@
+<div class="welcomeText row">
+    <div class="col-sm-11">
+        <h1 class="letterDrop">Profile settings</h1>
+    </div>
+    <div class="col-sm-1">
+        <button class="logOutBtn btn" ng-show="user._id" ng-click="logoutUser()"> &#x2716</button>
+    </div>
+</div>
+<div class="row account">
+    <div class=" col-md-6 ">
+        <div class="jumbotron jumbo ">
+            <form class="firstForm">
+                <h3 class="text-center page-header">Account details</h3>
+                <div class="form-group row">
+                    <label for="userFullname" class="col-sm-2 userLabel">Full name :</label>
+                    <input ng-value="{{user.fullName}}" id="userFullname" ng-model="userData.fullName" type="text" class="userData col-sm-9" placeholder="{{user.fullName}}" />
+                </div>
+                <div class="form-group row">
+                    <label for="userMail" class="col-sm-2 userLabel">E-mail :</label>
+                    <input id="userMail" ng-model="userData.email" type="email" class="userData col-sm-9" ng-init="userData.email" placeholder="{{user.email}}" />
+                </div>
+                <div class="col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 text-center">
+                    <input ng-click="changeUserData()" type="button" class="btn btn-primary btn-filled loginBtn" value="Change details" />
+                    <p class="text-success">{{dataText}}</p>
+                </div>
+            </form>
+            <form>
+                <h3 class="text-center page-header">Profile details</h3>
+                <div class="form-group row">
+                    <label class="col-sm-3  userLabel">Username :     {{user.name}} </label>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3  userLabel">Role :     {{user.role}} </label>
+                </div>
+            </form>
+            <form name="userPassChange">
+                <h3 class="text-center page-header">Change Password</h3>
+                <div class="form-group row">
+                    <label for="userPassword" class="col-sm-2 userLabel">Old :</label>
+                    <input id="userPassword" ng-model="changePass.old" type="password" class="userData col-sm-9" placeholder="Enter old password" required/>
+                </div>
+                <div class="form-group row">
+                    <label for="userNewPass" class="col-sm-2 userLabel">New :</label>
+                    <input id="userNewPass" ng-model="changePass.new" type="password" class="userData col-sm-9" placeholder="Enter new password" required/>
+                </div>
+                <div class="col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 text-center">
+                    <input ng-disabled="userPassChange.$invalid" ng-click="changePassword()" type="button" class="btn btn-primary btn-filled loginBtn" value="Change password" />
+                    <p id="changePassP">{{text}}</p>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div class="col-md-6 ">
+
+    </div>
+</div>

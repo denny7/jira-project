@@ -51,4 +51,5 @@ angular.module('homeApp')
                 $scope.err = "Username must be at least 4 symbols!";
             }
         }
+
     }])

@@ -6,14 +6,16 @@ angular.module('homeApp')
         $scope.taskName = "";
         $scope.project;
         var projectId = $routeParams.projectId;
-        console.log(JSON.stringify(projectId))
+        console.log(projectId)
         Main.getLoggedUserId().then(function(res) {
-            $scope.user.id = JSON.parse(res.data).userId;
+            console.log(res.data)
+            $scope.user.id = res.data._id;
         })
 
         Project.getTasks(projectId).then(function(res) {
             $scope.tasks = res.data[0];
             $scope.project = res.data[1][0]
+            $scope.projectPath = '/project/' + res.data[1][0]._id;
             console.log('project from ctrl' + JSON.stringify($scope.project.name))
         })
         $scope.createTaskF = function() {

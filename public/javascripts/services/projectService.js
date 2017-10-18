@@ -7,6 +7,5 @@ angular.module('homeApp')
             createTask: function(projectId, data) {
                 return $http.post('/api/project/' + projectId, data);
             }
-
         }
     }])

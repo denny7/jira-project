@@ -94,3 +94,30 @@ h5 {
 .main-content {
     text-align: center;
 }
+
+.userData {
+    font-size: 16px;
+    line-height: 24px;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-radius: 50px !important;
+    /* padding: 14px 24px 14px 24px !important; */
+}
+
+.userLabel {
+    text-align: center;
+    margin-top: 2px;
+}
+
+.jumbo form .userData {
+    color: #369FC8;
+}
+
+.account .jumbo form:last-of-type {
+    margin-top: -20px;
+    margin-bottom: 60px;
+}
+
+.firstForm {
+    margin-top: -40px;
+}

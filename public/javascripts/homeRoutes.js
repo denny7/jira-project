@@ -10,9 +10,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             templateUrl: '../views/dash.htm',
             controller: 'DashCtrl'
         })
-        .when('/login', {
-            templateUrl: '../views/login.htm',
-            controller: 'UserCtrl'
+        .when('/account', {
+            templateUrl: '../views/account.htm',
+            controller: 'AccountCtrl'
         })
         .when('/register', {
             templateUrl: '../views/registration.htm',

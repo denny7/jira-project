@@ -6,7 +6,7 @@ angular.module('homeApp')
         $scope.taskId = $routeParams.taskId;
         console.log('task id ' + JSON.stringify($scope.taskId))
         Main.getLoggedUserId().then(function(res) {
-            $scope.user.id = JSON.parse(res.data).userId;
+            $scope.user = res.data;
         })
 
         Task.getTaskInfo($scope.taskId).then(function(res) {

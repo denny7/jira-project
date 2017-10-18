@@ -1,12 +1,13 @@
 angular.module('homeApp')
-    .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', function($scope, $http, $location, Main, $routeParams, Project) {
-        $scope.user = {};
+    .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', '$rootScope', function($scope, $http, $location, Main, $routeParams, Project, $rootScope) {
+        $scope.user;
         // $scope.$on('$routeChangeStart', function(newUrl, curUrl) {
         //     Main.getLoggedUserId().then(function(res) {
-        //         $scope.user.id = JSON.parse(res.data).userId;
-        //         if ($scope.user.id == undefined) {
-        //             // User isn’t authenticated
-        //             $location.path("/");
+        //         console.log('--------------++++++++++--------');
+        //         console.log(res.data)
+        //         if (!res.data._id) {
+
+        //             $location.path('/');
         //         }
         //     })
         // });
@@ -15,11 +16,12 @@ angular.module('homeApp')
         })
         $scope.getUserId = function() {
             Main.getLoggedUserId().then(function(res) {
-                $scope.user.id = JSON.parse(res.data).userId;
-
-                console.log($scope.user.id);
+                $scope.user = res.data;
+                $rootScope.user = res.data;
+                console.log(res.data)
+                console.log($scope.user);
             });
-            return $scope.user.id;
+            return $scope.user;
         };
         $scope.logOutUser = function() {
             Main.logoutUser().then(function(res) {
@@ -28,13 +30,7 @@ angular.module('homeApp')
             });
         }
         $scope.getProject = function() {
-                var projectId = $routeParams.projectId;
+            var projectId = $routeParams.projectId;
+        }
 
-            }
-            // $scope.logModal = function() {
-            //     $('#signIn').modal();
-            // };
-            // $scope.regModal = function() {
-            //     $('#signUp').modal();
-            // }
     }])

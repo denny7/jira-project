@@ -6,9 +6,12 @@ angular.module('homeApp')
 
         $scope.user = {};
         Main.getLoggedUserId().then(function(res) {
-            $scope.user.id = JSON.parse(res.data).userId;
-            console.log('dashboard user id ' + $scope.user.id)
+            console.log('dashboard')
+            console.log(res.data)
+            $scope.user = res.data;
+            console.log('dashboard user id ' + $scope.user._id)
             Dashboard.load($scope.user).then(function(res) {
+                console.log('scope user id ')
                 $scope.projects = res.data;
             });
         })

@@ -23,8 +23,12 @@
         <a href="/dashboard">
             <div class="homeIcon"><i class="fa fa-home fa-2x"></i></div>
         </a>
+
         <div class="listIcon"><i class="fa fa-list  fa-2x"></i></div>
-        <div class="userIcon"><i class="fa fa-user  fa-2x"></i></div>
+
+        <a href="/account">
+            <div class="userIcon"><i class="fa fa-user  fa-2x"></i></div>
+        </a>
         <div class="plusIcon"><i class="fa fa-plus fa-2x"></i></div>
         <div class="home"><i class="fa fa-home fa-3x"></i></div>
     </div>
@@ -33,10 +37,10 @@
             <img src="http://lorempixel.com/output/people-q-g-64-64-1.jpg" class="img-responsive center-block" alt="Logo">
         </div>
         <br>
-        <div class="left-navigation">
+        <div class="left-navigation" data-ng-init="projectInfoMain()">
             <ul class="list">
                 <h3 class="text-center" ng-if="project"><strong>{{project.name}}</strong></h3>
-                <li><a>All Tasks</a></li>
+                <li><a ng-href="{{projectPath}}">All Tasks</a></li>
                 <li><a>Active Sprints</a></li>
                 <li data-toggle="collapse" data-target="#demo">Create new task</li>
                 <div id="demo" class="collapse liInput ">
@@ -63,6 +67,7 @@
     <script src="javascripts/controllers/mainController.js"></script>
     <script src="javascripts/controllers/userController.js"></script>
     <script src="javascripts/controllers/dashController.js"></script>
+    <script src="javascripts/controllers/accountController.js"></script>
     <script src="javascripts/controllers/projectController.js"></script>
     <script src="javascripts/controllers/taskController.js"></script>
 </body>
