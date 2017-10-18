@@ -1,35 +1,38 @@
 <div class="row">
-    <h1>project page</h1>
-    <div ng-repeat="task in tasks" class="col-lg-3 col-md-6">
-        <div class="panel">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <div ng-if='task.type=="epic"'>
-                            <img ng-src="../images/epic-icon.png" alt="epic" class="panelImg" />
+    <div class="col-md-3 col-sm-4 nav"></div>
+    <div class="col-md-9 col-sm-8 main-content">
+        <h1>project page</h1>
+        <div ng-repeat="task in tasks" class="col-lg-3 col-md-6">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <div ng-if='task.type=="epic"'>
+                                <img ng-src="../images/epic-icon.png" alt="epic" class="panelImg" />
+                            </div>
+                            <div ng-if='task.type=="story"'>
+                                <img ng-src="../images/story-icon.png" alt="story" class="panelImg" />
+                            </div>
+                            <div ng-if='task.type=="bug"'>
+                                <img ng-src="../images/bug-icon.png" alt="service" class="panelImg" />
+                            </div>
+                            <div ng-if='task.type=="task"'>
+                                <img ng-src="../images/task-icon.png" alt="task" class="panelImg" />
+                            </div>
                         </div>
-                        <div ng-if='task.type=="story"'>
-                            <img ng-src="../images/story-icon.png" alt="story" class="panelImg" />
-                        </div>
-                        <div ng-if='task.type=="bug"'>
-                            <img ng-src="../images/bug-icon.png" alt="service" class="panelImg" />
-                        </div>
-                        <div ng-if='task.type=="task"'>
-                            <img ng-src="../images/task-icon.png" alt="task" class="panelImg" />
+                        <div class="col-xs-9 text-right">
+                            <h3>{{task.name}}</h3>
+                            <p> {{task.type}}</p>
                         </div>
                     </div>
-                    <div class="col-xs-9 text-right">
-                        <h3>{{task.name}}</h3>
-                        <p> {{task.type}}</p>
-                    </div>
+                    <a href="/project/task/{{task._id}}">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
                 </div>
-                <a href="/project/task/{{task._id}}">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
             </div>
         </div>
     </div>

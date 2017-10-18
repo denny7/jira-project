@@ -273,7 +273,8 @@
     }
     
     .panel-heading {
-        height: 10em;
+        height: 11em !important;
+        width: auto;
     }
     
     .panel-footer {
@@ -297,4 +298,66 @@
     .footerText {
         font-size: 1.5em;
         line-height: 3em;
+    }
+    
+    .headerTask {
+        background: #369FC8;
+        height: 7em;
+        border-radius: 7px;
+    }
+    
+    .taskImg {
+        float: left;
+    }
+    
+    .taskName {
+        float: right;
+    }
+    
+    select {
+        width: 7em;
+        height: 2em;
+        border-radius: 2px;
+    }
+    
+    .selectImg {
+        width: 1em;
+    }
+    /* .taskOption {
+        background-color: greenyellow;
+    }
+    
+    .epicOption {
+        background-color: orange;
+    }
+    
+    .storyOption {
+        background-color: blue;
+    }
+    
+    .bugOption {
+        background-color: red;
+    } */
+    
+    .pencilDescription {
+        color: #369FC8;
+    }
+    
+    .addDescription:hover,
+    .taskName:hover {
+        font-size: 1.2em;
+        color: #369FC8;
+        cursor: pointer;
+    }
+    
+    .descriptionArea {
+        width: 20em;
+        height: 5em;
+        display: none;
+        border-radius: 5px;
+    }
+    
+    .nameEdit {
+        display: none;
+        border-radius: 5px;
     }

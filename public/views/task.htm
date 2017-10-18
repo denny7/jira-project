@@ -1,12 +1,76 @@
-<div class="row">
+<div class="row" ng-controller="TaskCtrl">
     <div class="col-md-3 col-sm-4 nav "></div>
     <div class="col-md-9 col-sm-8 main-content taskPage">
-        <h1>task page</h1>
-
-        <h3>{{task.name}}</h3>
-
-        <h5>{{task.type}}</h5>
-
-        <p>{{task.description}}</p>
+        <div class="headerTask">
+            <div ng-if='task.type=="epic"'>
+                <img ng-src="../images/epic-icon.png" alt="epic" class="panelImg taskImg" />
+            </div>
+            <div ng-if='task.type=="story"'>
+                <img ng-src="../images/story-icon.png" alt="story" class="panelImg taskImg" />
+            </div>
+            <div ng-if='task.type=="bug"'>
+                <img ng-src="../images/bug-icon.png" alt="service" class="panelImg taskImg" />
+            </div>
+            <div ng-if='task.type=="task"'>
+                <img ng-src="../images/task-icon.png" alt="task" class="panelImg taskImg" />
+            </div>
+            <h3 class="taskName">{{task.name}}</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-sm-7 ">
+                <div class="btn-group" ng-model="task.progress">
+                    <button type="button" class="btn btn-primary" ng-model="progress" ng-click="progressToDo()">To do</button>
+                    <button type="button" class="btn btn-primary" ng-model="progress" ng-click="progressInProgress()">In progress</button>
+                    <button type="button" class="btn btn-primary" ng-model="progress" ng-click="progressDone()">Done</button>
+                </div>
+                <h1 class="detailsTask">Details</h1>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p>Type</p>
+                        <p>Priority</p>
+                        <p>Status</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <select class="selectpicker show-tick" ng-model="task.type" ng-change="updateTask()">
+                            <option value="task" class="taskOption" ng-model="task.type" ng-change="updateTask()">Task</option>   
+                            <option value="epic" class="epicOption" ng-model="task.type" ng-change="updateTask()">Epic</option>
+                            <option value="bug" class="bugOption" ng-model="task.type" ng-change="updateTask()">Bug</option>
+                            <option value="story" class="storyOption" ng-model="task.type" ng-change="updateTask()">Story</option>        
+                        </select>
+                        <select class="selectpicker show-tick" ng-model="task.priority" ng-change="updateTask()">
+                            <option value="High" ng-model="task.priority" ng-change="updateTask()">High</option>
+                            <option value="Middle" ng-model="task.priority" ng-change="updateTask()">Middle</option>
+                            <option value="Low" ng-model="task.priority" ng-change="updateTask()">Low</option>
+                        </select>
+                        <p>{{task.progress}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>Name</p>
+                        <p class="taskName">{{task.name}}<i class="fa fa-pencil pencilName" aria-hidden="true"></i></p>
+                        <input type="text" ng-model="task.name" class="nameEdit" />
+                    </div>
+                </div>
+                <h1 class="descriptionTask">Description</h1>
+                <div class="desctriptionChange">
+                    <p class="addDescription">{{task.description}} <i class="fa fa-pencil pencilDescription" aria-hidden="true"></i></p>
+                </div>
+                <textarea ng-model="task.description" class="descriptionArea">
+                    {{description}}
+                </textarea>
+            </div>
+            <div class="col-md-4 col-sm-5 people">
+                <h1>People</h1>
+                <h3>Assignee:</h3>
+                <p>{{task.assignee}}</p>
+                <p>Assign to me</p>
+                <h3>Reporter</h3>
+                <p>{{task.userId}}</p>
+                <h3>Dates</h3>
+                <p>Created</p>
+                <p>{{createDate}}</p>
+                <p>Updated</p>
+                <p>{{updateDate}}</p>
+            </div>
+        </div>
     </div>
 </div>
