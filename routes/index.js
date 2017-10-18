@@ -114,7 +114,7 @@ router.post('/api/project/:projectId', function(req, res) {
         priorityNumber: "2",
         assignee: "not assigned",
         description: "",
-        type: "Software"
+        type: "task"
     }
     tasks.insert(task).then(function(data) {
         res.json({ createdTask: true })

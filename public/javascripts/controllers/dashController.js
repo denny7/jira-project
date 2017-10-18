@@ -2,6 +2,7 @@ angular.module('homeApp')
     .controller('DashCtrl', ['$scope', '$http', '$location', 'Main', 'Dashboard', function($scope, $http, $location, Main, Dashboard) {
         $('.parent').show();
         $('body').removeClass('homepage');
+        $('footer').show();
 
         $scope.user = {};
         Main.getLoggedUserId().then(function(res) {
@@ -18,4 +19,12 @@ angular.module('homeApp')
                 $scope.user = {};
             });
         }
+        $(".logoutHolder").on("mouseover", function() {
+            $(".logOutText").show();
+        })
+        $(".logoutHolder").on("mouseleave", function() {
+            $(".logOutText").hide();
+        })
+
+
     }])

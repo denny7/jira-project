@@ -7,11 +7,22 @@
 <div class="row">
     <h1>project page</h1>
     <div ng-repeat="task in tasks" class="col-lg-3 col-md-6">
-        <div class="panel panel-primary">
+        <div class="panel">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-tasks fa-5x"></i>
+                        <div ng-if='task.type=="epic"'>
+                            <img ng-src="../images/epic-icon.png" alt="epic" class="panelImg" />
+                        </div>
+                        <div ng-if='task.type=="story"'>
+                            <img ng-src="../images/story-icon.png" alt="story" class="panelImg" />
+                        </div>
+                        <div ng-if='task.type=="bug"'>
+                            <img ng-src="../images/bug-icon.png" alt="service" class="panelImg" />
+                        </div>
+                        <div ng-if='task.type=="task"'>
+                            <img ng-src="../images/task-icon.png" alt="task" class="panelImg" />
+                        </div>
                     </div>
                     <div class="col-xs-9 text-right">
                         <h3>{{task.name}}</h3>

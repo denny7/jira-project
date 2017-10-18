@@ -2,8 +2,9 @@
     <div class="col-sm-11">
         <h1 class="letterDrop">Welcome to your Projects</h1>
     </div>
-    <div class="col-sm-1">
-        <button class="logOutBtn btn" ng-show="user.id" ng-click="logoutUser()"> &#x2716</button>
+    <div class="col-sm-1 logoutHolder">
+        <div class="logOutBtn" ng-show="user.id" ng-click="logoutUser()"><i class="fa fa-times" aria-hidden="true"></i></div>
+        <div class="logOutText">Log Out</div>
     </div>
 </div>
 <div data-ng-init="getUserId()">
@@ -13,14 +14,24 @@
 
         </div>
         <div ng-repeat="p in projects" class="col-lg-3 col-md-6">
-            <div class="panel panel-primary">
+            <div class="panel">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-tasks fa-5x"></i>
+                            <!-- <i class="fa fa-tasks fa-5x"></i> -->
+                            <div ng-if='p.type=="Software"'>
+                                <img ng-src="../images/software-icon.png" alt="soft" class="panelImg" />
+                            </div>
+                            <div ng-if='p.type=="Business"'>
+                                <img ng-src="../images/business-icon.png" alt="business" class="panelImg" />
+                            </div>
+                            <div ng-if='p.type=="Service"'>
+                                <img ng-src="../images/service-icon.png" alt="service" class="panelImg" />
+                            </div>
                         </div>
                         <div class="col-xs-9 text-right">
                             <h3>{{p.name}}</h3>
+                            <p>type {{p.type}}</p>
                             <p>by {{p.userName}}</p>
                         </div>
                     </div>
