@@ -110,11 +110,21 @@ router.post('/api/project/:projectId', function(req, res) {
         priority: "Middle",
         priorityNumber: "2",
         assignee: "not assigned",
-        description: "",
-        type: "Software"
+        description: "Click to add description",
+        type: "task",
+        progress: "To Do"
     }
     tasks.insert(task).then(function(data) {
         res.json({ createdTask: true })
+    })
+});
+router.put('/api/task/:taskId', function(req, res) {
+    var taskId = req.params.taskId;
+    var tasks = db.get('tasks');
+    console.log("------------------------")
+    console.log(req.body)
+    tasks.update({ _id: taskId }, req.body).then(function(data) {
+        res.json(data)
     })
 });
 

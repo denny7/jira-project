@@ -1,7 +1,7 @@
 angular.module('homeApp')
     .controller('HomeCtrl', ['$scope', '$http', '$location', 'Main', function($scope, $http, $location, Main) {
         $('.parent').hide();
-
+        $("footer").hide();
         $('body').addClass('homepage');
         $scope.user = {};
         $scope.getUserId = function() {
