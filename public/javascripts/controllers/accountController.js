@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('AccountCtrl', ['$scope', '$http', '$routeParams', '$location', 'Main', 'Users', function($scope, $http, $routeParams, $location, Main, Users) {
+    .controller('AccountCtrl', ['$scope', '$http', '$routeParams', '$location', 'Main', 'Users', '$route', function($scope, $http, $routeParams, $location, Main, Users, $route) {
         $scope.user;
 
         $scope.changePass = {};
@@ -24,9 +24,10 @@ angular.module('homeApp')
                 Users.changeData(changeUserData).then(function(res) {
                     $scope.user = res.data;
                     $scope.dataText = 'You successfully changed your details !'
-
+                    $route.reload();
                 }).catch(function(err) {
                     $scope.dataText = err.status;
+                    $route.reload();
                 })
             }
 

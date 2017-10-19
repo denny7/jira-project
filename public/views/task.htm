@@ -1,21 +1,33 @@
 <div class="row" ng-controller="TaskCtrl">
     <div class="col-md-3 col-sm-4 nav "></div>
     <div class="col-md-9 col-sm-8 main-content taskPage">
-        <div class="headerTask">
-            <div ng-if='task.type=="epic"'>
-                <img ng-src="../images/epic-icon.png" alt="epic" class="panelImg taskImg" />
+        <div class="welcomeText row">
+            <div class="col-sm-11">
+                <div class="col-sm-3">
+                    <div ng-if='task.type=="epic"'>
+                        <img ng-src="../images/epic-icon.png" alt="epic" class="panelImg taskImg" />
+                    </div>
+                    <div ng-if='task.type=="story"'>
+                        <img ng-src="../images/story-icon.png" alt="story" class="panelImg taskImg" />
+                    </div>
+                    <div ng-if='task.type=="bug"'>
+                        <img ng-src="../images/bug-icon.png" alt="service" class="panelImg taskImg" />
+                    </div>
+                    <div ng-if='task.type=="task"'>
+                        <img ng-src="../images/task-icon.png" alt="task" class="panelImg taskImg" />
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h3 class="taskName">{{task.name}}</h3>
+                </div>
+
             </div>
-            <div ng-if='task.type=="story"'>
-                <img ng-src="../images/story-icon.png" alt="story" class="panelImg taskImg" />
+            <div class="col-sm-1 logoutHolder">
+                <div class="logOutBtn" ng-click="logoutUser()"><i class="fa fa-times"></i></div>
+                <div class="logOutText">Log Out</div>
             </div>
-            <div ng-if='task.type=="bug"'>
-                <img ng-src="../images/bug-icon.png" alt="service" class="panelImg taskImg" />
-            </div>
-            <div ng-if='task.type=="task"'>
-                <img ng-src="../images/task-icon.png" alt="task" class="panelImg taskImg" />
-            </div>
-            <h3 class="taskName">{{task.name}}</h3>
         </div>
+
         <div class="row">
             <div class="col-md-8 col-sm-7 ">
                 <div class="btn-group" ng-model="task.progress">

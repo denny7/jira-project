@@ -6,6 +6,15 @@ angular.module('homeApp')
             },
             createTask: function(projectId, data) {
                 return $http.post('/api/project/' + projectId, data);
+            },
+            getAllUsers: function(projectId) {
+                return $http.get('/api/project/people/' + projectId);
+            },
+            addUser: function(projectId, data) {
+                return $http.put('/api/project/addUser/' + projectId, data);
+            },
+            removeUser: function(projectId, userId) {
+                return $http.put('/api/project/removeUser/' + projectId, userId)
             }
         }
     }])

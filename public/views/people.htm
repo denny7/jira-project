@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-md-3 col-sm-4 nav"></div>
+    <div class="col-md-9 col-sm-8 main-content">
+        <div class="welcomeText row">
+            <div class="col-sm-2">
+                <h3 ng-click="addPeople()" class="addPeopleBtn">Add people</h3>
+            </div>
+            <div class="col-sm-9">
+                <h1 class="letterDrop">PEOPLE</h1>
+            </div>
+            <div class="col-sm-1 logoutHolder">
+                <div class="logOutBtn" ng-click="logoutUser()"><i class="fa fa-times"></i></div>
+                <div class="logOutText">Log Out</div>
+            </div>
+        </div>
+        <form name="addNewUser" ng-controller="UserCtrl" class="modal fade" id="addPeople" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content" id="createNewPr">
+                    <div class="modal-header">
+                        <h1 class="text-center white">Add new user</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input ng-model="newUser.name" type="text" class="form-control reg " placeholder="User full name" required autofocus/>
+                        </div>
+                        <div class="form-group text-center">
+                            <input ng-disabled="addNewUser.$invalid" ng-click="addNewUserF()" type="button" class="btn btn-primary btn-filled loginBtn" value="Create" />
+                            <p id="addUserT">{{addUserText}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-4"> Full name</div>
+            <div class="col-md-4"> E-mail</div>
+            <div class="col-md-2"> Role</div>
+            <div class="col-md-2"></div>
+            <hr>
+        </div>
+        <div ng-repeat="man in people" class="row people">
+            <div class="col-md-4"> {{man.fullName}}</div>
+            <div class="col-md-4 "> {{man.email}}</div>
+            <div class="col-md-2"> {{man.role}}</div>
+            <div ng-click="removeUser($event)" ng-if="man.role !='Admin' " class="col-md-2"><span id="{{man._id}}" class="removeUserBtn">Remove</span> </div>
+        </div>
+    </div>
+</div>

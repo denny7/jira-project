@@ -4,7 +4,7 @@ angular.module('homeApp')
 
         $('body').removeClass('homepage');
         $('footer').show();
-
+        $scope.welcomeText = 'WELCOME to your PROJECTS'
         $scope.user = {};
         Main.getLoggedUserId().then(function(res) {
             console.log('dashboard')
@@ -16,13 +16,6 @@ angular.module('homeApp')
                 $scope.projects = res.data;
             });
         })
-        $scope.logoutUser = function() {
-            Main.logoutUser().then(function(res) {
-                console.log('log out')
-                $location.path('/');
-                $scope.user = {};
-            });
-        }
         $(".logoutHolder").on("mouseover", function() {
             $(".logOutText").show();
         })

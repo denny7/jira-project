@@ -19,6 +19,7 @@
 </head>
 
 <body ng-app="homeApp" ng-controller="MainCtrl" ng-cloak>
+    <!-- Main menu -->
     <div class="parent">
         <a href="/dashboard">
             <div class="homeIcon"><i class="fa fa-home fa-2x"></i></div>
@@ -29,10 +30,51 @@
         <a href="/account">
             <div class="userIcon"><i class="fa fa-user  fa-2x"></i></div>
         </a>
-        <div class="plusIcon"><i class="fa fa-plus fa-2x"></i></div>
+        <div ng-if="user.role=='Admin'" ng-click="createPr()" class="plusIcon"><i class="fa fa-plus fa-2x"></i></div>
         <div class="home"><i class="fa fa-home fa-3x"></i></div>
     </div>
-    <div ng-if="currentPath == 'project'" ng-controller="ProjectCtrl" class="sidebar1">
+
+    <div ng-if="currentPath[3] == 'dashboard' || currentPath[3] == 'account'" class="welcomeText row">
+        <div class="col-sm-11">
+            <h1 ng-if="currentPath[3] == 'dashboard'" class="letterDrop"> WELCOME to your PROJECTS</h1>
+            <h1 ng-if="currentPath[3] == 'account'" class="letterDrop"> ACCOUNT SETTINGS</h1>
+        </div>
+        <div class="col-sm-1 logoutHolder">
+            <div class="logOutBtn" ng-click="logoutUser()"><i class="fa fa-times"></i></div>
+            <div class="logOutText">Log Out</div>
+        </div>
+    </div>
+
+    <form name="projectData" ng-controller="UserCtrl" class="modal fade" id="createProject" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" id="createNewPr">
+                <div class="modal-header">
+                    <h1 class="text-center white">Create new Project</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input ng-model="newProject.name" type="text" class="form-control reg " placeholder="Project name" required autofocus/>
+                    </div>
+                    <div class="form-group">
+                        <label style="color:#fff">Select type :</label>
+                        <select style="color:#369FC8" class="form-control reg show-tick" required ng-model="newProject.type">
+                                <option value=""  selected disabled >Select type</option>
+                              <option value="Business"  >Business</option>
+                              <option value="Software"  >Software</option>
+                              <option value="Service"  >Service</option>
+                        </select>
+                    </div>
+                    <div class="form-group text-center">
+                        <input ng-disabled="projectData.$invalid" ng-click="createNewProject()" type="button" class="btn btn-primary btn-filled loginBtn" value="Create" />
+                        <p class="text-success">{{projectText}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Project menu -->
+    <div ng-if="currentPath[3] == 'project'" ng-init="getProject()" ng-controller="ProjectCtrl" class="sidebar1">
         <div class="logo">
             <div ng-if='project.type=="Software"'>
                 <img ng-src="../images/software-icon.png" alt="soft" class="panelImg img-responsive center-block" />
@@ -45,21 +87,22 @@
             </div>
             <!-- <img src="http://lorempixel.com/output/people-q-g-64-64-1.jpg" class="img-responsive center-block" alt="Logo"> -->
         </div>
+
         <br>
         <div class="left-navigation" data-ng-init="projectInfoMain()">
             <ul class="list">
                 <h3 class="text-center" ng-if="project"><strong>{{project.name}}</strong></h3>
                 <li><a ng-href="{{projectPath}}">All Tasks</a></li>
                 <li><a>Active Sprints</a></li>
-                <li data-toggle="collapse" data-target="#demo">Create new task</li>
+                <li style="cursor:pointer" data-toggle="collapse" data-target="#demo">Create new task</li>
                 <div id="demo" class="collapse liInput ">
                     <input type="text" ng-model="taskName" placeholder="What's need to be done"> </input>
                     <span class="createTask"><i  ng-click="createTaskF()" class="fa fa-check"></i></span>
                 </div>
                 <br/>
-                <br/>
 
-                <li><a>People</a></li>
+                <br/>
+                <li><a ng-href="{{peoplePath}}">People</a></li>
             </ul>
         </div>
     </div>

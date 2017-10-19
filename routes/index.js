@@ -58,11 +58,19 @@ router.get('/logout', function(req, res) {
 });
 
 router.post('/dashboard', function(req, res) {
-    var userId = req.body._id;
-    var projects = db.get('projects');
-    projects.find({ users: { $elemMatch: { userId: userId } } }, {}).then(function(data) {
-        res.json(data)
-    })
+    var user = req.body;
+    var projects;
+    if (user.role == 'Admin') {
+        projects = db.get('projects');
+        projects.find({}, {}).then(function(data) {
+            res.json(data)
+        })
+    } else {
+        projects = db.get('projects');
+        projects.find({ users: { $elemMatch: { userId: user._id } } }, {}).then(function(data) {
+            res.json(data)
+        })
+    }
 });
 
 router.get('/api/project/:projectId', function(req, res) {
@@ -138,22 +146,70 @@ router.put('/user/changeData', function(req, res) {
     })
 })
 
-router.get('/checkAccess', function(req, res) {
-
+router.post('/createProject', function(req, res) {
+    var newProject = req.body;
+    var projects = db.get('projects');
+    projects.insert(newProject).then(function(data) {
+        res.json({ text: 'You successfully add new Project!' })
     })
-    // router.put('/api/task/assign/:taskId', function(req, res) {
-    //     var data = req.body;
-    //     var taskId = req.params.taskId;
-    //     var users = db.get("users");
-    //     var projects = db.get("projects");
-    //     // users.find({ fullName: data }, {}).then(function(res) {
-    //     //     if (res.length > 0) {
-    //     //         console.log("ress" + res)
-    //     //         res.json({ message: "success" });
-    //     //     } else {
-    //     //         console.log("invalid")
-    //     //         res.json({ message: "Invalid user" });
-    //     //     }
-    //     // })
-    // })
+})
+
+
+// router.put('/api/task/assign/:taskId', function(req, res) {
+//     var data = req.body;
+//     var taskId = req.params.taskId;
+//     var users = db.get("users");
+//     var projects = db.get("projects");
+//     // users.find({ fullName: data }, {}).then(function(res) {
+//     //     if (res.length > 0) {
+//     //         console.log("ress" + res)
+//     //         res.json({ message: "success" });
+//     //     } else {
+//     //         console.log("invalid")
+//     //         res.json({ message: "Invalid user" });
+//     //     }
+//     // })
+// })
+router.get('/api/project/people/:projectId', function(req, res) {
+    var projectId = req.params.projectId;
+    var projects = db.get('projects');
+    projects.find({ _id: projectId }, { users: 1 }).then(function(data) {
+        var peopleIds = [];
+        data[0].users.map(man => {
+            peopleIds.push(man.userId)
+        })
+        var users = db.get('users')
+        users.find({ _id: { $in: peopleIds } }, {}).then(function(data) {
+            res.json(data)
+        })
+    })
+})
+router.put('/api/project/addUser/:projectId', function(req, res) {
+    var projectId = req.params.projectId;
+    var newUserName = req.body.name;
+
+    var users = db.get('users');
+    users.find({ fullName: newUserName }, {}).then(function(userData) {
+        if (userData.length > 0) {
+            var id = userData[0]._id;
+            var id = String(id);
+            var projects = db.get('projects');
+            projects.update({ _id: projectId }, { $push: { users: { userId: id } } }).then(function(projectData) {
+                res.json({ message: 'success' })
+            })
+        } else {
+            res.json({ text: 'User with this name dont exist' })
+        }
+    })
+})
+
+router.put('/api/project/removeUser/:projectId', function(req, res) {
+    var projectId = req.params.projectId;
+    var projects = db.get('projects');
+    projects.update({ _id: projectId }, { $pull: { users: { userId: req.body.id } } }).then(function(data) {
+        console.log(data)
+        res.json({ message: 'seccess' })
+    })
+})
+
 module.exports = router;

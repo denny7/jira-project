@@ -7,6 +7,9 @@
 
                 logoutUser: function() {
                     return $http.get('/logout');
+                },
+                createPr: function(projectInfo) {
+                    return $http.post('/createProject', projectInfo);
                 }
             }
         }])

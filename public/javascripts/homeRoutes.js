@@ -14,9 +14,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             templateUrl: '../views/account.htm',
             controller: 'AccountCtrl'
         })
-        .when('/register', {
-            templateUrl: '../views/registration.htm',
-            controller: 'UserCtrl'
+        .when('/project/people/:projectId', {
+            templateUrl: '../views/people.htm',
+            controller: 'ProjectCtrl'
         })
         .when('/project/:projectId', {
             templateUrl: '../views/project.htm',

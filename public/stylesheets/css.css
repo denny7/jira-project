@@ -1,11 +1,11 @@
 .sidebar1 {
     position: fixed;
+    top: 0;
+    left: 0;
     background: linear-gradient( to bottom, rgba(54, 159, 200, 1) 0%, rgba(55, 160, 200, 1) 1%, rgba(108, 193, 171, 0.92) 67%, rgba(115, 197, 160, 0.92) 71%, rgba(164, 229, 80, 0.92) 100%);
     padding: 0px;
     height: 100%;
     width: 23%;
-    margin-top: -3.6em;
-    margin-left: -3em;
 }
 
 @media all and (max-width:900px) {
@@ -120,4 +120,41 @@ h5 {
 
 .firstForm {
     margin-top: -40px;
+}
+
+#createNewPr {
+    background: none;
+    background-color: rgba(54, 159, 200, 0.7) !important;
+}
+
+.people {
+    color: #369FC8;
+    padding: 5px;
+    margin: 5px 0;
+}
+
+.removeUserBtn:hover {
+    padding: 4px;
+    border-radius: 6px;
+    color: #fff;
+    background-color: #369FC8;
+    cursor: pointer;
+}
+
+.addPeopleBtn {
+    padding: 2px;
+    color: #369FC8;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.addPeopleBtn:hover {
+    color: #fff;
+    background: #369FC8;
+    cursor: pointer;
+}
+
+.people:hover {
+    background: rgba(207, 223, 223, 0.459);
+    border-radius: 10px;
 }

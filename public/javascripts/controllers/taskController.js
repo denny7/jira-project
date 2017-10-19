@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('TaskCtrl', ['$scope', '$http', '$routeParams', '$location', 'Main', 'Task', function($scope, $http, $routeParams, $location, Main, Task) {
+    .controller('TaskCtrl', ['$scope', '$http', '$routeParams', '$location', 'Main', 'Task', 'Project', function($scope, $http, $routeParams, $location, Main, Task, Project) {
         $(".desctriptionChange").on("mouseover", function() {
             $(".pencilDescription").show()
         })
@@ -88,4 +88,19 @@ angular.module('homeApp')
             $scope.task.updateDate = Date.now()
             Task.updateTaskInfo($scope.taskId, $scope.task).then(function(res, req) {})
         }
+<<<<<<< HEAD
+=======
+        $scope.createTaskF = function() {
+            var data = {
+                userId: $scope.user.id,
+                taskName: $scope.taskName
+            }
+            Project.createTask(projectId, data).then(function(res) {
+                $scope.tasks.push(res.data);
+                console.log(res.data)
+                $route.reload();
+            })
+        }
+
+>>>>>>> 8e2d9dda36be43132f7f8cf1fb1390bca34de74f
     }])
