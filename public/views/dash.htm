@@ -1,17 +1,7 @@
-<div class="welcomeText row">
-    <div class="col-sm-11">
-        <h1 class="letterDrop">Welcome to your Projects</h1>
-    </div>
-    <div class="col-sm-1 logoutHolder">
-        <div class="logOutBtn" ng-show="user._id" ng-click="logoutUser()"><i class="fa fa-times"></i></div>
-        <div class="logOutText">Log Out</div>
-    </div>
-</div>
 <div data-ng-init="getUserId()">
     <div class="row">
-        <div ng-hide="projects">
+        <div ng-hide="projects.length>0">
             <h1>YOU DONT HAVE PROJECTS YET</h1>
-
         </div>
         <div ng-repeat="p in projects" class="col-lg-3 col-md-6">
             <div class="panel">
@@ -32,7 +22,7 @@
                         <div class="col-xs-9 text-right">
                             <h3>{{p.name}}</h3>
                             <p>type {{p.type}}</p>
-                            <p>by {{p.userName}}</p>
+                            <p>by {{p.userFullname}}</p>
                         </div>
                     </div>
                 </div>

@@ -311,7 +311,7 @@
     }
     
     .taskName {
-        float: right;
+        color: #fff;
     }
     
     select {
