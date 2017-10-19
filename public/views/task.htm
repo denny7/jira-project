@@ -61,8 +61,14 @@
             <div class="col-md-4 col-sm-5 people">
                 <h1>People</h1>
                 <h3>Assignee:</h3>
-                <p>{{task.assignee}}</p>
-                <p>Assign to me</p>
+                <p ng-model="task.assignee">{{task.assignee}}</p>
+                <p>---{{task.assigneee2}}</p>
+                <p class="assignToMe" ng-if='task.assignee!=user.fullName' ng-model="task.assignee" ng-click="assignToMeF()">Assign to me</p>
+                <!-- <p class="assignTo" ng-click="assignToF()">Assing to:</p>
+                <div class="assignToDiv">
+                    <input placeholder="Enter fullname" class="assignToInput" type="text"><i class="fa fa-check checkAssign" ng-model="inputValue" ng-click="assignTo()" aria-hidden="true"></i>
+                </div>
+                <p>{{errMsg}}</p> -->
                 <h3>Reporter</h3>
                 <p>{{user.fullName}}</p>
                 <h3>Dates</h3>
@@ -70,6 +76,7 @@
                 <p>{{createDate}}</p>
                 <p>Updated</p>
                 <p>{{updateDate}}</p>
+                <!--  ng-if='task.assignee!=user.fullName'-->
             </div>
         </div>
     </div>

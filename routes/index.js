@@ -23,12 +23,14 @@ router.post('/login', function(req, res, next) {
 router.post('/register', function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
+    var fullName = req.body.username;
+    var role = "Employee";
     var repeatPassword = req.body.repeatPassword;
     var email = req.body.email;
     var users = db.get('users');
     users.find({ $or: [{ name: username }, { email: email }] }).then(function(data) {
         if (data.length == 0) {
-            users.insert({ name: username, password: sha1(password), email: email }).then(function(data) {
+            users.insert({ name: username, password: sha1(password), email: email, fullName: fullName, role: role }).then(function(data) {
                 res.json({ register: true })
             })
         } else {
@@ -138,5 +140,20 @@ router.put('/user/changeData', function(req, res) {
 
 router.get('/checkAccess', function(req, res) {
 
-})
+    })
+    // router.put('/api/task/assign/:taskId', function(req, res) {
+    //     var data = req.body;
+    //     var taskId = req.params.taskId;
+    //     var users = db.get("users");
+    //     var projects = db.get("projects");
+    //     // users.find({ fullName: data }, {}).then(function(res) {
+    //     //     if (res.length > 0) {
+    //     //         console.log("ress" + res)
+    //     //         res.json({ message: "success" });
+    //     //     } else {
+    //     //         console.log("invalid")
+    //     //         res.json({ message: "Invalid user" });
+    //     //     }
+    //     // })
+    // })
 module.exports = router;

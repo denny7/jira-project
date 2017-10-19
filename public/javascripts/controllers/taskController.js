@@ -38,6 +38,25 @@ angular.module('homeApp')
             $scope.task.progress = 'Done';
             $scope.updateTask();
         }
+        $scope.assignToMeF = function() {
+            $scope.task.assignee = $scope.user.fullName;
+            $scope.updateTask();
+        }
+        $(".assignToDiv").hide()
+        $scope.assignToF = function() {
+                $(".assignToDiv").show()
+            }
+            // $scope.inputValue = '';
+            // $scope.assignTo = function() {
+            //     Task.assignToUser($scope.taskId, $scope.inputValue).then(function(req, res) {
+            //         if (res.data.message == "success") {
+            //             $scope.task.assignee2 = $scope.inputValue;
+            //             $scope.updateTask();
+            //         } else {
+            //             $scope.errMsg = res.data.message
+            //         }
+            //     })
+            // }
         $scope.task = "";
         $scope.user = {};
         $scope.taskId = $routeParams.taskId;
@@ -69,5 +88,4 @@ angular.module('homeApp')
             $scope.task.updateDate = Date.now()
             Task.updateTaskInfo($scope.taskId, $scope.task).then(function(res, req) {})
         }
-
     }])

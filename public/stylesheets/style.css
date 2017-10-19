@@ -361,3 +361,17 @@
         display: none;
         border-radius: 5px;
     }
+    
+    .assignToMe:hover,
+    .assignTo:hover {
+        cursor: pointer;
+        color: #369FC8;
+    }
+    
+    .assignToInput {
+        border-radius: 5px;
+    }
+    
+    .checkAssign {
+        color: #369FC8;
+    }
