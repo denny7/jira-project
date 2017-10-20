@@ -15,6 +15,12 @@ angular.module('homeApp')
             },
             removeUser: function(projectId, userId) {
                 return $http.put('/api/project/removeUser/' + projectId, userId)
+            },
+            removeTask: function(taskId) {
+                return $http.put('/api/project/removeTask', taskId)
+            },
+            removeProject: function(projectId) {
+                return $http.put('/api/project/removeProject', projectId)
             }
         }
     }])

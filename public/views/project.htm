@@ -3,7 +3,10 @@
     <div class="col-md-3 col-sm-4 nav"></div>
     <div class="col-md-9 col-sm-8 main-content">
         <div class="welcomeText row">
-            <div class="col-sm-11">
+            <div class="col-sm-2">
+                <h3 ng-if="user.role ='Admin'" ng-click="removeProjectFunc()" class="addPeopleBtn removeProjectBtn">Remove Project</h3>
+            </div>
+            <div class="col-sm-9">
                 <h1 class="letterDrop">TASKS</h1>
             </div>
             <div class="col-sm-1 logoutHolder">
@@ -11,38 +14,52 @@
                 <div class="logOutText">Log Out</div>
             </div>
         </div>
-        <div ng-repeat="task in tasks" class="col-lg-3 col-md-6">
-            <div class="panel">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <div ng-if='task.type=="epic"'>
-                                <img ng-src="../images/epic-icon.png" alt="epic" class="panelImg" />
-                            </div>
-                            <div ng-if='task.type=="story"'>
-                                <img ng-src="../images/story-icon.png" alt="story" class="panelImg" />
-                            </div>
-                            <div ng-if='task.type=="bug"'>
-                                <img ng-src="../images/bug-icon.png" alt="service" class="panelImg" />
-                            </div>
-                            <div ng-if='task.type=="task"'>
-                                <img ng-src="../images/task-icon.png" alt="task" class="panelImg" />
-                            </div>
+        <div class="row sortOptionsDiv">
+            <div class="col-xs-4 ">
+                <p ng-click="sortByName()" class="sortOptions">Name</p>
+            </div>
+            <div class="col-xs-4 ">
+                <p ng-click="sortByType()" class="sortOptions">Type</p>
+            </div>
+            <div class="col-xs-1 ">
+                <p ng-click="sortByPriority()" class="sortOptions">Priority</p>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" class="searchTaskInput" placeholder="Search" ng-model='seachTask'>
+            </div>
+        </div>
+        <div ng-repeat="task in tasks | filter : seachTask | orderBy : sorting">
+
+            <div class="row people projectPageTasks">
+                <a href="/project/task/{{task._id}}">
+                    <div class="col-xs-4">
+                        <div ng-if='task.type=="epic"'>
+                            <img ng-src="../images/epic-icon.png" alt="epic" class="panelImg" />
+                            <p class="taskOption"> {{task.name}}</p>
                         </div>
-                        <div class="col-xs-9 text-right">
-                            <h3>{{task.name}}</h3>
-                            <p> {{task.type}}</p>
+                        <div ng-if='task.type=="story"'>
+                            <img ng-src="../images/story-icon.png" alt="story" class="panelImg" />
+                            <p class="taskOption"> {{task.name}}</p>
+                        </div>
+                        <div ng-if='task.type=="bug"'>
+                            <img ng-src="../images/bug-icon.png" alt="service" class="panelImg" />
+                            <p class="taskOption"> {{task.name}}</p>
+                        </div>
+                        <div ng-if='task.type=="task"'>
+                            <img ng-src="../images/task-icon.png" alt="task" class="panelImg" />
+                            <p class="taskOption"> {{task.name}}</p>
                         </div>
                     </div>
-                    <a href="/project/task/{{task._id}}">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
+                    <div class="col-xs-4 taskOption">
+                        <p>{{task.type}}</p>
+                    </div>
+                    <div class="col-xs-1 taskOption">
+                        <p>{{task.priority}}</p>
+                    </div>
+                </a>
+                <div ng-click="removeTask($event)" class="col-xs-3 taskOption"><span id="{{task._id}}" class="removeUserBtn">Remove</span> </div>
             </div>
+
         </div>
     </div>
 

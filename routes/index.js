@@ -5,7 +5,25 @@ var sha1 = require('sha1');
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('mongodb://jira:jira@ds115625.mlab.com:15625/jira');
-// --------------------------------------------------
+var nodemailer = require('nodemailer');
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+var smtpTransport = require('nodemailer-smtp-transport');
+
+var mailAccountUser = 'projejct.JIRA@gmail.com'
+var mailAccountPassword = 'qg7yWFPq'
+
+var fromEmailAddress = 'project.JIRA@gmail.com'
+
+var transport = nodemailer.createTransport(smtpTransport({
+        service: 'gmail',
+        rejectUnauthorized: false,
+        auth: {
+            user: mailAccountUser,
+            pass: mailAccountPassword
+        }
+    }))
+    // --------------------------------------------------
 router.post('/login', function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
@@ -21,6 +39,7 @@ router.post('/login', function(req, res, next) {
     })
 });
 router.post('/register', function(req, res, next) {
+
     var username = req.body.username;
     var password = req.body.password;
     var fullName = req.body.username;
@@ -30,7 +49,46 @@ router.post('/register', function(req, res, next) {
     var users = db.get('users');
     users.find({ $or: [{ name: username }, { email: email }] }).then(function(data) {
         if (data.length == 0) {
+<<<<<<< HEAD
             users.insert({ name: username, password: sha1(password), email: email, fullName: fullName, role: role }).then(function(data) {
+=======
+            var mail = {
+                from: fromEmailAddress,
+                to: email,
+                subject: "WELCOME to JIRA",
+                text: `Hello ${username}, 
+                        This is your password - ${password} , please keep it in safe!!`,
+            }
+            transport.sendMail(mail, function(error, response) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log("Message sent: " + response.message);
+                }
+                transport.close();
+            });
+            users.find({ role: 'Admin' }, {}).then(function(data) {
+                data.forEach(admin => {
+                    var mailToAdmin = {
+                        from: fromEmailAddress,
+                        to: admin.email,
+                        subject: "New user registration",
+                        text: `Hello ${admin.fullName}, 
+                               We have a new user in out system - ${username} ,
+                                if you know him please add him to some projects !`,
+                    }
+                    transport.sendMail(mailToAdmin, function(error, response) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log("Message sent: " + response.message);
+                        }
+                        transport.close();
+                    });
+                })
+            })
+            users.insert({ name: username, password: sha1(password), email: email }).then(function(data) {
+>>>>>>> fa80a1362f88a95316d01602d595d413a6f7cf09
                 res.json({ register: true })
             })
         } else {
@@ -106,7 +164,7 @@ router.post('/api/project/:projectId', function(req, res) {
         createDate: Date.now(),
         updateDate: Date.now(),
         priority: "Middle",
-        priorityNumber: "2",
+        priorityNumber: 2,
         assignee: "not assigned",
         description: "Click to add description",
         type: "task",
@@ -119,8 +177,10 @@ router.post('/api/project/:projectId', function(req, res) {
 });
 router.put('/api/task/:taskId', function(req, res) {
     var taskId = req.params.taskId;
+    var task = req.body;
+    task.priority == 'Middle' ? task.priorityNumber = 2 : task.priority == 'High' ? task.priorityNumber = 1 : task.priorityNumber = 3;
     var tasks = db.get('tasks');
-    tasks.update({ _id: taskId }, req.body).then(function(data) {
+    tasks.update({ _id: taskId }, task).then(function(data) {
         res.json(data)
     })
 });
@@ -220,6 +280,15 @@ router.put('/api/project/removeUser/:projectId', function(req, res) {
     var projectId = req.params.projectId;
     var projects = db.get('projects');
     projects.update({ _id: projectId }, { $pull: { users: { userId: req.body.id } } }).then(function(data) {
+
+        res.json({ message: 'seccess' })
+    })
+})
+
+router.put('/api/project/removeTask', function(req, res) {
+    var taskId = req.body.id;
+    var tasks = db.get('tasks');
+    tasks.remove({ _id: taskId }, {}).then(function(data) {
         console.log(data)
         res.json({ message: 'seccess' })
     })
@@ -240,5 +309,18 @@ router.put('/api/task/deleteComment/:taskId', function(req, res) {
     //     console.log(result)
     // })
 
+<<<<<<< HEAD
 });
+=======
+router.put('/api/project/removeProject', function(req, res) {
+    var projectId = String(req.body._id);
+    var projects = db.get('projects');
+    projects.remove({ _id: projectId }, {}).then(function(data) {
+        var tasks = db.get('tasks');
+        tasks.remove({ projectId: projectId }, {}).then(function(r) {
+            res.json({ message: 'seccess' })
+        })
+    })
+})
+>>>>>>> fa80a1362f88a95316d01602d595d413a6f7cf09
 module.exports = router;

@@ -53,7 +53,6 @@ angular.module('homeApp')
         }
         $scope.getProject = function() {
             $route.reload();
-
             console.log('from main')
             console.log($scope.projectId)
             Project.getTasks($scope.projectId).then(function(res) {
@@ -61,7 +60,13 @@ angular.module('homeApp')
                 console.log($scope.project);
                 $scope.projectPath = '/project/' + res.data[1][0]._id;
                 $scope.peoplePath = '/project/people/' + res.data[1][0]._id;
+                $scope.sprintsPath = '/project/activeSprints/' + res.data[1][0]._id;
                 $route.reload();
+                Project.getAllUsers($scope.projectId).then(function(res) {
+                    console.log(res.data)
+                    $scope.people = res.data;
+                    console.log($scope.people)
+                })
             })
         }
         $scope.createPr = function() {

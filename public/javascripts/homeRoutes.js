@@ -26,6 +26,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             templateUrl: '../views/task.htm',
             controller: 'TaskCtrl'
         })
+        .when('/project/activeSprints/:projectId', {
+            templateUrl: '../views/sprints.htm',
+            controller: 'ProjectCtrl'
+        })
         .otherwise({
             templateUrl: '../views/dash.htm',
             controller: 'DashCtrl',
