@@ -31,12 +31,12 @@
                 </div>
             </div>
         </form>
-        <div class="row">
-            <div class="col-md-4"> Full name</div>
-            <div class="col-md-4"> E-mail</div>
-            <div class="col-md-2"> Role</div>
-            <div class="col-md-2"></div>
-            <hr>
+        <div class="row sortOptionsDiv">
+            <div class="col-xs-4 sortOptions">Name</div>
+            <div class="col-xs-4 sortOptions">E-mail</div>
+            <div class="col-xs-2 sortOptions">Role</div>
+            <div class="col-xs-2"></div>
+
         </div>
         <div ng-repeat="man in people" class="row people">
             <div class="col-md-4"> {{man.fullName}}</div>

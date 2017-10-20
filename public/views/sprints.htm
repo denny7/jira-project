@@ -1,0 +1,39 @@
+<div class="row">
+
+    <div class="col-md-3 col-sm-4 nav"></div>
+    <div class="col-md-9 col-sm-8 main-content">
+        <div class="welcomeText row">
+            <div class="col-sm-11">
+                <h1 class="letterDrop">Active Sprints</h1>
+            </div>
+            <div class="col-sm-1 logoutHolder">
+                <div class="logOutBtn" ng-click="logoutUser()"><i class="fa fa-times"></i></div>
+                <div class="logOutText">Log Out</div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <h3>To Do</h3>
+            <div ng-repeat="task in tasks | filter: task.progress='To Do'">
+                <div ng-if="task.progress='To Do'">
+                    <p>{{task.name}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <h3>In Progress</h3>
+            <div ng-repeat="task in tasks | filter: task.progress='In Progress'">
+                <div>
+                    <p>{{task.name}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <h3>Done</h3>
+            <div ng-repeat="task in tasks | filter: task.progress='Done'">
+                <div ng-show="task.progress='Done'">
+                    <p>{{task.name}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

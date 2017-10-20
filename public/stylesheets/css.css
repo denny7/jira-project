@@ -158,3 +158,78 @@ h5 {
     background: rgba(207, 223, 223, 0.459);
     border-radius: 10px;
 }
+
+.projectPageTasks img {
+    float: left;
+    width: 40px;
+    vertical-align: center;
+    margin-top: -1px;
+}
+
+.projectPageTasks {
+    border-bottom: 1px solid rgba(207, 223, 223, 0.459);
+    ;
+}
+
+.taskOption {
+    padding-top: 8px;
+    font-size: 1.2em;
+}
+
+.sortOptions {
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.sortOptionsDiv {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #369FC8;
+}
+
+.searchTaskInput {
+    background-image: url('../images/Search-icon.png');
+    background-position: 4px 6px;
+    background-repeat: no-repeat;
+    padding: 5px 0 4px 30px;
+    background-size: 20px 20px;
+    font-size: 1em;
+    line-height: 24px;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border-radius: 50px !important;
+    color: #369FC8;
+    font-weight: bold;
+}
+
+.searchTaskInput:focus {
+    box-shadow: 1px 1px 2px #369FC8;
+}
+
+#search {
+    margin-left: 45%;
+    margin-bottom: 15px;
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('../images/Search-icon.png');
+    background-position: 5px 4px;
+    background-repeat: no-repeat;
+    padding: 5px 15px 4px 30px;
+    background-size: 22px 22px;
+    /* transition: ; */
+    transition: margin 0.5s ease-in-out, width 0.5s ease-in-out;
+    color: #369FC8;
+    font-weight: bold;
+}
+
+#search:focus {
+    width: 40%;
+    margin-left: 0;
+}
+
+.removeProjectBtn {
+    margin-top: 7px;
+}

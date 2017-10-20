@@ -6,28 +6,54 @@ angular.module('homeApp')
         $scope.newUser = {};
         $scope.taskName = "";
         $scope.project;
+        $scope.seachTask = '';
         $scope.removeUser = function(event) {
             var userId = {};
             userId.id = event.target.id;
             Project.removeUser(projectId, userId).then(function(res) {
                 console.log('ready');
                 $route.reload();
-
             })
+        }
+        $scope.removeProjectFunc = function() {
+            if (confirm(`WARNING !!!
+                    YOU WILL DELETE THE PROJECT AND ALL ISSUES IN IT !!
+                    ARE YOU SURE ?`)) {
+                Project.removeProject($scope.project).then(function(res) {
+                    console.log('projects removed!')
+                    $location.path('/dashboard');
+                })
+            }
+
+        }
+        $scope.removeTask = function(event) {
+            var taskId = {};
+            taskId.id = event.target.id;
+            console.log('task id')
+            console.log(taskId.id)
+            if (confirm('Are you sure that you want to delete this issue?')) {
+                Project.removeTask(taskId).then(function(res) {
+                    console.log('ready');
+                    $route.reload();
+                })
+            }
 
         }
         var projectId = $routeParams.projectId;
         console.log(projectId)
         Main.getLoggedUserId().then(function(res) {
             console.log(res.data)
+            $scope.user = res.data;
             $scope.user.id = res.data._id;
         })
 
-        Project.getAllUsers(projectId).then(function(res) {
-            console.log(res.data)
-            $scope.people = res.data;
-            console.log($scope.people)
-        })
+        $scope.peopleFunc = function() {
+            Project.getAllUsers(projectId).then(function(res) {
+                console.log(res.data)
+                $scope.people = res.data;
+                console.log($scope.people)
+            })
+        }
 
         Project.getTasks(projectId).then(function(res) {
             $scope.tasks = res.data[0];
@@ -60,5 +86,24 @@ angular.module('homeApp')
                     $scope.addUserText = res.data.text;
                 }
             })
+        }
+        $scope.sorting = '';
+        $scope.sortByName = function() {
+            if ($scope.sorting == 'name')
+                $scope.sorting = '-name'
+            else
+                $scope.sorting = 'name'
+        }
+        $scope.sortByPriority = function() {
+            if ($scope.sorting == 'priorityNumber')
+                $scope.sorting = '-priorityNumber'
+            else
+                $scope.sorting = 'priorityNumber'
+        }
+        $scope.sortByType = function() {
+            if ($scope.sorting == 'type')
+                $scope.sorting = '-type'
+            else
+                $scope.sorting = 'type'
         }
     }])

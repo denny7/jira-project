@@ -4,7 +4,7 @@ angular.module('homeApp')
 
         $('body').removeClass('homepage');
         $('footer').show();
-        $scope.welcomeText = 'WELCOME to your PROJECTS'
+        $scope.seachProject = '';
         $scope.user = {};
         Main.getLoggedUserId().then(function(res) {
             console.log('dashboard')
