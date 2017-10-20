@@ -1,6 +1,6 @@
 angular.module('homeApp')
     .controller('ProjectCtrl', ['$scope', '$http', '$route', '$routeParams', '$location', 'Main', 'Project', function($scope, $http, $route, $routeParams, $location, Main, Project) {
-
+        $("footer").hide()
         $scope.tasks = [];
         $scope.user = {};
         $scope.newUser = {};

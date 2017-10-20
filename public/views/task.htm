@@ -30,17 +30,18 @@
 
         <div class="row">
             <div class="col-md-8 col-sm-7 ">
-                <div class="btn-group" ng-model="task.progress">
-                    <button type="button" class="btn btn-primary" ng-model="progress" ng-click="progressToDo()">To do</button>
-                    <button type="button" class="btn btn-primary" ng-model="progress" ng-click="progressInProgress()">In progress</button>
-                    <button type="button" class="btn btn-primary" ng-model="progress" ng-click="progressDone()">Done</button>
+                <div class="btn-group btnsProgress" ng-model="task.progress">
+                    <button type="button" class="btn btnProgress" ng-model="progress" ng-click="progressToDo()">To do</button>
+                    <button type="button" class="btn btnProgress" ng-model="progress" ng-click="progressInProgress()">In progress</button>
+                    <button type="button" class="btn btnProgress" ng-model="progress" ng-click="progressDone()">Done</button>
                 </div>
                 <h1 class="detailsTask">Details</h1>
+                <hr>
                 <div class="row">
                     <div class="col-sm-3">
-                        <p>Type</p>
-                        <p>Priority</p>
-                        <p>Status</p>
+                        <p class="bolder">Type</p>
+                        <p class="bolder">Priority</p>
+                        <p class="bolder">Status</p>
                     </div>
                     <div class="col-sm-3">
                         <select class="selectpicker show-tick" ng-model="task.type" ng-change="updateTask()">
@@ -57,39 +58,71 @@
                         <p>{{task.progress}}</p>
                     </div>
                     <div class="col-sm-6">
-                        <p>Name</p>
-                        <p class="taskName">{{task.name}}<i class="fa fa-pencil pencilName" aria-hidden="true"></i></p>
+                        <p class="bolder">Name</p>
+                        <p class="taskNameP">{{task.name}} <i class="fa fa-pencil pencilName" aria-hidden="true"></i></p>
                         <input type="text" ng-model="task.name" class="nameEdit" />
                     </div>
                 </div>
                 <h1 class="descriptionTask">Description</h1>
+                <hr>
                 <div class="desctriptionChange">
                     <p class="addDescription">{{task.description}} <i class="fa fa-pencil pencilDescription" aria-hidden="true"></i></p>
                 </div>
                 <textarea ng-model="task.description" class="descriptionArea">
                     {{task.description}}
                 </textarea>
-            </div>
-            <div class="col-md-4 col-sm-5 people">
-                <h1>People</h1>
-                <h3>Assignee:</h3>
-                <p ng-model="task.assignee">{{task.assignee}}</p>
-                <p>---{{task.assigneee2}}</p>
-                <p class="assignToMe" ng-if='task.assignee!=user.fullName' ng-model="task.assignee" ng-click="assignToMeF()">Assign to me</p>
-                <!-- <p class="assignTo" ng-click="assignToF()">Assing to:</p>
-                <div class="assignToDiv">
-                    <input placeholder="Enter fullname" class="assignToInput" type="text"><i class="fa fa-check checkAssign" ng-model="inputValue" ng-click="assignTo()" aria-hidden="true"></i>
+                <h1 class="commentsTask">Comments</h1>
+                <button class="btn btn-primary">Add Comment</button>
+                <p></p>
+                <textarea ng-model="commentText" name="commentArea" id="commentArea" cols="30" rows="3"></textarea>
+                <p></p>
+                <button class="btn btn-primary" ng-click="addCommentTask()">Press Comment</button>
+                <div ng-repeat="comment in task.comments">
+                    <div class="item">
+                        <div class="image">
+                            <div>
+                                <img src="http://lorempixel.com/400/400/people/1/" />
+                                <span>
+                                {{comment.info.date}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="details">
+                            <div>
+                                <h1>{{comment.info.userFullName}}
+                                    <span class="deleteComment" id="{{comment.info.date}}" ng-click="deleteComment($event)" ng-if="comment.info.userFullName==user.fullName"><i class="fa fa-times"></i></span>
+                                </h1>
+                                <p>{{comment.info.commentText}}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <p>{{errMsg}}</p> -->
-                <h3>Reporter</h3>
+            </div>
+            <div class="col-md-4 col-sm-5 peopleTask">
+                <h1 class="peopleTaskh1">People</h1>
+                <hr>
+                <h3 class="lightBlue">Assignee:</h3>
+                <p ng-model="task.assignee"><i class="fa fa-user userIconTask"></i> {{task.assignee}}</p>
+                <p class="assignToMe" ng-if='task.assignee!=user.fullName' ng-model="task.assignee" ng-click="assignToMeF()">Assign to me</p>
+                <p class="assignTo" ng-click="assignToF()">Assign to:</p>
+                <div class="assignToDiv">
+                    <input placeholder="Enter fullname" class="assignToInput" type="text" ng-model="inputValue"><i class="fa fa-check checkAssign" aria-hidden="true"></i>
+                </div>
+                <p class="text-danger errMsgText">{{errMsg}}</p>
+                <h3 class="lightBlue">Reporter</h3>
                 <p>{{user.fullName}}</p>
-                <h3>Dates</h3>
+                <h3 class="lightBlue">Dates</h3>
                 <p>Created</p>
                 <p>{{createDate}}</p>
                 <p>Updated</p>
                 <p>{{updateDate}}</p>
-                <!--  ng-if='task.assignee!=user.fullName'-->
             </div>
         </div>
+
+    </div>
+</div>
+<div class="col-md-9 col-md-offset-3 col-sm-12">
+    <div class="footerTask">
+        <p class="footerText">All rights reserved &#169</p>
     </div>
 </div>

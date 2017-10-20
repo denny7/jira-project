@@ -1,5 +1,6 @@
 angular.module('homeApp')
-    .controller('TaskCtrl', ['$scope', '$http', '$routeParams', '$location', 'Main', 'Task', 'Project', function($scope, $http, $routeParams, $location, Main, Task, Project) {
+    .controller('TaskCtrl', ['$scope', '$http', '$routeParams', '$location', 'Main', 'Task', 'Project', '$route', function($scope, $http, $routeParams, $location, Main, Task, Project, $route) {
+        $("footer").hide()
         $(".desctriptionChange").on("mouseover", function() {
             $(".pencilDescription").show()
         })
@@ -13,18 +14,22 @@ angular.module('homeApp')
             $(".descriptionArea").hide();
             $scope.updateTask();
         })
-        $(".taskName").on("mouseover", function() {
+        $(".taskNameP").on("mouseover", function() {
             $(".pencilName").show()
         })
-        $(".taskName").on("mouseout", function() {
+        $(".pencilName").hide()
+        $(".taskNameP").on("mouseout", function() {
             $(".pencilName").hide()
         })
-        $(".taskName").on("click", function() {
+        $(".taskNameP").on("click", function() {
             $(".nameEdit").show()
         })
         $(".nameEdit").on("focusout", function() {
             $(".nameEdit").hide();
             $scope.updateTask();
+        })
+        $(".checkAssign").on("click", function() {
+            $scope.assignTo()
         })
         $scope.progressToDo = function() {
             $scope.task.progress = 'To do';
@@ -44,19 +49,28 @@ angular.module('homeApp')
         }
         $(".assignToDiv").hide()
         $scope.assignToF = function() {
-                $(".assignToDiv").show()
+            $(".assignToDiv").show()
+        }
+
+        $scope.inputValue = '';
+
+        $scope.assignTo = function() {
+            var objToSend = {
+                projectId: $scope.projectId,
+                fullName: $scope.inputValue
             }
-            // $scope.inputValue = '';
-            // $scope.assignTo = function() {
-            //     Task.assignToUser($scope.taskId, $scope.inputValue).then(function(req, res) {
-            //         if (res.data.message == "success") {
-            //             $scope.task.assignee2 = $scope.inputValue;
-            //             $scope.updateTask();
-            //         } else {
-            //             $scope.errMsg = res.data.message
-            //         }
-            //     })
-            // }
+            Task.assignToUser($scope.taskId, objToSend).then(function(req, res) {
+                console.log(req)
+                if (!req.data.message) {
+                    $scope.task.assignee = $scope.inputValue;
+                    $scope.updateTask();
+                    $scope.errMsg = "";
+                    $(".assignToDiv").hide()
+                } else {
+                    $scope.errMsg = req.data.message
+                }
+            })
+        }
         $scope.task = "";
         $scope.user = {};
         $scope.taskId = $routeParams.taskId;
@@ -88,8 +102,28 @@ angular.module('homeApp')
             $scope.task.updateDate = Date.now()
             Task.updateTaskInfo($scope.taskId, $scope.task).then(function(res, req) {})
         }
-<<<<<<< HEAD
-=======
+        $scope.commentText = '';
+        $scope.addCommentTask = function() {
+            var comment = {};
+            comment.userFullName = $scope.user.fullName
+            comment.date = Date.now();
+            comment.commentText = $scope.commentText;
+            if (comment.commentText.length > 0) {
+                Task.addComment($scope.taskId, comment).then(function(req, res) {});
+                $route.reload();
+            }
+        }
+        $scope.deleteComment = function($event) {
+            console.log("da vidim id" + $event.currentTarget.id);
+            console.log($scope.taskId)
+            var commentId = {
+                    id: $event.currentTarget.id
+                }
+                // console.log(commentId)
+                //  send object
+            Task.deleteComment($scope.taskId, commentId).then(function(req, res) {})
+        }
+
         $scope.createTaskF = function() {
             var data = {
                 userId: $scope.user.id,
@@ -102,5 +136,4 @@ angular.module('homeApp')
             })
         }
 
->>>>>>> 8e2d9dda36be43132f7f8cf1fb1390bca34de74f
     }])

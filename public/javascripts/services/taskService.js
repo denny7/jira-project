@@ -9,6 +9,12 @@ angular.module('homeApp')
             },
             assignToUser: function(taskId, data) {
                 return $http.put('/api/task/assign/' + taskId, data);
+            },
+            addComment: function(taskId, data) {
+                return $http.put('/api/task/comment/' + taskId, data);
+            },
+            deleteComment: function(taskId, commentId) {
+                return $http.put('/api/task/deleteComment/' + taskId, commentId);
             }
         }
     }])
