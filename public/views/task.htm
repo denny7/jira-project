@@ -24,19 +24,17 @@
             </div>
             <div class="col-sm-1 logoutHolder">
                 <div class="logOutBtn" ng-click="logoutUser()"><i class="fa fa-times"></i></div>
-                <div class="logOutText">Log Out</div>
+                <div class="logOutText">Exit</div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-8 col-sm-7 ">
-                <div class="btn-group btnsProgress" ng-model="task.progress">
-                    <button type="button" class="btn btnProgress" ng-model="progress" ng-click="progressToDo()">To do</button>
-                    <button type="button" class="btn btnProgress" ng-model="progress" ng-click="progressInProgress()">In progress</button>
-                    <button type="button" class="btn btnProgress" ng-model="progress" ng-click="progressDone()">Done</button>
-                </div>
-                <h1 class="detailsTask">Details</h1>
+                <button type="button" class="btn btnProgress progressToDo" ng-model="progress" ng-click="progressToDo()">To do</button>
+                <button type="button" class="btn btnProgress progressInProgress" ng-model="progress" ng-click="progressInProgress()">In progress</button>
+                <button type="button" class="btn btnProgress progressDone" ng-model="progress" ng-click="progressDone()">Done</button>
                 <hr>
+                <h1 class="detailsTask">Details</h1>
                 <div class="row">
                     <div class="col-sm-3">
                         <p class="bolder">Type</p>
@@ -63,44 +61,57 @@
                         <input type="text" ng-model="task.name" class="nameEdit" />
                     </div>
                 </div>
-                <h1 class="descriptionTask">Description</h1>
                 <hr>
+                <h1 class="descriptionTask">Description</h1>
                 <div class="desctriptionChange">
                     <p class="addDescription">{{task.description}} <i class="fa fa-pencil pencilDescription" aria-hidden="true"></i></p>
                 </div>
-                <textarea ng-model="task.description" class="descriptionArea">
+                <textarea ng-model="task.description" class="descriptionArea" autofocus>
                     {{task.description}}
                 </textarea>
+                <hr>
                 <h1 class="commentsTask">Comments</h1>
-                <button class="btn btn-primary">Add Comment</button>
-                <p></p>
-                <textarea ng-model="commentText" name="commentArea" id="commentArea" cols="30" rows="3"></textarea>
-                <p></p>
-                <button class="btn btn-primary" ng-click="addCommentTask()">Press Comment</button>
-                <div ng-repeat="comment in task.comments">
-                    <div class="item">
-                        <div class="image">
-                            <div>
-                                <img src="http://lorempixel.com/400/400/people/1/" />
-                                <span>
-                                {{comment.info.date}}
-                                </span>
+                <button class="btn btn-primary addCommentBtn">Add Comment</button>
+                <div class="addComment">
+                    <p></p>
+                    <textarea autofocus ng-model="commentText" name="commentArea" class="commentArea" cols="30" rows="3" placeholder="Enter e comment"></textarea>
+                    <p></p>
+                    <button class="btn btn-primary pressCommentBtn" ng-click="addCommentTask()">Send</button>
+                </div>
+
+                <div ng-if="task.comments.length < 1">
+                    <h1 class="noComment">No comments yet</h1>
+                </div>
+                <div>
+                    <div ng-repeat="comment in filteredComments">
+                        <div class="item">
+                            <div class="image">
+                                <div>
+                                    <img src="http://lorempixel.com/400/400/people/1/" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="details">
-                            <div>
-                                <h1>{{comment.info.userFullName}}
-                                    <span class="deleteComment" id="{{comment.info.date}}" ng-click="deleteComment($event)" ng-if="comment.info.userFullName==user.fullName"><i class="fa fa-times"></i></span>
-                                </h1>
-                                <p>{{comment.info.commentText}}</p>
+                            <div class="details">
+                                <div class="commentHolder">
+                                    <div class="row">
+                                        <div class="col-xs-7 userFullName">
+                                            <p>{{comment.userFullName}}</p>
+                                        </div>
+                                        <div class="col-xs-5 userDate">
+                                            <p>{{comment.createDateCom}} <span class="deleteComment" id="{{comment.date}}" ng-click="deleteComment($event)" ng-if="'comment.userFullName==user.fullName' || 'user.role==`Admin`'"><i class="fa fa-times"></i></span></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <p>{{comment.commentText}}</p>
+
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="commentPagination" data-pagination="" data-num-pages="numPages()" data-current-page="currentPage" data-max-size="maxSize" data-boundary-links="true"></div>
                 </div>
             </div>
             <div class="col-md-4 col-sm-5 peopleTask">
                 <h1 class="peopleTaskh1">People</h1>
-                <hr>
                 <h3 class="lightBlue">Assignee:</h3>
                 <p ng-model="task.assignee"><i class="fa fa-user userIconTask"></i> {{task.assignee}}</p>
                 <p class="assignToMe" ng-if='task.assignee!=user.fullName' ng-model="task.assignee" ng-click="assignToMeF()">Assign to me</p>

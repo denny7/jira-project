@@ -42,22 +42,17 @@ router.post('/register', function(req, res, next) {
 
     var username = req.body.username;
     var password = req.body.password;
-    var fullName = req.body.username;
-    var role = "Employee";
     var repeatPassword = req.body.repeatPassword;
     var email = req.body.email;
     var users = db.get('users');
     users.find({ $or: [{ name: username }, { email: email }] }).then(function(data) {
         if (data.length == 0) {
-<<<<<<< HEAD
-            users.insert({ name: username, password: sha1(password), email: email, fullName: fullName, role: role }).then(function(data) {
-=======
             var mail = {
                 from: fromEmailAddress,
                 to: email,
                 subject: "WELCOME to JIRA",
                 text: `Hello ${username}, 
-                        This is your password - ${password} , please keep it in safe!!`,
+                            This is your password - ${password} , please keep it in safe!!`,
             }
             transport.sendMail(mail, function(error, response) {
                 if (error) {
@@ -74,8 +69,8 @@ router.post('/register', function(req, res, next) {
                         to: admin.email,
                         subject: "New user registration",
                         text: `Hello ${admin.fullName}, 
-                               We have a new user in out system - ${username} ,
-                                if you know him please add him to some projects !`,
+                                   We have a new user in out system - ${username} ,
+                                    if you know him please add him to some projects !`,
                     }
                     transport.sendMail(mailToAdmin, function(error, response) {
                         if (error) {
@@ -88,7 +83,6 @@ router.post('/register', function(req, res, next) {
                 })
             })
             users.insert({ name: username, password: sha1(password), email: email }).then(function(data) {
->>>>>>> fa80a1362f88a95316d01602d595d413a6f7cf09
                 res.json({ register: true })
             })
         } else {
@@ -96,7 +90,6 @@ router.post('/register', function(req, res, next) {
         }
     })
 });
-
 router.get('/api/logged', function(req, res) {
     var user;
     if (req.session.userId != undefined) {
@@ -280,7 +273,6 @@ router.put('/api/project/removeUser/:projectId', function(req, res) {
     var projectId = req.params.projectId;
     var projects = db.get('projects');
     projects.update({ _id: projectId }, { $pull: { users: { userId: req.body.id } } }).then(function(data) {
-
         res.json({ message: 'seccess' })
     })
 })
@@ -297,21 +289,26 @@ router.put('/api/task/comment/:taskId', function(req, res) {
     var taskId = req.params.taskId;
     var tasks = db.get("tasks");
     var info = req.body;
-    tasks.update({ _id: taskId }, { $push: { comments: { info } } }).then(function(result) {
+    tasks.update({ _id: taskId }, { $push: { comments: info } }).then(function(result) {
         console.log(result)
     })
 })
 router.put('/api/task/deleteComment/:taskId', function(req, res) {
     var taskId = req.params.taskId;
-    var commentToDelete = String(req.body.id)
-    console.log(req.body);
-    // tasks.update({ _id: taskId }, { $pull: { comments: { info: { date: commentToDelete } } } }).then(function(result) {
-    //     console.log(result)
-    // })
-
-<<<<<<< HEAD
+    var commentToDelete = Number(req.body.id)
+    console.log(commentToDelete);
+    var tasks = db.get("tasks");
+    tasks.update({ _id: taskId }, { $pull: { comments: { date: commentToDelete } } }).then(function(data) {
+        res.json({ message: 'success' })
+    })
 });
-=======
+router.get('/api/task/getComments/:taskId', function(req, res) {
+    var taskId = req.params.taskId;
+    var tasks = db.get("tasks");
+    tasks.find({ _id: taskId }, { comments: 1 }).then(function(data) {
+        res.json(data)
+    })
+})
 router.put('/api/project/removeProject', function(req, res) {
     var projectId = String(req.body._id);
     var projects = db.get('projects');
@@ -322,5 +319,5 @@ router.put('/api/project/removeProject', function(req, res) {
         })
     })
 })
->>>>>>> fa80a1362f88a95316d01602d595d413a6f7cf09
+
 module.exports = router;

@@ -1,6 +1,13 @@
 angular.module('homeApp')
     .controller('TaskCtrl', ['$scope', '$http', '$routeParams', '$location', 'Main', 'Task', 'Project', '$route', function($scope, $http, $routeParams, $location, Main, Task, Project, $route) {
+        $(".logoutHolder").on("mouseover", function() {
+            $(".logOutText").show();
+        })
+        $(".logoutHolder").on("mouseleave", function() {
+            $(".logOutText").hide();
+        })
         $("footer").hide()
+        $(".pencilDescription").hide()
         $(".desctriptionChange").on("mouseover", function() {
             $(".pencilDescription").show()
         })
@@ -31,16 +38,30 @@ angular.module('homeApp')
         $(".checkAssign").on("click", function() {
             $scope.assignTo()
         })
+        $(".addComment").hide();
+        $(".addCommentBtn").on("click", function() {
+            $(".addComment").show();
+            $(".addCommentBtn").hide()
+        })
         $scope.progressToDo = function() {
             $scope.task.progress = 'To do';
+            $(".progressToDo").addClass("btn-blue")
+            $(".progressInProgress").removeClass("btn-blue")
+            $(".progressDone").removeClass("btn-blue")
             $scope.updateTask();
         }
         $scope.progressInProgress = function() {
             $scope.task.progress = 'In Progress';
+            $(".progressToDo").removeClass("btn-blue")
+            $(".progressInProgress").addClass("btn-blue")
+            $(".progressDone").removeClass("btn-blue")
             $scope.updateTask();
         }
         $scope.progressDone = function() {
             $scope.task.progress = 'Done';
+            $(".progressToDo").removeClass("btn-blue")
+            $(".progressInProgress").removeClass("btn-blue")
+            $(".progressDone").addClass("btn-blue")
             $scope.updateTask();
         }
         $scope.assignToMeF = function() {
@@ -51,7 +72,6 @@ angular.module('homeApp')
         $scope.assignToF = function() {
             $(".assignToDiv").show()
         }
-
         $scope.inputValue = '';
 
         $scope.assignTo = function() {
@@ -83,6 +103,9 @@ angular.module('homeApp')
             $scope.task = res.data[0];
             $scope.dateCr = new Date(Number($scope.task.createDate));
             $scope.minuteCr = $scope.dateCr.getMinutes();
+            if ($scope.minuteCr < 10) {
+                $scope.minuteCr = "0" + $scope.minuteCr;
+            }
             $scope.hourCr = $scope.dateCr.getHours();
             $scope.dayCr = $scope.dateCr.getDate();
             $scope.monthCr = $scope.dateCr.getMonth() + 1;
@@ -90,6 +113,9 @@ angular.module('homeApp')
             $scope.createDate = $scope.dayCr + "." + $scope.monthCr + "." + $scope.yearCr + " " + $scope.hourCr + ":" + $scope.minuteCr
             $scope.dateUp = new Date(Number($scope.task.updateDate));
             $scope.minuteUp = $scope.dateUp.getMinutes();
+            if ($scope.minuteUp < 10) {
+                $scope.minuteUp = "0" + $scope.minuteUp;
+            }
             $scope.hourUp = $scope.dateUp.getHours();
             $scope.dayUp = $scope.dateUp.getDate();
             $scope.monthUp = $scope.dateUp.getMonth() + 1;
@@ -110,18 +136,29 @@ angular.module('homeApp')
             comment.commentText = $scope.commentText;
             if (comment.commentText.length > 0) {
                 Task.addComment($scope.taskId, comment).then(function(req, res) {});
+                $scope.comment = comment;
+                $scope.dateCom = new Date(Number($scope.comment.date));
+                $scope.minuteCom = $scope.dateCom.getMinutes();
+                if ($scope.minuteCom < 10) {
+                    $scope.minuteCom = "0" + $scope.minuteCom;
+                }
+                $scope.hourCom = $scope.dateCom.getHours();
+                $scope.dayCom = $scope.dateCom.getDate();
+                $scope.monthCom = $scope.dateCom.getMonth() + 1;
+                $scope.yearCom = $scope.dateCom.getFullYear();
+                $scope.comment.createDateCom = $scope.dayCom + "." + $scope.monthCom + "." + $scope.yearCom + " " + $scope.hourCom + ":" + $scope.minuteCom
                 $route.reload();
+                $(".addComment").hide();
+                $(".addCommentBtn").show()
             }
+
         }
         $scope.deleteComment = function($event) {
-            console.log("da vidim id" + $event.currentTarget.id);
-            console.log($scope.taskId)
-            var commentId = {
-                    id: $event.currentTarget.id
-                }
-                // console.log(commentId)
-                //  send object
-            Task.deleteComment($scope.taskId, commentId).then(function(req, res) {})
+            var commentId = {}
+            commentId.id = $event.currentTarget.id
+            Task.deleteComment($scope.taskId, commentId).then(function(res) {
+                $route.reload();
+            })
         }
 
         $scope.createTaskF = function() {
@@ -135,5 +172,23 @@ angular.module('homeApp')
                 $route.reload();
             })
         }
+        Task.getComments($scope.taskId).then(function(res) {
+            console.log(res.data[0].comments)
+            $scope.comments = (res.data[0].comments).reverse()
+            console.log($scope.comments[0].commentText)
+                // pagination comments
+            $scope.filteredComments = [], $scope.currentPage = 1, $scope.numPerPage = 5, $scope.maxSize = 5;
+            $scope.numPages = function() {
+                return Math.ceil($scope.comments.length / $scope.numPerPage);
+            };
+            $scope.$watch('currentPage + numPerPage', function() {
+                var begin = (($scope.currentPage - 1) * $scope.numPerPage),
+                    end = begin + $scope.numPerPage;
+
+                $scope.filteredComments = $scope.comments.slice(begin, end);
+            });
+            $(".commentPagination > ul").addClass("pagination")
+
+        });
 
     }])

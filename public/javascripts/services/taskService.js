@@ -15,6 +15,9 @@ angular.module('homeApp')
             },
             deleteComment: function(taskId, commentId) {
                 return $http.put('/api/task/deleteComment/' + taskId, commentId);
+            },
+            getComments: function(taskId) {
+                return $http.get('/api/task/getComments/' + taskId);
             }
         }
     }])

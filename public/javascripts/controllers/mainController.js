@@ -11,6 +11,7 @@ angular.module('homeApp')
         //         }
         //     })
         // });
+
         $scope.newProject = {};
         $scope.$on('$locationChangeStart', function(event, next, current) {
             $scope.currentPath = next.split('/');

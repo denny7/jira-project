@@ -1,4 +1,4 @@
-var app = angular.module('homeApp', ['ngRoute']);
+var app = angular.module('homeApp', ['ngRoute', 'ui.bootstrap']);
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 
     $routeProvider
