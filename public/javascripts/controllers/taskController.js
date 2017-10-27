@@ -178,6 +178,7 @@ angular.module('homeApp')
                 $route.reload();
             })
         }
+        console.log("----------" + $scope.taskId)
         Task.getComments($scope.taskId).then(function(res) {
             console.log(res)
             $scope.comments = (res.data).reverse()

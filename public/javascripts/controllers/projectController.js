@@ -70,9 +70,7 @@ angular.module('homeApp')
         Project.getTasks(projectId).then(function(res) {
             $scope.tasks = res.data[0];
             $scope.project = res.data[1][0]
-<<<<<<< HEAD
             $scope.peopleFunc()
-=======
             if (document.getElementById("chart")) {
                 console.log($scope.tasks)
                 var toDo = $scope.tasks.filter(task => task.progress == 'To Do');
@@ -117,7 +115,6 @@ angular.module('homeApp')
                 });
 
             }
->>>>>>> 60c7fbd8ff18f5b64dbe1c16734c953612b26e5b
         })
         $scope.createTaskF = function() {
             var data = {

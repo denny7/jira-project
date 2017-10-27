@@ -14,15 +14,11 @@
                 <hr>
                 <div class="form-group row">
                     <label for="userFullname" class="col-sm-2 userLabel">Full name :</label>
-                    <input ng-value="{{user.fullName}}" id="userFullname" ng-model="userData.fullName" type="text" class="userData col-sm-9" placeholder="{{user.fullName}}" />
+                    <input id="userFullname" ng-model="userData.fullName" type="text" class="userData col-sm-9" placeholder="{{user.fullName}}" />
                 </div>
                 <div class="form-group row">
                     <label for="userMail" class="col-sm-2 userLabel">E-mail :</label>
                     <input id="userMail" ng-model="userData.email" type="email" class="userData col-sm-9" ng-init="userData.email" placeholder="{{user.email}}" />
-                </div>
-                <div class="form-group row">
-                    <label for="userMail" class="col-sm-2 userLabel">Picture :</label>
-                    <input id="fileInput" ng-model="userData.picture" type="file" class="userData col-sm-9" />
                 </div>
                 <div class="col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 text-center">
                     <input ng-click="changeUserData()" type="button" class="btn btn-primary btn-filled loginBtn" value="Change details" />

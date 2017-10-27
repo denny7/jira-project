@@ -1,9 +1,7 @@
 angular.module('homeApp')
     .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', '$rootScope', '$route', '$window', function($scope, $http, $location, Main, $routeParams, Project, $rootScope, $route, $window) {
         $scope.user;
-<<<<<<< HEAD
         $rootScope.user;
-=======
         $scope.taskName = '';
         // $scope.$on('$routeChangeStart', function(newUrl, curUrl) {
         //     Main.getLoggedUserId().then(function(res) {
@@ -16,7 +14,6 @@ angular.module('homeApp')
         //     })
         // });
 
->>>>>>> 60c7fbd8ff18f5b64dbe1c16734c953612b26e5b
         $scope.newProject = {};
         $scope.$on('$locationChangeStart', function(event, next, current) {
             $scope.currentPath = next.split('/');
@@ -30,7 +27,6 @@ angular.module('homeApp')
                 $scope.projectId = $scope.currentPath[5]
             }
         })
-<<<<<<< HEAD
         if (!$scope.user) {
             $scope.user = JSON.parse($window.localStorage.getItem("current user"))
             $rootScope.user = JSON.parse($window.localStorage.getItem("current user"))
@@ -57,25 +53,6 @@ angular.module('homeApp')
         //         $scope.user = {};
         //     });
         // }
-=======
-
-        $scope.getUserId = function() {
-            Main.getLoggedUserId().then(function(res) {
-                $scope.user = res.data;
-                $rootScope.user = res.data;
-                console.log(res.data)
-                console.log($scope.user);
-            });
-            return $scope.user;
-        };
-        $scope.logOutUser = function() {
-            Main.logoutUser().then(function(res) {
-                $location.path('/');
-                $window.sessionStorage.removeItem('currentUser');
-                $scope.user = {};
-            });
-        }
->>>>>>> 60c7fbd8ff18f5b64dbe1c16734c953612b26e5b
         $scope.getProject = function() {
             // $route.reload();
             console.log('from main')
@@ -84,6 +61,7 @@ angular.module('homeApp')
                 $scope.projectId = JSON.stringify($window.localStorage.getItem("projectId"))
             }
             Project.getTasks($scope.projectId).then(function(res) {
+                console.log("resss data")
                 console.log(res.data)
                 $scope.projectt = res.data[1][0];
                 $rootScope.project = res.data[1][0];
@@ -106,7 +84,7 @@ angular.module('homeApp')
             $('#createProject').modal();
         }
         $scope.createTaskF = function() {
-            var projectId = $routeParams.projectId;
+            var projectId = $rootScope.projectId;
             var data = {
                 userId: $scope.user._id,
                 taskName: $scope.taskName
