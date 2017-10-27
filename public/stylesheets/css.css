@@ -18,6 +18,7 @@
     }
     .main-content {
         margin-top: 470px;
+        height: 100%;
     }
     .sidebar1 li {
         margin-top: 8px;
@@ -93,6 +94,8 @@ h5 {
 
 .main-content {
     text-align: center;
+    min-height: 100%;
+    margin-bottom: 5em;
 }
 
 .userData {
@@ -157,6 +160,10 @@ h5 {
 .people:hover {
     background: rgba(207, 223, 223, 0.459);
     border-radius: 10px;
+}
+
+.userIconTask {
+    color: #369FC8;
 }
 
 .projectPageTasks img {

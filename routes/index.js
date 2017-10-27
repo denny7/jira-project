@@ -52,7 +52,7 @@ router.post('/register', function(req, res, next) {
                 to: email,
                 subject: "WELCOME to JIRA",
                 text: `Hello ${username}, 
-                        This is your password - ${password} , please keep it in safe!!`,
+                            This is your password - ${password} , please keep it in safe!!`,
             }
             transport.sendMail(mail, function(error, response) {
                 if (error) {
@@ -69,8 +69,8 @@ router.post('/register', function(req, res, next) {
                         to: admin.email,
                         subject: "New user registration",
                         text: `Hello ${admin.fullName}, 
-                               We have a new user in out system - ${username} ,
-                                if you know him please add him to some projects !`,
+                                   We have a new user in out system - ${username} ,
+                                    if you know him please add him to some projects !`,
                     }
                     transport.sendMail(mailToAdmin, function(error, response) {
                         if (error) {
@@ -90,7 +90,6 @@ router.post('/register', function(req, res, next) {
         }
     })
 });
-
 router.get('/api/logged', function(req, res) {
     var user;
     if (req.session.userId != undefined) {
@@ -162,7 +161,8 @@ router.post('/api/project/:projectId', function(req, res) {
         assignee: "not assigned",
         description: "Click to add description",
         type: "task",
-        progress: "To Do"
+        progress: "To Do",
+        comments: []
     }
     tasks.insert(task).then(function(data) {
         res.json({ createdTask: true })
@@ -208,6 +208,32 @@ router.post('/createProject', function(req, res) {
     })
 })
 
+
+router.put('/api/task/assign/:taskId', function(req, res) {
+    var data = req.body;
+    var taskId = req.params.taskId;
+    var users = db.get("users");
+    var projects = db.get("projects");
+    console.log(data)
+    users.find({ fullName: data.fullName }, {}).then(function(userInput) {
+        if (userInput.length > 0) {
+            var id = String(userInput[0]._id);
+            console.log(id)
+            projects.find({ users: { $elemMatch: { userId: id } } }, {}).then(function(project) {
+                console.log(project)
+                if (project.length > 0) {
+                    res.json({ success: true })
+                } else {
+                    res.json({ message: "There is not such user in this project" })
+                }
+            })
+
+        } else {
+
+            res.json({ message: "Invalid user" });
+        }
+    })
+})
 router.get('/api/project/people/:projectId', function(req, res) {
     var projectId = req.params.projectId;
     var projects = db.get('projects');
@@ -218,7 +244,9 @@ router.get('/api/project/people/:projectId', function(req, res) {
         })
         var users = db.get('users')
         users.find({ _id: { $in: peopleIds } }, {}).then(function(data) {
+            console.log(data)
             res.json(data)
+
         })
     })
 })
@@ -245,7 +273,6 @@ router.put('/api/project/removeUser/:projectId', function(req, res) {
     var projectId = req.params.projectId;
     var projects = db.get('projects');
     projects.update({ _id: projectId }, { $pull: { users: { userId: req.body.id } } }).then(function(data) {
-
         res.json({ message: 'seccess' })
     })
 })
@@ -258,7 +285,30 @@ router.put('/api/project/removeTask', function(req, res) {
         res.json({ message: 'seccess' })
     })
 })
-
+router.put('/api/task/comment/:taskId', function(req, res) {
+    var taskId = req.params.taskId;
+    var tasks = db.get("tasks");
+    var info = req.body;
+    tasks.update({ _id: taskId }, { $push: { comments: info } }).then(function(result) {
+        console.log(result)
+    })
+})
+router.put('/api/task/deleteComment/:taskId', function(req, res) {
+    var taskId = req.params.taskId;
+    var commentToDelete = Number(req.body.id)
+    console.log(commentToDelete);
+    var tasks = db.get("tasks");
+    tasks.update({ _id: taskId }, { $pull: { comments: { date: commentToDelete } } }).then(function(data) {
+        res.json({ message: 'success' })
+    })
+});
+router.get('/api/task/getComments/:taskId', function(req, res) {
+    var taskId = req.params.taskId;
+    var tasks = db.get("tasks");
+    tasks.find({ _id: taskId }, { comments: 1 }).then(function(data) {
+        res.json(data)
+    })
+})
 router.put('/api/project/removeProject', function(req, res) {
     var projectId = String(req.body._id);
     var projects = db.get('projects');
@@ -269,4 +319,5 @@ router.put('/api/project/removeProject', function(req, res) {
         })
     })
 })
+
 module.exports = router;

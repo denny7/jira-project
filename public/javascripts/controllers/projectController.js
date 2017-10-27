@@ -1,6 +1,12 @@
 angular.module('homeApp')
     .controller('ProjectCtrl', ['$scope', '$http', '$route', '$routeParams', '$location', 'Main', 'Project', function($scope, $http, $route, $routeParams, $location, Main, Project) {
-
+        $(".logoutHolder").on("mouseover", function() {
+            $(".logOutText").show();
+        })
+        $(".logoutHolder").on("mouseleave", function() {
+            $(".logOutText").hide();
+        })
+        $("footer").hide()
         $scope.tasks = [];
         $scope.user = {};
         $scope.newUser = {};

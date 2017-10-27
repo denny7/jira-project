@@ -1,6 +1,13 @@
+    html {
+        position: relative;
+        height: 100%;
+    }
+    
     body {
         padding: 50px;
         font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+        min-height: 100%;
+        margin: 0 0 5em;
     }
     
     a {
@@ -308,10 +315,38 @@
     
     .taskImg {
         float: left;
+        margin-top: 0px;
     }
     
     .taskName {
         color: #fff;
+    }
+    
+    .btnProgress {
+        background: #369FC8;
+        color: white;
+        width: 25%;
+    }
+    
+    .btn-blue {
+        background: #056C93;
+    }
+    
+    .detailsTask,
+    .descriptionTask,
+    .commentsTask {
+        color: #056C93;
+        margin-top: 10px;
+    }
+    
+    .peopleTaskh1 {
+        color: #056C93;
+        margin-top: 44px;
+    }
+    
+    .bolder {
+        font-weight: bold;
+        color: #056C93;
     }
     
     select {
@@ -323,29 +358,13 @@
     .selectImg {
         width: 1em;
     }
-    /* .taskOption {
-        background-color: greenyellow;
-    }
-    
-    .epicOption {
-        background-color: orange;
-    }
-    
-    .storyOption {
-        background-color: blue;
-    }
-    
-    .bugOption {
-        background-color: red;
-    } */
     
     .pencilDescription {
         color: #369FC8;
     }
     
     .addDescription:hover,
-    .taskName:hover {
-        font-size: 1.2em;
+    .taskNameP:hover {
         color: #369FC8;
         cursor: pointer;
     }
@@ -359,5 +378,193 @@
     
     .nameEdit {
         display: none;
+        text-align: center;
+        height: 34px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    }
+    
+    .assignToMe,
+    .assignTo {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    
+    .assignToMe:hover,
+    .assignTo:hover {
+        border-radius: 10px;
+        background: #369FC8;
+        cursor: pointer;
+        color: #fff;
+    }
+    
+    .assignToInput {
+        text-align: center;
+        height: 34px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    }
+    
+    .checkAssign {
+        color: #369FC8;
+    }
+    
+    .checkAssign:hover {
+        cursor: pointer;
+        font-size: 1.4em;
+        color: #369FC8;
+    }
+    
+    .lightBlue {
+        color: #369FC8;
+    }
+    
+    .footerProject,
+    .footerTask {
+        width: 100%;
+        background: #369FC8;
         border-radius: 5px;
+        height: 5em;
+        text-align: center;
+        color: #fff;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    /* comments */
+    
+    .noComment {
+        color: #369FC8
+    }
+    
+    .item {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .item .image {
+        padding: 1em 2em;
+    }
+    
+    .item .image>div {
+        position: relative;
+        text-align: center;
+        font-size: 0.8em;
+    }
+    
+    .item .image>div::after {
+        content: '';
+        width: 100%;
+        height: 0;
+        border-bottom: 1px solid #369FC8;
+        position: absolute;
+        top: 2.75em;
+        left: 2.5em;
+        z-index: -1;
+    }
+    
+    .item .image img {
+        border-radius: 50%;
+        height: 7em;
+        border: 0.35em solid #369FC8;
+    }
+    
+    .left {
+        float: left;
+    }
+    
+    .item .details {
+        position: relative;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        text-align: left;
+    }
+    
+    .item .details>div {
+        border: 1px solid #369FC8;
+        border-radius: 0.5em;
+        height: auto;
+        max-width: 33em;
+        word-wrap: break-word;
+        height: auto;
+        min-height: 4em;
+        margin: 1em 0;
+        padding: 0.5em;
+    }
+    
+    .item .userFullName,
+    .item .userDate {
+        color: #369FC8;
+    }
+    
+    .item .userDate {
+        text-align: right;
+    }
+    
+    .item .userFullName {
+        padding-top: 5px;
+    }
+    
+    .item .details>div p {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .item .details::before {
+        content: '';
+        width: 0;
+        height: 100%;
+        border-left: 1px solid #369FC8;
+        position: absolute;
+        top: 0;
+        left: -4.35em;
+        z-index: -1;
+    }
+    
+    .deleteComment {
+        font-size: 1.5em;
+    }
+    
+    .deleteComment:hover {
+        cursor: pointer;
+    }
+    
+    .commentArea {
+        width: 33em;
+        border: 1px solid #369FC8;
+        border-radius: 6px;
+        text-align: center;
+    }
+    
+    .desctriptionChange {
+        width: 100%;
+        height: 200px;
+        word-break: break-word;
+        overflow: auto;
+        border: 1px solid #369FC8;
+        border-radius: 6px;
+        text-align: left;
+        margin-bottom: 10px;
+        background: rgba(54, 159, 200, 0.04);
+        padding: 10px;
+    }
+    
+    .commentHolder {
+        background: rgba(54, 159, 200, 0.04)
     }
