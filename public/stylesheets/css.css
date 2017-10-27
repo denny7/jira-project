@@ -233,3 +233,29 @@ h5 {
 .removeProjectBtn {
     margin-top: 7px;
 }
+
+.imgSprints {
+    width: 30px;
+    margin-right: 10px;
+}
+
+.sprints {
+    border-top: 1px solid #369FC8;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 0.9em;
+    box-sizing: border-box;
+    margin: 15px 30px;
+}
+
+.sprints a {
+    text-decoration: none !important;
+}
+
+.sprints>div {
+    text-align: left;
+}
+
+.charts {
+    margin: 20px 10px;
+}

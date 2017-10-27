@@ -1,6 +1,7 @@
 angular.module('homeApp')
-    .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', '$rootScope', '$route', function($scope, $http, $location, Main, $routeParams, Project, $rootScope, $route) {
+    .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', '$rootScope', '$route', '$window', function($scope, $http, $location, Main, $routeParams, Project, $rootScope, $route, $window) {
         $scope.user;
+        $scope.taskName = '';
         // $scope.$on('$routeChangeStart', function(newUrl, curUrl) {
         //     Main.getLoggedUserId().then(function(res) {
         //         console.log('--------------++++++++++--------');
@@ -14,28 +15,17 @@ angular.module('homeApp')
         $scope.newProject = {};
         $scope.$on('$locationChangeStart', function(event, next, current) {
             $scope.currentPath = next.split('/');
-            console.log('from location change start')
-
+            if (!$window.sessionStorage.getItem('currentUser')) {
+                $location.path('/')
+            }
             if ($scope.currentPath[4] && $scope.currentPath[4].match("^59")) {
                 $scope.projectId = $scope.currentPath[4];
             }
-
-
             if ($scope.currentPath[5] && $scope.currentPath[5].match("^59")) {
                 $scope.projectId = $scope.currentPath[5]
             }
-
-
-
-
         })
-        $scope.logoutUser = function() {
-            Main.logoutUser().then(function(res) {
-                console.log('log out')
-                $location.path('/');
-                $scope.user = {};
-            });
-        }
+
         $scope.getUserId = function() {
             Main.getLoggedUserId().then(function(res) {
                 $scope.user = res.data;
@@ -48,6 +38,7 @@ angular.module('homeApp')
         $scope.logOutUser = function() {
             Main.logoutUser().then(function(res) {
                 $location.path('/');
+                $window.sessionStorage.removeItem('currentUser');
                 $scope.user = {};
             });
         }
@@ -71,6 +62,19 @@ angular.module('homeApp')
         }
         $scope.createPr = function() {
             $('#createProject').modal();
+        }
+        $scope.createTaskF = function() {
+            var projectId = $routeParams.projectId;
+            var data = {
+                userId: $scope.user._id,
+                taskName: $scope.taskName
+            }
+            console.log($scope.taskName)
+                // Project.createTask(projectId, data).then(function(res) {
+                //     // $scope.tasks.push(res.data);
+                //     // console.log(res.data)
+                //     $route.reload();
+                // })
         }
         $scope.createNewProject = function() {
             $scope.newProject.userId = $scope.user._id;

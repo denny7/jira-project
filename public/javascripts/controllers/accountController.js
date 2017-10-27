@@ -18,17 +18,19 @@ angular.module('homeApp')
                 email: $scope.user.email
             };
             $scope.changeUserData = function() {
+
                 var changeUserData = [];
-                changeUserData.push($scope.user, $scope.userData);
-                console.log($scope.userData)
-                Users.changeData(changeUserData).then(function(res) {
-                    $scope.user = res.data;
-                    $scope.dataText = 'You successfully changed your details !'
-                    $route.reload();
-                }).catch(function(err) {
-                    $scope.dataText = err.status;
-                    $route.reload();
-                })
+
+                if ($("#fileInput")[0].files[0]) {
+
+                    var FR = new FileReader();
+                    FR.addEventListener('load', function(e) {
+                        console.log('picture22')
+                        $scope.userData.picture = e.target.result;
+                        $scope.$apply();
+                    });
+                }
+
             }
 
             $scope.changePassword = function() {

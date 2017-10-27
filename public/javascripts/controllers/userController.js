@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('UserCtrl', ['$scope', '$location', 'Users', function($scope, $location, Users) {
+    .controller('UserCtrl', ['$scope', '$location', 'Users', '$window', function($scope, $location, Users, $window) {
         $scope.formData = {};
         $scope.regData = {};
         $scope.userId = '';
@@ -11,7 +11,7 @@ angular.module('homeApp')
                         console.log('loged in')
                         console.log(res.data);
                         $location.path('/dashboard');
-
+                        $window.sessionStorage.setItem('currentUser', 'true');
                     } else {
                         $scope.err = res.data.text;
                     }
@@ -21,6 +21,7 @@ angular.module('homeApp')
         $scope.logOut = function() {
             Users.logout().then(function(res) {
                 console.log(red.data.text)
+                $window.sessionStorage.removeItem('currentUser');
             })
         }
         $scope.regUser = function() {

@@ -11,28 +11,97 @@
                 <div class="logOutText">Log Out</div>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3 sprints">
             <h3>To Do</h3>
-            <div ng-repeat="task in tasks | filter: task.progress='To Do'">
-                <div ng-if="task.progress='To Do'">
-                    <p>{{task.name}}</p>
-                </div>
+            <hr>
+            <div class="people" ng-repeat="task in tasks | filter: task.progress='To Do'">
+
+                <a href="/project/task/{{task._id}}">
+
+                    <div ng-if='task.type=="epic"'>
+                        <img ng-src="../images/epic-icon.png" alt="epic" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+                    <div ng-if='task.type=="story"'>
+                        <img ng-src="../images/story-icon.png" alt="story" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+                    <div ng-if='task.type=="bug"'>
+                        <img ng-src="../images/bug-icon.png" alt="service" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+                    <div ng-if='task.type=="task"'>
+                        <img ng-src="../images/task-icon.png" alt="task" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+
+                </a>
+
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3 sprints">
             <h3>In Progress</h3>
-            <div ng-repeat="task in tasks | filter: task.progress='In Progress'">
-                <div>
-                    <p>{{task.name}}</p>
-                </div>
+            <hr>
+            <div class="people" ng-repeat="task in tasks | filter: task.progress='In Progress'">
+
+                <a href="/project/task/{{task._id}}">
+
+                    <div ng-if='task.type=="epic"'>
+                        <img ng-src="../images/epic-icon.png" alt="epic" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+                    <div ng-if='task.type=="story"'>
+                        <img ng-src="../images/story-icon.png" alt="story" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+                    <div ng-if='task.type=="bug"'>
+                        <img ng-src="../images/bug-icon.png" alt="service" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+                    <div ng-if='task.type=="task"'>
+                        <img ng-src="../images/task-icon.png" alt="task" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+
+                </a>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3 sprints">
             <h3>Done</h3>
-            <div ng-repeat="task in tasks | filter: task.progress='Done'">
-                <div ng-show="task.progress='Done'">
-                    <p>{{task.name}}</p>
-                </div>
+            <hr>
+            <div class="people" ng-repeat="task in tasks | filter: task.progress='Done'">
+
+                <a href="/project/task/{{task._id}}">
+
+                    <div ng-if='task.type=="epic"'>
+                        <img ng-src="../images/epic-icon.png" alt="epic" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+                    <div ng-if='task.type=="story"'>
+                        <img ng-src="../images/story-icon.png" alt="story" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+                    <div ng-if='task.type=="bug"'>
+                        <img ng-src="../images/bug-icon.png" alt="service" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+                    <div ng-if='task.type=="task"'>
+                        <img ng-src="../images/task-icon.png" alt="task" class="panelImg imgSprints" />
+                        <span class="taskOption"> {{task.name}}</span>
+                    </div>
+
+                </a>
+
+            </div>
+        </div>
+        <div class="col-md-12 row charts">
+            <div class="col-md-6">
+                <h1>All Tasks by Types</h1>
+                <canvas id="otherChart" width="400" height="400"></canvas>
+            </div>
+            <div class="col-md-6">
+                <h1>All Tasks by Progress</h1>
+                <canvas id="chart"></canvas>
             </div>
         </div>
     </div>
