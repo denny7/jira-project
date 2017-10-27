@@ -480,7 +480,8 @@
     
     .item .image img {
         border-radius: 50%;
-        height: 7em;
+        height: 9em;
+        width: 9em;
         border: 0.35em solid #369FC8;
     }
     
@@ -567,4 +568,21 @@
     
     .commentHolder {
         background: rgba(54, 159, 200, 0.04)
+    }
+    
+    .userAvatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 2px solid #369FC8;
+        display: block;
+        margin: 0 auto;
+    }
+    
+    #uploadPhoto {
+        display: none;
+    }
+    
+    .uploadPhotoBtn {
+        margin: 10px !important;
     }

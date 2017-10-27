@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('ProjectCtrl', ['$scope', '$http', '$route', '$routeParams', '$location', 'Main', 'Project', function($scope, $http, $route, $routeParams, $location, Main, Project) {
+    .controller('ProjectCtrl', ['$scope', '$http', '$route', '$rootScope', '$routeParams', '$location', 'Main', 'Project', '$window', function($scope, $http, $route, $rootScope, $routeParams, $location, Main, Project, $window) {
         $(".logoutHolder").on("mouseover", function() {
             $(".logOutText").show();
         })
@@ -7,8 +7,10 @@ angular.module('homeApp')
             $(".logOutText").hide();
         })
         $("footer").hide()
-        $scope.tasks = [];
-        $scope.user = {};
+        console.log("+++++++++++++++++++++++++++++++++++")
+        console.log($rootScope.user)
+        $scope.user = $rootScope.user;
+        $scope.user.id = $rootScope.user._id;
         $scope.newUser = {};
         $scope.taskName = "";
         $scope.project;
@@ -46,13 +48,17 @@ angular.module('homeApp')
 
         }
         var projectId = $routeParams.projectId;
-        console.log(projectId)
-        Main.getLoggedUserId().then(function(res) {
-            console.log(res.data)
-            $scope.user = res.data;
-            $scope.user.id = res.data._id;
-        })
+        $rootScope.projectId = $routeParams.projectId
+            // if (projectId != undefined) {
+            //     $window.localStorage.setItem("projectId", JSON.stringify(projectId))
 
+        // }
+        // console.log(projectId)
+        // Main.getLoggedUserId().then(function(res) {
+        //     console.log(res.data)
+        //     $scope.user = res.data;
+        //     $scope.user.id = res.data._id;
+        // })
         $scope.peopleFunc = function() {
             Project.getAllUsers(projectId).then(function(res) {
                 console.log(res.data)
@@ -64,6 +70,7 @@ angular.module('homeApp')
         Project.getTasks(projectId).then(function(res) {
             $scope.tasks = res.data[0];
             $scope.project = res.data[1][0]
+            $scope.peopleFunc()
         })
         $scope.createTaskF = function() {
             var data = {

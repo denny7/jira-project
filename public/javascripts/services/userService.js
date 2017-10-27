@@ -15,6 +15,9 @@ angular.module('homeApp')
             },
             changeData: function(changedData) {
                 return $http.put('/user/changeData', changedData);
-            }
+            },
+            changeAvatar: function(avatarData) {
+                return $http.put('/user/changeAvatar', avatarData);
+            },
         }
     }])

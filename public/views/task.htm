@@ -35,6 +35,7 @@
                 <button type="button" class="btn btnProgress progressDone" ng-model="progress" ng-click="progressDone()">Done</button>
                 <hr>
                 <h1 class="detailsTask">Details</h1>
+                <p class="projectId">{{projectId}}</p>
                 <div class="row">
                     <div class="col-sm-3">
                         <p class="bolder">Type</p>
@@ -78,16 +79,16 @@
                     <p></p>
                     <button class="btn btn-primary pressCommentBtn" ng-click="addCommentTask()">Send</button>
                 </div>
-
                 <div ng-if="task.comments.length < 1">
                     <h1 class="noComment">No comments yet</h1>
                 </div>
-                <div>
+                <div ng-if="task.comments.length > 0">
                     <div ng-repeat="comment in filteredComments">
                         <div class="item">
                             <div class="image">
                                 <div>
-                                    <img src="http://lorempixel.com/400/400/people/1/" />
+                                    <!-- <p>{{comment.avatar}} cscscssc</p> -->
+                                    <img ng-src="{{comment.avatar}}" alt="avatar" />
                                 </div>
                             </div>
                             <div class="details">

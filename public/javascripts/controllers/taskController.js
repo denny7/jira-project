@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('TaskCtrl', ['$scope', '$http', '$routeParams', '$location', 'Main', 'Task', 'Project', '$route', function($scope, $http, $routeParams, $location, Main, Task, Project, $route) {
+    .controller('TaskCtrl', ['$scope', '$rootScope', '$http', '$routeParams', '$location', 'Main', 'Task', 'Project', '$route', function($scope, $rootScope, $http, $routeParams, $location, Main, Task, Project, $route) {
         $(".logoutHolder").on("mouseover", function() {
             $(".logOutText").show();
         })
@@ -73,12 +73,14 @@ angular.module('homeApp')
             $(".assignToDiv").show()
         }
         $scope.inputValue = '';
+        // console.log("projectIdinTask " + $rootScope.project._id)
 
         $scope.assignTo = function() {
             var objToSend = {
-                projectId: $scope.projectId,
+                projectId: $rootScope.projectId,
                 fullName: $scope.inputValue
             }
+            console.log(objToSend)
             Task.assignToUser($scope.taskId, objToSend).then(function(req, res) {
                 console.log(req)
                 if (!req.data.message) {
@@ -92,13 +94,14 @@ angular.module('homeApp')
             })
         }
         $scope.task = "";
-        $scope.user = {};
+        $scope.user = $rootScope.user;
+        $scope.user.id = $rootScope.user._id;
         $scope.taskId = $routeParams.taskId;
         console.log('task id ' + JSON.stringify($scope.taskId))
 
-        Main.getLoggedUserId().then(function(res) {
-            $scope.user = res.data;
-        })
+        // Main.getLoggedUserId().then(function(res) {
+        //     $scope.user = res.data;
+        // })
         Task.getTaskInfo($scope.taskId).then(function(res) {
             $scope.task = res.data[0];
             $scope.dateCr = new Date(Number($scope.task.createDate));
@@ -131,9 +134,10 @@ angular.module('homeApp')
         $scope.commentText = '';
         $scope.addCommentTask = function() {
             var comment = {};
-            comment.userFullName = $scope.user.fullName
+            comment.userId = $scope.user._id;
             comment.date = Date.now();
             comment.commentText = $scope.commentText;
+            console.log(comment)
             if (comment.commentText.length > 0) {
                 Task.addComment($scope.taskId, comment).then(function(req, res) {});
                 $scope.comment = comment;
@@ -147,9 +151,11 @@ angular.module('homeApp')
                 $scope.monthCom = $scope.dateCom.getMonth() + 1;
                 $scope.yearCom = $scope.dateCom.getFullYear();
                 $scope.comment.createDateCom = $scope.dayCom + "." + $scope.monthCom + "." + $scope.yearCom + " " + $scope.hourCom + ":" + $scope.minuteCom
-                $route.reload();
                 $(".addComment").hide();
-                $(".addCommentBtn").show()
+                $(".addCommentBtn").show();
+                $route.reload();
+                console.log("reloaded")
+
             }
 
         }
@@ -173,9 +179,8 @@ angular.module('homeApp')
             })
         }
         Task.getComments($scope.taskId).then(function(res) {
-            console.log(res.data[0].comments)
-            $scope.comments = (res.data[0].comments).reverse()
-            console.log($scope.comments[0].commentText)
+            console.log(res)
+            $scope.comments = (res.data).reverse()
                 // pagination comments
             $scope.filteredComments = [], $scope.currentPage = 1, $scope.numPerPage = 5, $scope.maxSize = 5;
             $scope.numPages = function() {
@@ -190,5 +195,6 @@ angular.module('homeApp')
             $(".commentPagination > ul").addClass("pagination")
 
         });
+
 
     }])

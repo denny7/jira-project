@@ -10,6 +10,9 @@
                 },
                 createPr: function(projectInfo) {
                     return $http.post('/createProject', projectInfo);
+                },
+                accountSettings: function() {
+                    return $http.get('/api/accountSettings');
                 }
             }
         }])

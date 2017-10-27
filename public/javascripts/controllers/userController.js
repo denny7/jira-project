@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('UserCtrl', ['$scope', '$location', 'Users', function($scope, $location, Users) {
+    .controller('UserCtrl', ['$scope', '$rootScope', '$location', 'Users', 'Main', '$window', function($scope, $rootScope, $location, Users, Main, $window) {
         $scope.formData = {};
         $scope.regData = {};
         $scope.userId = '';
@@ -10,7 +10,15 @@ angular.module('homeApp')
                     if (!res.data.text) {
                         console.log('loged in')
                         console.log(res.data);
-                        $location.path('/dashboard');
+                        Main.getLoggedUserId().then(function(res) {
+                            console.log('dashboard')
+                            console.log(res.data)
+                            $scope.user = res.data;
+                            $rootScope.user = res.data
+                            console.log('dashboard user id ' + $scope.user._id)
+                            $window.localStorage.setItem("current user", JSON.stringify($rootScope.user))
+                            $location.path('/dashboard');
+                        })
 
                     } else {
                         $scope.err = res.data.text;

@@ -3,14 +3,14 @@ angular.module('homeApp')
         $('.parent').hide();
         $("footer").hide();
         $('body').addClass('homepage');
-        $scope.user = {};
-        $scope.getUserId = function() {
-            Main.getLoggedUserId().then(function(res) {
-                $scope.user.id = JSON.parse(res.data).userId;
-                console.log($scope.user.id);
-            });
-            return $scope.user.id;
-        };
+        // $scope.user = {};
+        // $scope.getUserId = function() {
+        //     Main.getLoggedUserId().then(function(res) {
+        //         $scope.user.id = JSON.parse(res.data).userId;
+        //         console.log($scope.user.id);
+        //     });
+        //     return $scope.user.id;
+        // };
         $scope.logModal = function() {
             $('#signIn').modal();
         };

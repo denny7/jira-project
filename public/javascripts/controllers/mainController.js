@@ -1,17 +1,7 @@
 angular.module('homeApp')
-    .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', '$rootScope', '$route', function($scope, $http, $location, Main, $routeParams, Project, $rootScope, $route) {
+    .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', '$rootScope', '$route', '$window', function($scope, $http, $location, Main, $routeParams, Project, $rootScope, $route, $window) {
         $scope.user;
-        // $scope.$on('$routeChangeStart', function(newUrl, curUrl) {
-        //     Main.getLoggedUserId().then(function(res) {
-        //         console.log('--------------++++++++++--------');
-        //         console.log(res.data)
-        //         if (!res.data._id) {
-
-        //             $location.path('/');
-        //         }
-        //     })
-        // });
-
+        $rootScope.user;
         $scope.newProject = {};
         $scope.$on('$locationChangeStart', function(event, next, current) {
             $scope.currentPath = next.split('/');
@@ -25,11 +15,11 @@ angular.module('homeApp')
             if ($scope.currentPath[5] && $scope.currentPath[5].match("^59")) {
                 $scope.projectId = $scope.currentPath[5]
             }
-
-
-
-
         })
+        if (!$scope.user) {
+            $scope.user = JSON.parse($window.localStorage.getItem("current user"))
+            $rootScope.user = JSON.parse($window.localStorage.getItem("current user"))
+        }
         $scope.logoutUser = function() {
             Main.logoutUser().then(function(res) {
                 console.log('log out')
@@ -37,36 +27,44 @@ angular.module('homeApp')
                 $scope.user = {};
             });
         }
-        $scope.getUserId = function() {
-            Main.getLoggedUserId().then(function(res) {
-                $scope.user = res.data;
-                $rootScope.user = res.data;
-                console.log(res.data)
-                console.log($scope.user);
-            });
-            return $scope.user;
-        };
-        $scope.logOutUser = function() {
-            Main.logoutUser().then(function(res) {
-                $location.path('/');
-                $scope.user = {};
-            });
-        }
+
+        // Main.getLoggedUserId().then(function(res) {
+        //     $scope.user = res.data;
+        //     $rootScope.user = res.data;
+        //     console.log(res.data)
+        //     console.log($scope.user);
+        // });
+
+
+        // $scope.logOutUser = function() {
+        //     Main.logoutUser().then(function(res) {
+        //         $location.path('/');
+        //         $scope.user = {};
+        //     });
+        // }
         $scope.getProject = function() {
-            $route.reload();
+            // $route.reload();
             console.log('from main')
             console.log($scope.projectId)
+            if ($scope.projectId != JSON.stringify($window.localStorage.getItem("projectId")) && $window.localStorage.getItem("projectId") != "undefined") {
+                $scope.projectId = JSON.stringify($window.localStorage.getItem("projectId"))
+            }
             Project.getTasks($scope.projectId).then(function(res) {
-                $scope.project = res.data[1][0];
-                console.log($scope.project);
+                console.log(res.data)
+                $scope.projectt = res.data[1][0];
+                $rootScope.project = res.data[1][0];
+                $rootScope.tasks = res.data[0];
+                console.log($rootScope.tasks);
                 $scope.projectPath = '/project/' + res.data[1][0]._id;
                 $scope.peoplePath = '/project/people/' + res.data[1][0]._id;
                 $scope.sprintsPath = '/project/activeSprints/' + res.data[1][0]._id;
-                $route.reload();
                 Project.getAllUsers($scope.projectId).then(function(res) {
                     console.log(res.data)
                     $scope.people = res.data;
+                    $rootScope.people = res.data;
                     console.log($scope.people)
+                        // $route.reload();
+
                 })
             })
         }

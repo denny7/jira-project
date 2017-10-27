@@ -18,6 +18,6 @@ angular.module('homeApp')
             },
             getComments: function(taskId) {
                 return $http.get('/api/task/getComments/' + taskId);
-            }
+            },
         }
     }])

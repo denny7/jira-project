@@ -75,24 +75,24 @@
     </form>
 
     <!-- Project menu -->
-    <div ng-if="currentPath[3] == 'project'" ng-init="getProject()" ng-controller="ProjectCtrl" class="sidebar1">
+    <div ng-if="currentPath[3] == 'project'" data-ng-init="getProject()" ng-controller="ProjectCtrl" class="sidebar1">
         <div class="logo">
-            <div ng-if='project.type=="Software"'>
+            <div ng-if='projectt.type=="Software"'>
                 <img ng-src="../images/software-icon.png" alt="soft" class="panelImg img-responsive center-block" />
             </div>
-            <div ng-if='project.type=="Business"'>
+            <div ng-if='projectt.type=="Business"'>
                 <img ng-src="../images/business-icon.png" alt="business" class="panelImg img-responsive center-block" />
             </div>
-            <div ng-if='project.type=="Service"'>
+            <div ng-if='projectt.type=="Service"'>
                 <img ng-src="../images/service-icon.png" alt="service" class="panelImg img-responsive center-block" />
             </div>
             <!-- <img src="http://lorempixel.com/output/people-q-g-64-64-1.jpg" class="img-responsive center-block" alt="Logo"> -->
         </div>
 
         <br>
-        <div class="left-navigation" data-ng-init="getProject()">
+        <div class="left-navigation">
             <ul class="list">
-                <h3 class="text-center" ng-if="project"><strong>{{project.name}}</strong></h3>
+                <h3 class="text-center" ng-if="projectt"><strong>{{projectt.name}}dsds</strong></h3>
                 <li><a ng-href="{{projectPath}}">All Tasks</a></li>
                 <li><a ng-href="{{sprintsPath}}">Active Sprints</a></li>
                 <li style="cursor:pointer" data-toggle="collapse" data-target="#demo">Create new task</li>
@@ -125,6 +125,7 @@
     <script src="javascripts/controllers/accountController.js"></script>
     <script src="javascripts/controllers/projectController.js"></script>
     <script src="javascripts/controllers/taskController.js"></script>
+
 </body>
 
 </html>

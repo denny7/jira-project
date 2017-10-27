@@ -2,7 +2,16 @@
     <div class=" col-md-6 ">
         <div class="jumbotron jumbo ">
             <form class="firstForm">
+
                 <h3 class="text-center page-header">Account details</h3>
+                <div class="col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 text-center">
+                    <img ng-src="{{user.avatar}}" alt="avatar" class="userAvatar" />
+                    <input onclick="document.getElementById('uploadPhoto').click()" type="button" class="btn btn-primary btn-filled loginBtn uploadPhotoBtn" value="Choose photo" />
+
+                    <input id="uploadPhoto" type="file" name="picture" file-model="myFile" accept="application/x-zip-compressed,image/*">
+                    <p id="changeAvatarP" class="text-danger"></p>
+                </div>
+                <hr>
                 <div class="form-group row">
                     <label for="userFullname" class="col-sm-2 userLabel">Full name :</label>
                     <input ng-value="{{user.fullName}}" id="userFullname" ng-model="userData.fullName" type="text" class="userData col-sm-9" placeholder="{{user.fullName}}" />
