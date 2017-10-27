@@ -70,7 +70,54 @@ angular.module('homeApp')
         Project.getTasks(projectId).then(function(res) {
             $scope.tasks = res.data[0];
             $scope.project = res.data[1][0]
+<<<<<<< HEAD
             $scope.peopleFunc()
+=======
+            if (document.getElementById("chart")) {
+                console.log($scope.tasks)
+                var toDo = $scope.tasks.filter(task => task.progress == 'To Do');
+                var inProgress = $scope.tasks.filter(task => task.progress == 'In Progress');
+                var done = $scope.tasks.filter(task => task.progress == 'Done');
+                var donutData = [toDo.length, inProgress.length, done.length]
+                var tTaks = $scope.tasks.filter(task => task.type == 'task');
+                var bug = $scope.tasks.filter(task => task.type == 'bug');
+                var epic = $scope.tasks.filter(task => task.type == 'epic');
+                var story = $scope.tasks.filter(task => task.type == 'story');
+                var barData = [tTaks.length, bug.length, epic.length, story.length];
+                var ctx = document.getElementById("chart").getContext("2d");
+                var ct = document.getElementById("otherChart").getContext("2d");
+                var chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ["To Do", "In Progress", "Done"],
+                        datasets: [{
+                            backgroundColor: ['rgb(248, 110, 81)', 'rgb(146, 192, 31)', 'rgb(69, 180, 226)'],
+                            data: donutData,
+                        }]
+                    },
+                    options: {
+                        // responsive: false,
+                        // maintainAspectRatio: false
+                    }
+                });
+                var otherChart = new Chart(ct, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Task", "Bug", "Epic", "Story"],
+                        datasets: [{
+                            backgroundColor: ['rgb(146, 192, 31)', 'rgb(248, 110, 81)', 'rgb(69, 180, 226)', 'rgb(252, 176, 64)'],
+                            data: barData
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false,
+                        }
+                    }
+                });
+
+            }
+>>>>>>> 60c7fbd8ff18f5b64dbe1c16734c953612b26e5b
         })
         $scope.createTaskF = function() {
             var data = {
@@ -119,4 +166,11 @@ angular.module('homeApp')
             else
                 $scope.sorting = 'type'
         }
+
+
+
+
+
+
+
     }])

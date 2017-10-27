@@ -22,7 +22,9 @@ angular.module('homeApp')
                 email: $scope.user.email,
             };
             $scope.changeUserData = function() {
+
                 var changeUserData = [];
+<<<<<<< HEAD
                 changeUserData.push($scope.user, $scope.userData);
                 Users.changeData(changeUserData).then(function(res) {
                     $scope.dataText = 'You successfully changed your details !'
@@ -31,6 +33,19 @@ angular.module('homeApp')
                     $scope.dataText = err.status;
                     $route.reload();
                 })
+=======
+
+                if ($("#fileInput")[0].files[0]) {
+
+                    var FR = new FileReader();
+                    FR.addEventListener('load', function(e) {
+                        console.log('picture22')
+                        $scope.userData.picture = e.target.result;
+                        $scope.$apply();
+                    });
+                }
+
+>>>>>>> 60c7fbd8ff18f5b64dbe1c16734c953612b26e5b
             }
             $scope.changePassword = function() {
                     var patt = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/g;
