@@ -3,26 +3,29 @@ angular.module('homeApp')
         $scope.formData = {};
         $scope.regData = {};
         $scope.userId = '';
+        $scope.loginSend = false;
         $scope.logInUser = function() {
             if (!$.isEmptyObject($scope.formData)) {
                 Users.logIn($scope.formData).then(function(res) {
                     console.log(res.data)
+                    $scope.loginSend = true;
                     if (!res.data.text) {
                         console.log('loged in')
                         console.log(res.data);
-                        Main.getLoggedUserId().then(function(res) {
-                            console.log('dashboard')
-                            console.log(res.data)
-                            $scope.user = res.data;
-                            $rootScope.user = res.data
-                            console.log('dashboard user id ' + $scope.user._id)
-                            $window.localStorage.setItem("current user", JSON.stringify($rootScope.user))
-                            $location.path('/dashboard');
-                        })
+                        // Main.getLoggedUserId().then(function(res) {
+                        console.log('dashboard')
+                        console.log(res.data)
+                        $scope.user = res.data[0];
+                        $rootScope.user = res.data[0]
+                        console.log('dashboard user id ' + $scope.user._id)
+                        $window.localStorage.setItem("current user", JSON.stringify($rootScope.user))
+                        $location.path('/dashboard');
+                        // })
 
                         $location.path('/dashboard');
                         $window.sessionStorage.setItem('currentUser', 'true');
                     } else {
+                        $scope.loginSend = false;
                         $scope.err = res.data.text;
                     }
                 })
@@ -32,6 +35,7 @@ angular.module('homeApp')
             Users.logout().then(function(res) {
                 console.log(red.data.text)
                 $window.sessionStorage.removeItem('currentUser');
+                $window.localStorage.removeItem('current user');
             })
         }
         $scope.regUser = function() {

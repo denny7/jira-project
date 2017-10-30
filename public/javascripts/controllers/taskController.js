@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('TaskCtrl', ['$scope', '$rootScope', '$http', '$routeParams', '$location', 'Main', 'Task', 'Project', '$route', function($scope, $rootScope, $http, $routeParams, $location, Main, Task, Project, $route) {
+    .controller('TaskCtrl', ['$scope', '$rootScope', '$http', '$routeParams', '$location', 'Main', 'Task', 'Project', '$route', '$timeout', '$window', function($scope, $rootScope, $http, $routeParams, $location, Main, Task, Project, $route, $timeout, $window) {
         $(".logoutHolder").on("mouseover", function() {
             $(".logOutText").show();
         })
@@ -73,6 +73,7 @@ angular.module('homeApp')
             $(".assignToDiv").show()
         }
         $scope.inputValue = '';
+        $scope.commentSend = true;
         // console.log("projectIdinTask " + $rootScope.project._id)
 
         $scope.assignTo = function() {
@@ -95,6 +96,10 @@ angular.module('homeApp')
         }
         $scope.task = "";
         $scope.user = $rootScope.user;
+        // if (!$rootScope.user) {
+        //     $scope.user = JSON.parse($window.localStorage.getItem("current user"))
+        //     $rootScope.user = JSON.parse($window.localStorage.getItem("current user"))
+        // }
         $scope.user.id = $rootScope.user._id;
         $scope.taskId = $routeParams.taskId;
         console.log('task id ' + JSON.stringify($scope.taskId))
@@ -103,7 +108,23 @@ angular.module('homeApp')
         //     $scope.user = res.data;
         // })
         Task.getTaskInfo($scope.taskId).then(function(res) {
+
             $scope.task = res.data[0];
+            $scope.comments = res.data[0].comments.reverse()
+            console.log(124214)
+            console.log($scope.comments)
+                // pagination comments
+            $scope.filteredComments = [], $scope.currentPage = 1, $scope.numPerPage = 5, $scope.maxSize = 5;
+            $scope.numPages = function() {
+                return Math.ceil($scope.comments.length / $scope.numPerPage);
+            };
+            $scope.$watch('currentPage + numPerPage', function() {
+                var begin = (($scope.currentPage - 1) * $scope.numPerPage),
+                    end = begin + $scope.numPerPage;
+
+                $scope.filteredComments = $scope.comments.slice(begin, end);
+            });
+
             $scope.dateCr = new Date(Number($scope.task.createDate));
             $scope.minuteCr = $scope.dateCr.getMinutes();
             if ($scope.minuteCr < 10) {
@@ -124,6 +145,11 @@ angular.module('homeApp')
             $scope.monthUp = $scope.dateUp.getMonth() + 1;
             $scope.yearUp = $scope.dateUp.getFullYear();
             $scope.updateDate = $scope.dayUp + "." + $scope.monthUp + "." + $scope.yearUp + " " + $scope.hourUp + ":" + $scope.minuteUp
+            $timeout(function() {
+                $("div.commentPagination  ul").addClass("pagination");
+                $scope.commentSend = false;
+            })
+
         }).catch(function(err) {
             console.log(err.status)
         })
@@ -168,10 +194,13 @@ angular.module('homeApp')
         }
 
         $scope.createTaskF = function() {
+            var projectId = event.target.id;
             var data = {
                 userId: $scope.user.id,
+                userFullName: $scope.user.fullName,
                 taskName: $scope.taskName
             }
+            console.log($rootScope.projectId)
             Project.createTask(projectId, data).then(function(res) {
                 $scope.tasks.push(res.data);
                 console.log(res.data)
@@ -179,23 +208,24 @@ angular.module('homeApp')
             })
         }
         console.log("----------" + $scope.taskId)
-        Task.getComments($scope.taskId).then(function(res) {
-            console.log(res)
-            $scope.comments = (res.data).reverse()
-                // pagination comments
-            $scope.filteredComments = [], $scope.currentPage = 1, $scope.numPerPage = 5, $scope.maxSize = 5;
-            $scope.numPages = function() {
-                return Math.ceil($scope.comments.length / $scope.numPerPage);
-            };
-            $scope.$watch('currentPage + numPerPage', function() {
-                var begin = (($scope.currentPage - 1) * $scope.numPerPage),
-                    end = begin + $scope.numPerPage;
+            // Task.getComments($scope.taskId).then(function(res) {
+            //     $scope.commentSend = false;
+            //     console.log(res)
+            //     $scope.comments = (res.data).reverse()
+            //         // pagination comments
+            //     $scope.filteredComments = [], $scope.currentPage = 1, $scope.numPerPage = 5, $scope.maxSize = 5;
+            //     $scope.numPages = function() {
+            //         return Math.ceil($scope.comments.length / $scope.numPerPage);
+            //     };
+            //     $scope.$watch('currentPage + numPerPage', function() {
+            //         var begin = (($scope.currentPage - 1) * $scope.numPerPage),
+            //             end = begin + $scope.numPerPage;
 
-                $scope.filteredComments = $scope.comments.slice(begin, end);
-            });
-            $(".commentPagination > ul").addClass("pagination")
+        //         $scope.filteredComments = $scope.comments.slice(begin, end);
+        //     });
+        //     $(".commentPagination > ul").addClass("pagination")
 
-        });
+        // });
 
 
     }])

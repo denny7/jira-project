@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', '$rootScope', '$route', '$window', function($scope, $http, $location, Main, $routeParams, Project, $rootScope, $route, $window) {
+    .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', '$rootScope', '$route', '$window', '$timeout', function($scope, $http, $location, Main, $routeParams, Project, $rootScope, $route, $window, $timeout) {
         $scope.user;
         $rootScope.user;
         $scope.taskName = '';
@@ -16,24 +16,29 @@ angular.module('homeApp')
 
         $scope.newProject = {};
         $scope.$on('$locationChangeStart', function(event, next, current) {
-            $scope.currentPath = next.split('/');
-            if (!$window.sessionStorage.getItem('currentUser')) {
-                $location.path('/')
-            }
-            if ($scope.currentPath[4] && $scope.currentPath[4].match("^59")) {
-                $scope.projectId = $scope.currentPath[4];
-            }
-            if ($scope.currentPath[5] && $scope.currentPath[5].match("^59")) {
-                $scope.projectId = $scope.currentPath[5]
-            }
-        })
-        if (!$scope.user) {
-            $scope.user = JSON.parse($window.localStorage.getItem("current user"))
-            $rootScope.user = JSON.parse($window.localStorage.getItem("current user"))
-        }
+                $scope.currentPath = next.split('/');
+                if (!$window.sessionStorage.getItem('currentUser')) {
+                    $location.path('/')
+                }
+                if ($scope.currentPath[4] && $scope.currentPath[4].match("^59")) {
+                    $scope.projectId = $scope.currentPath[4];
+                }
+                if ($scope.currentPath[4] == 'task') {}
+                if ($scope.currentPath[5] && $scope.currentPath[5].match("^59") && $scope.currentPath[4] != "task") {
+                    $scope.projectId = $scope.currentPath[5]
+                }
+            })
+            // if (!$scope.user) {
+        $scope.user = JSON.parse($window.localStorage.getItem("current user"));
+        $rootScope.user = JSON.parse($window.localStorage.getItem("current user"));
+        // }
         $scope.logoutUser = function() {
             Main.logoutUser().then(function(res) {
                 console.log('log out')
+                $window.sessionStorage.removeItem('currentUser');
+                $window.localStorage.removeItem('current user');
+                $rootScope.projects = {};
+                $rootScope.user = {};
                 $location.path('/');
                 $scope.user = {};
             });
@@ -57,9 +62,6 @@ angular.module('homeApp')
             // $route.reload();
             console.log('from main')
             console.log($scope.projectId)
-            if ($scope.projectId != JSON.stringify($window.localStorage.getItem("projectId")) && $window.localStorage.getItem("projectId") != "undefined") {
-                $scope.projectId = JSON.stringify($window.localStorage.getItem("projectId"))
-            }
             Project.getTasks($scope.projectId).then(function(res) {
                 console.log("resss data")
                 console.log(res.data)
@@ -83,18 +85,19 @@ angular.module('homeApp')
         $scope.createPr = function() {
             $('#createProject').modal();
         }
-        $scope.createTaskF = function() {
-            var projectId = $rootScope.projectId;
+        $scope.createTaskF = function(event) {
+            var projectId = event.target.id;
             var data = {
                 userId: $scope.user._id,
+                userFullName: $scope.user.fullName,
                 taskName: $scope.taskName
             }
             console.log($scope.taskName)
-                // Project.createTask(projectId, data).then(function(res) {
-                //     // $scope.tasks.push(res.data);
-                //     // console.log(res.data)
-                //     $route.reload();
-                // })
+            Project.createTask(projectId, data).then(function(res) {
+                // $scope.tasks.push(res.data);
+                // console.log(res.data)
+                $route.reload();
+            })
         }
         $scope.createNewProject = function() {
             $scope.newProject.userId = $scope.user._id;

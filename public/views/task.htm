@@ -17,8 +17,8 @@
                         <img ng-src="../images/task-icon.png" alt="task" class="panelImg taskImg" />
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <h3 class="taskName">{{task.name}}</h3>
+                <div class="col-sm-6 ">
+                    <h3 id="{{task.projectId}}" class="taskName prId">{{task.name}}</h3>
                 </div>
 
             </div>
@@ -78,36 +78,39 @@
                     <p></p>
                     <button class="btn btn-primary pressCommentBtn" ng-click="addCommentTask()">Send</button>
                 </div>
-                <div ng-if="task.comments.length < 1">
-                    <h1 class="noComment">No comments yet</h1>
-                </div>
-                <div ng-if="task.comments.length > 0">
-                    <div ng-repeat="comment in filteredComments">
-                        <div class="item">
-                            <div class="image">
-                                <div>
-                                    <!-- <p>{{comment.avatar}} cscscssc</p> -->
-                                    <img ng-src="{{comment.avatar}}" alt="avatar" />
-                                </div>
-                            </div>
-                            <div class="details">
-                                <div class="commentHolder">
-                                    <div class="row">
-                                        <div class="col-xs-7 userFullName">
-                                            <p>{{comment.userFullName}}</p>
-                                        </div>
-                                        <div class="col-xs-5 userDate">
-                                            <p>{{comment.createDateCom}} <span class="deleteComment" id="{{comment.date}}" ng-click="deleteComment($event)" ng-if="'comment.userFullName==user.fullName' || 'user.role==`Admin`'"><i class="fa fa-times"></i></span></p>
-                                        </div>
+                <div ng-show="commentSend"><i class="fa fa-spinner fa-spin dashLoad"></i></div>
+                <div ng-hide="commentSend && task.comments.length <1">
+                    <div ng-if="task.comments.length == 0">
+                        <h1 class="noComment">No comments yet</h1>
+                    </div>
+                    <div ng-if=" task.comments.length > 0">
+                        <div ng-repeat="comment in filteredComments">
+                            <div class="item">
+                                <div class="image">
+                                    <div>
+                                        <!-- <p>{{comment.avatar}} cscscssc</p> -->
+                                        <img ng-src="{{comment.avatar}}" alt="avatar" />
                                     </div>
-                                    <hr>
-                                    <p>{{comment.commentText}}</p>
+                                </div>
+                                <div class="details">
+                                    <div class="commentHolder">
+                                        <div class="row">
+                                            <div class="col-xs-7 userFullName">
+                                                <p>{{comment.userFullName}}</p>
+                                            </div>
+                                            <div class="col-xs-5 userDate">
+                                                <p>{{comment.createDateCom}} <span class="deleteComment" id="{{comment.date}}" ng-click="deleteComment($event)" ng-if="'comment.userFullName==user.fullName' || 'user.role==`Admin`'"><i class="fa fa-times"></i></span></p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <p>{{comment.commentText}}</p>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="commentPagination" data-pagination="" data-num-pages="numPages()" data-current-page="currentPage" data-max-size="maxSize" data-boundary-links="true"></div>
                     </div>
-                    <div class="commentPagination" data-pagination="" data-num-pages="numPages()" data-current-page="currentPage" data-max-size="maxSize" data-boundary-links="true"></div>
                 </div>
             </div>
             <div class="col-md-4 col-sm-5 peopleTask">
@@ -121,7 +124,7 @@
                 </div>
                 <p class="text-danger errMsgText">{{errMsg}}</p>
                 <h3 class="lightBlue">Reporter</h3>
-                <p>{{user.fullName}}</p>
+                <p>{{task.userFullName}}</p>
                 <h3 class="lightBlue">Dates</h3>
                 <p>Created</p>
                 <p>{{createDate}}</p>

@@ -9,6 +9,9 @@ angular.module('homeApp')
         $("footer").hide()
         console.log("+++++++++++++++++++++++++++++++++++")
         console.log($rootScope.user)
+        var projectId = $routeParams.projectId;
+        $rootScope.projectId = $routeParams.projectId
+        $scope.projectSend = true;
         $scope.user = $rootScope.user;
         $scope.user.id = $rootScope.user._id;
         $scope.newUser = {};
@@ -47,10 +50,9 @@ angular.module('homeApp')
             }
 
         }
-        var projectId = $routeParams.projectId;
-        $rootScope.projectId = $routeParams.projectId
-            // if (projectId != undefined) {
-            //     $window.localStorage.setItem("projectId", JSON.stringify(projectId))
+
+        // if (projectId != undefined) {
+        //     $window.localStorage.setItem("projectId", JSON.stringify(projectId))
 
         // }
         // console.log(projectId)
@@ -68,6 +70,8 @@ angular.module('homeApp')
         }
 
         Project.getTasks(projectId).then(function(res) {
+            $scope.projectSend = false;
+            $rootScope.projectId = $routeParams.projectId;
             $scope.tasks = res.data[0];
             $scope.project = res.data[1][0]
             $scope.peopleFunc()
@@ -116,9 +120,12 @@ angular.module('homeApp')
 
             }
         })
-        $scope.createTaskF = function() {
+        $scope.createTaskF = function(event) {
+            var projectId = event.target.id;
+            console.log(projectId)
             var data = {
                 userId: $scope.user.id,
+                userFullName: $scope.user.fullName,
                 taskName: $scope.taskName
             }
             Project.createTask(projectId, data).then(function(res) {

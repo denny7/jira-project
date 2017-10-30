@@ -4,7 +4,7 @@
     <div class="col-md-9 col-sm-8 main-content">
         <div class="welcomeText row">
             <div class="col-sm-2">
-                <h3 ng-if="user.role ='Admin'" ng-click="removeProjectFunc()" class="addPeopleBtn removeProjectBtn">Remove Project</h3>
+                <h3 ng-if="user.role =='Admin'" ng-click="removeProjectFunc()" class="addPeopleBtn removeProjectBtn">Remove Project</h3>
             </div>
             <div class="col-sm-9">
                 <h1 class="letterDrop">TASKS</h1>
@@ -16,19 +16,20 @@
         </div>
         <div class="row sortOptionsDiv">
             <div class="col-xs-4 ">
-                <p ng-click="sortByName()" class="sortOptions">Name</p>
+                <p ng-click="sortByName()" class="sortOptions">Name <i class="fa fa-sort"></i></p>
             </div>
-            <div class="col-xs-4 ">
-                <p ng-click="sortByType()" class="sortOptions">Type</p>
+            <div class="col-xs-3 ">
+                <p ng-click="sortByType()" class="sortOptions">Type <i class="fa fa-sort"></i></p>
             </div>
-            <div class="col-xs-1 ">
-                <p ng-click="sortByPriority()" class="sortOptions">Priority</p>
+            <div class="col-xs-2 ">
+                <p ng-click="sortByPriority()" class="sortOptions">Priority <i class="fa fa-sort"></i></p>
             </div>
             <div class="col-xs-3">
                 <input type="text" class="searchTaskInput" placeholder="Search" ng-model='seachTask'>
             </div>
         </div>
-        <div ng-repeat="task in tasks | filter : seachTask | orderBy : sorting">
+        <div ng-show="projectSend"><i class="fa fa-spinner fa-spin dashLoad"></i></div>
+        <div ng-hide="projectSend" ng-repeat="task in tasks | filter : seachTask | orderBy : sorting">
 
             <div class="row people projectPageTasks">
                 <a href="/project/task/{{task._id}}">
@@ -50,10 +51,10 @@
                             <p class="taskOption"> {{task.name}}</p>
                         </div>
                     </div>
-                    <div class="col-xs-4 taskOption">
+                    <div class="col-xs-3 taskOption">
                         <p>{{task.type}}</p>
                     </div>
-                    <div class="col-xs-1 taskOption">
+                    <div class="col-xs-2 taskOption">
                         <p>{{task.priority}}</p>
                     </div>
                 </a>

@@ -266,3 +266,14 @@ h5 {
 .charts {
     margin: 20px 10px;
 }
+
+i.homeLoad {
+    font-size: 40px;
+    color: #369FC8;
+}
+
+i.dashLoad {
+    margin: 30px 40%;
+    font-size: 12em;
+    color: #369FC8;
+}

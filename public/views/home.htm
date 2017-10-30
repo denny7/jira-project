@@ -15,7 +15,7 @@
                     <input ng-model="formData.password" type="password" class="login" required placeholder="Password" />
                 </div>
                 <div class="col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 text-center">
-                    <input ng-disabled="formData.$invalid" ng-click="logInUser()" type="button" class="btn btn-primary btn-filled loginBtn" value="Login" />
+                    <input ng-disabled="formData.$invalid" ng-click="logInUser()" type="button" class="btn btn-primary btn-filled loginBtn" value="Login" /> <i ng-show="loginSend" class="fa fa-spinner fa-spin homeLoad"></i>
                     <p class="text-danger">{{err}}</p>
                 </div>
             </form>

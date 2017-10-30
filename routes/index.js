@@ -29,7 +29,7 @@ router.post('/login', function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
     var users = db.get('users');
-    users.find({ name: username, password: sha1(password) }, {}).then(function(data) {
+    users.find({ name: username, password: sha1(password) }, { avatar: 0 }).then(function(data) {
         if (data.length > 0) {
             req.session.userId = data[0]._id;
             res.json(data);
@@ -146,11 +146,14 @@ router.get('/api/task/:taskId', function(req, res) {
 
 router.post('/api/project/:projectId', function(req, res) {
     var projectId = req.params.projectId;
+    console.log(req.params)
     var userId = req.body.userId;
+    var userFullName = req.body.userFullName;
     var taskName = req.body.taskName;
     var tasks = db.get('tasks');
     var task = {
         userId: userId,
+        userFullName: userFullName,
         projectId: projectId,
         name: taskName,
         createDate: Date.now(),
@@ -240,7 +243,6 @@ router.get('/api/project/people/:projectId', function(req, res) {
         })
         var users = db.get('users')
         users.find({ _id: { $in: peopleIds } }, {}).then(function(data) {
-            console.log(data)
             res.json(data)
 
         })

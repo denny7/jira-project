@@ -1,9 +1,10 @@
 <div>
-    <div class="row">
+    <div ng-show="dashSend"><i class="fa fa-spinner fa-spin dashLoad"></i></div>
+    <div ng-hide="dashSend" class="row">
         <div ng-hide="projects.length>0">
             <h1>YOU DONT HAVE PROJECTS YET</h1>
         </div>
-        <div class="col-md-12">
+        <div ng-show="projects.length>0" class="col-md-12">
             <input ng-model='seachProject' id="search" type="text" placeholder="Търсене..">
         </div>
         <div ng-repeat="p in projects | filter : seachProject" class="col-lg-3 col-md-6">

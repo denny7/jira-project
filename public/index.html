@@ -28,9 +28,9 @@
         <a href="/dashboard">
             <div class="homeIcon"><i class="fa fa-home fa-2x"></i></div>
         </a>
-
-        <div class="listIcon"><i class="fa fa-list  fa-2x"></i></div>
-
+        <a href="/news">
+            <div class="listIcon"><i class="fa fa-list  fa-2x"></i></div>
+        </a>
         <a href="/account">
             <div class="userIcon"><i class="fa fa-user  fa-2x"></i></div>
         </a>
@@ -38,10 +38,11 @@
         <div class="home"><i class="fa fa-home fa-3x"></i></div>
     </div>
 
-    <div ng-if="currentPath[3] == 'dashboard' || currentPath[3] == 'account'" class="welcomeText row">
+    <div ng-if="currentPath[3] == 'dashboard' || currentPath[3] == 'account' || currentPath[3] == 'news'" class="welcomeText row">
         <div class="col-sm-11">
             <h1 ng-if="currentPath[3] == 'dashboard'" class="letterDrop"> WELCOME to your PROJECTS</h1>
             <h1 ng-if="currentPath[3] == 'account'" class="letterDrop"> ACCOUNT SETTINGS</h1>
+            <h1 ng-if="currentPath[3] == 'news'" class="letterDrop"> NEWS</h1>
         </div>
         <div class="col-sm-1 logoutHolder">
             <div class="logOutBtn" ng-click="logoutUser()"><i class="fa fa-times"></i></div>
@@ -101,12 +102,12 @@
                 <li style="cursor:pointer" data-toggle="collapse" data-target="#demo">Create new task</li>
                 <div id="demo" class="collapse liInput ">
                     <input type="text" ng-model="taskName" placeholder="What's need to be done"> </input>
-                    <span class="createTask"><i  ng-click="createTaskF()" class="fa fa-check"></i></span>
+                    <span class="createTask"><i id="{{projectt._id}}"  ng-click="createTaskF($event)" class="fa fa-check"></i></span>
                 </div>
                 <br/>
 
                 <br/>
-                <li><a ng-href="{{peoplePath}}">People</a></li>
+                <li ng-if="user.role=='Admin'"><a ng-href="{{peoplePath}}">People</a></li>
             </ul>
         </div>
     </div>
@@ -121,6 +122,7 @@
     <script src="javascripts/services/dashService.js"></script>
     <script src="javascripts/services/projectService.js"></script>
     <script src="javascripts/services/taskService.js"></script>
+    <script src="javascripts/services/newsService.js"></script>
     <script src="javascripts/controllers/homeController.js"></script>
     <script src="javascripts/controllers/mainController.js"></script>
     <script src="javascripts/controllers/userController.js"></script>
@@ -128,7 +130,7 @@
     <script src="javascripts/controllers/accountController.js"></script>
     <script src="javascripts/controllers/projectController.js"></script>
     <script src="javascripts/controllers/taskController.js"></script>
-
+    <script src="javascripts/controllers/newsController.js"></script>
 </body>
 
 </html>
