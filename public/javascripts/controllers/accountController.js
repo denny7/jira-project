@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('AccountCtrl', ['$scope', '$rootScope', '$window', '$http', '$routeParams', '$location', 'Main', 'Users', '$route', function($scope, $rootScope, $window, $http, $routeParams, $location, Main, Users, $route) {
+    .controller('AccountCtrl', ['$scope', '$rootScope', '$window', '$http', '$routeParams', '$location', 'Main', 'Users', '$route', "News", function($scope, $rootScope, $window, $http, $routeParams, $location, Main, Users, $route, News) {
         $scope.user;
 
         $scope.changePass = {};
@@ -92,5 +92,8 @@ angular.module('homeApp')
         })
         $(".logoutHolder").on("mouseleave", function() {
             $(".logOutText").hide();
+        })
+        News.getUserNews($scope.user._id).then(function(res) {
+            console.log(res.data)
         })
     }])

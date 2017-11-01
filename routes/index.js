@@ -151,6 +151,7 @@ router.post('/api/project/:projectId', function(req, res) {
     var userFullName = req.body.userFullName;
     var taskName = req.body.taskName;
     var tasks = db.get('tasks');
+    var news = db.get("news");
     var task = {
         userId: userId,
         userFullName: userFullName,
@@ -167,16 +168,46 @@ router.post('/api/project/:projectId', function(req, res) {
         comments: []
     }
     tasks.insert(task).then(function(data) {
+        var newsToSend = {
+            userId: userId,
+            name: taskName,
+            updateDate: Date.now(),
+            projectId: projectId,
+            taskId: data._id.toString(),
+            change: "Create new task"
+        }
+        news.insert(newsToSend).then(function(dataNews) {
+            console.log("Inserted in news")
+        })
         res.json({ createdTask: true })
     })
+
+
 });
 router.put('/api/task/:taskId', function(req, res) {
     var taskId = req.params.taskId;
     var task = req.body;
+    var projectId = req.body.projectId;
+    var userId = req.body.userId;
+    var userFullName = req.body.userFullName;
+    var taskName = req.body.name;
     task.priority == 'Middle' ? task.priorityNumber = 2 : task.priority == 'High' ? task.priorityNumber = 1 : task.priorityNumber = 3;
     var tasks = db.get('tasks');
+    var news = db.get("news");
     tasks.update({ _id: taskId }, task).then(function(data) {
         res.json(data)
+    })
+    var newsToSend = {
+        userId: userId,
+        name: taskName,
+        updateDate: Date.now(),
+        projectId: projectId,
+        taskId: taskId,
+        change: "Updated"
+    }
+    console.log(newsToSend.taskId);
+    news.update({ taskId: taskId }, newsToSend).then(function(dataUpdate) {
+        console.log("Updated in news");
     })
 });
 
@@ -205,9 +236,21 @@ router.put('/user/changeData', function(req, res) {
 router.post('/createProject', function(req, res) {
     var newProject = req.body;
     var projects = db.get('projects');
+    var news = db.get("news")
     projects.insert(newProject).then(function(data) {
+        var newsToSend = {
+            userId: data.userId,
+            name: data.name,
+            updateDate: Date.now(),
+            projectId: data._id.toString(),
+            change: "Create new project"
+        }
+        news.insert(newsToSend).then(function(dataNews) {
+            console.log("Inserted in news")
+        })
         res.json({ text: 'You successfully add new Project!' })
     })
+
 })
 
 
@@ -287,6 +330,17 @@ router.put('/api/task/comment/:taskId', function(req, res) {
     var tasks = db.get("tasks");
     var info = req.body;
     tasks.update({ _id: taskId }, { $push: { comments: info } }).then(function(result) {})
+    var user = db.get("users");
+    var news = db.get("news");
+    var newsToSend = {
+        userId: info.userId,
+        updateDate: Date.now(),
+        change: "Add comment"
+    }
+    news.update({ taskId: taskId }, { $set: newsToSend }).then(function(updateComment) {})
+
+
+
 })
 router.put('/api/task/deleteComment/:taskId', function(req, res) {
     var taskId = req.params.taskId;
@@ -342,5 +396,56 @@ router.get('/api/accountSettings', function(req, res) {
             res.json(user);
         })
     }
+})
+router.get('/api/getUserNews/:userId', function(req, res) {
+    var news = db.get("news");
+    var userId = req.params.userId;
+
+    news.find({ userId: String(userId) }, {}).then(function(data) {
+        if (data.length > 0) {
+            res.json(data)
+        }
+    })
+})
+router.get('/api/getNews/:userId', function(req, res) {
+    var news;
+    var userId = req.params.userId;
+    db.get("news").find({}, {}).then(function(data) {
+        news = data;
+        // console.log(news)
+        var projects = db.get("projects");
+        var users;
+        db.get("users").find({}, { fullName: 1, role: 1 }).then(function(userData) {
+            users = userData;
+            var newsForUser = [];
+            var userRole = users.find(u => userId == u._id);
+            news.forEach(function(modified) {
+                // console.log(userRole)
+                if (userRole.role == 'Admin') {
+                    console.log("Admin!!!!")
+                    var userName = users.find(user => String(user._id) == modified.userId)
+                    console.log(userName)
+                    newsForUser.push(modified);
+                    newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
+                    if (news.indexOf(modified) == news.length - 1) {
+                        return res.json(newsForUser);
+                    }
+                } else {
+                    console.log("Employee!!!")
+                    projects.find({ _id: modified.projectId, users: { $elemMatch: { userId: userId } } }, {}).then(function(returnProjects) {
+                        if (returnProjects.length > 0) {
+                            var userName = users.find(user => String(user._id) == modified.userId)
+                            newsForUser.push(modified);
+                            newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
+                            console.log(userName.fullName)
+                        }
+                        if (news.indexOf(modified) == news.length - 1) {
+                            return res.json(newsForUser);
+                        }
+                    })
+                }
+            })
+        })
+    })
 })
 module.exports = router;

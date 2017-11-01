@@ -126,7 +126,7 @@ angular.module('homeApp')
             var data = {
                 userId: $scope.user.id,
                 userFullName: $scope.user.fullName,
-                taskName: $scope.taskName
+                taskName: $scope.taskName,
             }
             Project.createTask(projectId, data).then(function(res) {
                 $scope.tasks.push(res.data);
