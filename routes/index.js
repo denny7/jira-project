@@ -343,4 +343,49 @@ router.get('/api/accountSettings', function(req, res) {
         })
     }
 })
+router.get('/forgottenPass/:email', function(req, res) {
+    var email = req.params.email;
+    console.log(email)
+    var users = db.get('users');
+    var newPass = Math.random().toString(36).slice(-8);
+    users.findOneAndUpdate({ email: email }, { $set: { password: sha1(newPass) } }).then(function(data) {
+        if (data) {
+            var mail = {
+                from: fromEmailAddress,
+                to: email,
+                subject: "Recover Password",
+                text: `Hello !  
+                                        This is your password - ${newPass} , please keep it in safe!!`,
+            }
+            transport.sendMail(mail, function(error, response) {
+                transport.close();
+            });
+            res.json({ text: 'success' })
+        } else {
+            res.json({ err: 'There is no a user with this email!' })
+        }
+    })
+});
+router.get('/allUsers', function(req, res) {
+    var users = db.get('users');
+    users.find({}, { avatar: 0, password: 0 }).then(function(data) {
+        res.json(data);
+    })
+})
+router.put('/changeUserRole', function(req, res) {
+    var userId = req.body.userId;
+    var userRole = req.body.userRole;
+    var users = db.get('users');
+    users.update({ _id: userId }, { role: userRole }).then(function(data) {
+        res.json({ status: 200 })
+    })
+})
+router.delete('/removeUser/:userId', function(req, res) {
+    var userId = req.params.userId;
+    console.log(userId)
+    var users = db.get('users');
+    users.remove({ _id: userId }).then(function(data) {
+        res.json(data);
+    })
+})
 module.exports = router;

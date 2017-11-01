@@ -34,7 +34,7 @@
         <a href="/account">
             <div class="userIcon"><i class="fa fa-user  fa-2x"></i></div>
         </a>
-        <div ng-if="user.role=='Admin'" ng-click="createPr()" class="plusIcon"><i class="fa fa-plus fa-2x"></i></div>
+        <div ng-show="user.role=='Admin'" ng-click="createPr()" class="plusIcon"><i class="fa fa-plus fa-2x"></i></div>
         <div class="home"><i class="fa fa-home fa-3x"></i></div>
     </div>
 

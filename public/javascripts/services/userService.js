@@ -19,5 +19,17 @@ angular.module('homeApp')
             changeAvatar: function(avatarData) {
                 return $http.put('/user/changeAvatar', avatarData);
             },
+            forgottenPass: function(email) {
+                return $http.get('/forgottenPass/' + email);
+            },
+            getAllUsers: function() {
+                return $http.get('/allUsers');
+            },
+            changeUserRole: function(changedRole) {
+                return $http.put('/changeUserRole', changedRole);
+            },
+            removeUser: function(userId) {
+                return $http.delete('/removeUser/' + userId);
+            }
         }
     }])

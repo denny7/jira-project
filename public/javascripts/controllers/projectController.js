@@ -131,6 +131,7 @@ angular.module('homeApp')
             Project.createTask(projectId, data).then(function(res) {
                 $scope.tasks.push(res.data);
                 console.log(res.data)
+                $scope.taskName = '';
                 $route.reload();
             })
         }

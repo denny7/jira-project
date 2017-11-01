@@ -1,6 +1,7 @@
 angular.module('homeApp')
     .controller('DashCtrl', ['$scope', '$rootScope', '$http', '$location', 'Main', 'Dashboard', "$timeout", '$route', function($scope, $rootScope, $http, $location, Main, Dashboard, $timeout, $route) {
         $('.parent').show();
+
         $rootScope.projects = [];
         console.log($rootScope.projects)
         $scope.projects = [];

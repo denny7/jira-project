@@ -219,7 +219,8 @@
         font-size: 14px;
         line-height: 24px;
         font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        background: rgba(151, 99, 99, 0.85) !important;
+        color: #369FC8 !important;
+        /* background: rgba(151, 99, 99, 0.85) !important; */
         border-radius: 50px !important;
         padding: 14px 24px 14px 24px !important;
         margin-bottom: 18px;

@@ -22,6 +22,9 @@
             <div class=" col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 text-center">
                 <span class="text-white" ng-click="regModal()">Don't have an account? Register now!</span>
             </div>
+            <div class=" col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 text-center">
+                <span class="text-white" ng-click="regForgotten()">Forgotten password ?</span>
+            </div>
         </div>
     </div>
 
@@ -59,4 +62,24 @@
         </div>
     </form>
 
+    <!-- Forgotten password -->
+    <form name="forgottenData" ng-controller="UserCtrl" class="modal fade" id="forgottenPass" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" id="registerForm">
+                <div class="modal-header">
+                    <h1 class="text-center white">Send new password</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input ng-model="forgotten.email" type="email" class="form-control reg " placeholder="Enter your E-mail" required />
+                    </div>
+
+                    <div class="form-group text-center">
+                        <input ng-disabled="forgottenData.$invalid" ng-click="forgotPass()" type="button" class="btn btn-primary btn-filled loginBtn" value="Send" />
+                        <p id="newPassP">{{forgottenText}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
