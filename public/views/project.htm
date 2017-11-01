@@ -58,7 +58,7 @@
                         <p>{{task.priority}}</p>
                     </div>
                 </a>
-                <div ng-click="removeTask($event)" class="col-xs-3 taskOption"><span id="{{task._id}}" class="removeUserBtn">Remove</span> </div>
+                <div ng-click="removeTask($event)" ng-if="task.userId==user._id || user.role=='Admin'" class="col-xs-3 taskOption"><span id="{{task._id}}" class="removeUserBtn">Remove</span> </div>
             </div>
 
         </div>

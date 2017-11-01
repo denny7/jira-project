@@ -52,7 +52,46 @@
 
         </div>
     </div>
-    <div class="col-md-6 ">
+    <div ng-show="user.role == 'Admin'" class="col-md-6 ">
+        <div class="jumbotron jumbo row">
+            <div class="page-header row">
+                <button ng-click="hidePeople()" type="button" class="btn btn-info col-xs-4 col-xs-offset-1" data-toggle="collapse" data-target="#lastChanges">Last Changes</button>
+                <button ng-click="hideChanges()" type="button" class="btn btn-info col-xs-4 col-xs-offset-1" data-toggle="collapse" data-target="#peoples">People</button>
+            </div>
 
+            <div id="lastChanges" class="collapse in col-md-12">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </div>
+            <div id="peoples" class="collapse col-md-12">
+                <div class="row sortOptionsDiv">
+                    <div class="col-xs-12">
+                        <input type="text" class="searchTaskInput" placeholder="Search" ng-model='seachUser'>
+                    </div>
+                    <div ng-click="sortByName()" class="col-xs-4 sortOptions">Name <i class="fa fa-sort"></i></div>
+                    <div ng-click="sortByEmail()" class="col-xs-4 sortOptions">E-mail <i class="fa fa-sort"></i></div>
+                    <div ng-click="sortByRole()" class="col-xs-2 sortOptions">Role <i class="fa fa-sort"></i></div>
+
+
+                </div>
+                <div ng-repeat="man in allUsers | orderBy : sorting | filter : seachUser" class="row people">
+                    <div class="col-md-4"> {{man.fullName}}</div>
+                    <div class="col-md-4 "> {{man.email}}</div>
+                    <div class="col-md-2 text-center">{{man.role}}
+                        <select ng-hide="man.role=='Admin'" class="selectpicker show-tick" ng-model="man.role" ng-change="updateMan(man._id, man.role)">
+                                    <option value="Admin" class="taskOption" ng-model="allUsers[$index].role" >Admin</option>   
+                                    <option value="Employee" class="epicOption" ng-model="allUsers[$index].role">Employee</option>
+                                    <option value="Manager" class="bugOption" ng-model="allUsers[$index].role">Manager</option>       
+                                </select>
+                    </div>
+                    <div ng-hide="man.role=='Admin'" ng-click="removeUser(man._id, $index)" class="col-md-2"><span class="removeUserBtn">Remove</span> </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div ng-hide="user.role == 'Admin'" class="col-md-6 ">
+        <div class="jumbotron jumbo row">
+            <h3 class="text-center page-header">Last Changes</h3>
+        </div>
     </div>
 </div>

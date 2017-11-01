@@ -4,5 +4,6 @@ angular.module('homeApp')
         News.getNews(userId).then(function(res) {
             console.log(res.data);
         })
+        $('footer').show();
 
     }])

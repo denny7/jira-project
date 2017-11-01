@@ -66,5 +66,18 @@ angular.module('homeApp')
                 $scope.err = "Username must be at least 4 symbols!";
             }
         }
+        $scope.forgotten = {};
+        $scope.forgotPass = function() {
+            Users.forgottenPass($scope.forgotten.email).then(function(res) {
+                console.log(res.data)
+                if (res.data.text) {
+                    $scope.forgottenText = 'We send you a new password to this email!';
+                    $('#newPassP').removeClass().addClass('text-success')
+                } else {
+                    $scope.forgottenText = res.data.err;
+                    $('#newPassP').removeClass().addClass('text-danger')
+                }
+            })
+        }
 
     }])

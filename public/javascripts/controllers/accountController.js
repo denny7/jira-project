@@ -1,7 +1,7 @@
 angular.module('homeApp')
     .controller('AccountCtrl', ['$scope', '$rootScope', '$window', '$http', '$routeParams', '$location', 'Main', 'Users', '$route', "News", function($scope, $rootScope, $window, $http, $routeParams, $location, Main, Users, $route, News) {
         $scope.user;
-
+        $('footer').show();
         $scope.changePass = {};
         $scope.text = '';
         $scope.dataText = '';
@@ -11,8 +11,49 @@ angular.module('homeApp')
                 $scope.user = {};
             });
         }
+        $scope.allUsers;
+        $scope.updateMan = function(id, role) {
+            console.log(id + '  ' + role)
+            var sendData = { userId: id, userRole: role }
+            Users.changeUserRole(sendData).then(function(res) {})
+        }
+        $scope.removeUser = function(id, index) {
+            console.log(index)
 
+            Users.removeUser(id).then(function(res) {
+                $scope.allUsers.splice(index, 1)
+            })
+        }
+        Users.getAllUsers().then(function(res) {
+            $scope.allUsers = res.data;
+        })
+        $scope.hidePeople = function() {
+            $('#peoples').collapse('hide');
+        }
+        $scope.hideChanges = function() {
+            $('#lastChanges').collapse('hide');
 
+        }
+        $scope.sorting = '';
+        $scope.seachUser = '';
+        $scope.sortByName = function() {
+            if ($scope.sorting == 'fullName')
+                $scope.sorting = '-fullName'
+            else
+                $scope.sorting = 'fullName'
+        }
+        $scope.sortByEmail = function() {
+            if ($scope.sorting == 'email')
+                $scope.sorting = '-email'
+            else
+                $scope.sorting = 'email'
+        }
+        $scope.sortByRole = function() {
+            if ($scope.sorting == 'role')
+                $scope.sorting = '-role'
+            else
+                $scope.sorting = 'role'
+        }
         Main.accountSettings().then(function(res) {
             $scope.user = res.data;
 
