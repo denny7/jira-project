@@ -171,7 +171,9 @@ angular.module('homeApp')
             else
                 $scope.sorting = 'type'
         }
-
+        $scope.showMine = function() {
+            $scope.seachTask = $rootScope.user.fullName
+        }
 
 
 

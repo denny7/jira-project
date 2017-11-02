@@ -1,0 +1,56 @@
+<div class="row newsPage">
+
+    <div class=" col-md-offset-1 col-md-10 ">
+        <div class="newsHolder">
+            <div class="col-xs-12 row page-header">
+                <div class="col-xs-3 ">
+                    <p>By</p>
+                </div>
+                <div class="col-xs-3 ">
+                    <p>Modified</p>
+                </div>
+                <div class="col-xs-3 ">
+                    <p>Name</p>
+                </div>
+                <div class="col-xs-3 ">
+                    <p>Date</p>
+                </div>
+            </div>
+            <div ng-show="newsSend"><i class="fa fa-spinner fa-spin dashLoad"></i></div>
+            <div ng-hide="newsSend" ng-repeat="new in news | orderBy : '-updateDate' ">
+                <div ng-if="new.taskId" class="newTask col-xs-12 row people">
+                    <a href="/project/task/{{new.taskId}}">
+                        <div class="col-xs-3 ">
+                            <p>{{new.userFullName}}</p>
+                        </div>
+                        <div class="col-xs-3 ">
+                            <p>{{new.change}}</p>
+                        </div>
+                        <div class="col-xs-3 ">
+                            <p>{{new.name}}</p>
+                        </div>
+                        <div class="col-xs-3 ">
+                            <p>{{new.updateDateShow}}</p>
+                        </div>
+                    </a>
+                </div>
+                <div ng-if="!new.taskId" class="newProject col-xs-12 row people">
+                    <a href="/project/{{new.projectId}}">
+                        <div class="col-xs-3 ">
+                            <p>{{new.userFullName}}</p>
+                        </div>
+                        <div class="col-xs-3 ">
+                            <p>{{new.change}}</p>
+                        </div>
+                        <div class="col-xs-3 ">
+                            <p>{{new.name}}</p>
+                        </div>
+                        <div class="col-xs-3 ">
+                            <p>{{new.updateDateShow}}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

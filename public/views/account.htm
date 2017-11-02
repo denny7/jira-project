@@ -1,4 +1,4 @@
-<div class="row account">
+<div class="row account viewContent">
     <div class=" col-md-6 ">
         <div class="jumbotron jumbo ">
             <form class="firstForm">
@@ -52,15 +52,63 @@
 
         </div>
     </div>
-    <div ng-show="user.role == 'Admin'" class="col-md-6 ">
+    <div class="col-md-6 ">
         <div class="jumbotron jumbo row">
-            <div class="page-header row">
+            <div class="page-header row" ng-show="user.role == 'Admin'">
                 <button ng-click="hidePeople()" type="button" class="btn btn-info col-xs-4 col-xs-offset-1" data-toggle="collapse" data-target="#lastChanges">Last Changes</button>
                 <button ng-click="hideChanges()" type="button" class="btn btn-info col-xs-4 col-xs-offset-1" data-toggle="collapse" data-target="#peoples">People</button>
             </div>
+            <div ng-hide="user.role == 'Admin'">
+                <h3 class="myLastChanges text-center page-header">My last changes</h3>
+            </div>
+            <div id="lastChanges" class="collapse in col-md-12 text-center">
+                <div class="col-xs-4 ">
+                    <p>Modified</p>
+                    <hr>
+                </div>
+                <div class="col-xs-4 ">
+                    <p>Name</p>
+                    <hr>
+                </div>
+                <div class="col-xs-4 ">
+                    <p>Date</p>
+                    <hr>
+                </div>
+                <div ng-show="newsSend"><i class="fa fa-spinner fa-spin dashLoad"></i></div>
 
-            <div id="lastChanges" class="collapse in col-md-12">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                <div ng-hide="newsSend">
+                    <div ng-show="news.length==0">
+                        <h3 class="text-danger text-center">You did not made any last changes!</h3>
+                    </div>
+                    <div ng-repeat="new in news | orderBy : '-updateDate'">
+                        <div ng-if="new.taskId" class="newTask row col-xs-12 text-center people myNews">
+                            <a href="/project/task/{{new.taskId}}">
+                                <div class="col-xs-4 ">
+                                    <p>{{new.change}}</p>
+                                </div>
+                                <div class="col-xs-4 ">
+                                    <p>{{new.name}}</p>
+                                </div>
+                                <div class="col-xs-4 ">
+                                    <p>{{new.updateDateShow}}</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div ng-if="!new.taskId" class="newProject row col-xs-12 text-center people myNews">
+                            <a href="/project/{{new.projectId}}">
+                                <div class="col-xs-4 ">
+                                    <p>{{new.change}}</p>
+                                </div>
+                                <div class="col-xs-4 ">
+                                    <p>{{new.name}}</p>
+                                </div>
+                                <div class="col-xs-4 ">
+                                    <p>{{new.updateDateShow}}</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="peoples" class="collapse col-md-12">
                 <div class="row sortOptionsDiv">
@@ -87,11 +135,6 @@
                 </div>
 
             </div>
-        </div>
-    </div>
-    <div ng-hide="user.role == 'Admin'" class="col-md-6 ">
-        <div class="jumbotron jumbo row">
-            <h3 class="text-center page-header">Last Changes</h3>
         </div>
     </div>
 </div>

@@ -8,6 +8,8 @@
         font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
         min-height: 100%;
         margin: 0 0 5em;
+        height: 100%;
+        padding-bottom: 5em
     }
     
     a {
@@ -24,26 +26,6 @@
         background-color: transparent;
         border-radius: 50%;
         z-index: 20;
-    }
-    
-    .homeIcon:hover {
-        color: #369FC8;
-        background-color: white !important;
-    }
-    
-    .listIcon:hover {
-        color: #4E8E15;
-        background-color: white !important;
-    }
-    
-    .userIcon:hover {
-        color: #DC3089;
-        background-color: white !important;
-    }
-    
-    .plusIcon:hover {
-        color: #dba606;
-        background-color: white !important;
     }
     
     .homeIcon {
@@ -89,6 +71,7 @@
     }
     
     .plusIcon {
+        cursor: pointer;
         width: 60%;
         height: 60%;
         border-radius: 50%;
@@ -222,7 +205,7 @@
         color: #369FC8 !important;
         /* background: rgba(151, 99, 99, 0.85) !important; */
         border-radius: 50px !important;
-        padding: 14px 24px 14px 24px !important;
+        /* padding: 14px 24px 14px 24px !important; */
         margin-bottom: 18px;
     }
     
@@ -301,6 +284,15 @@
         height: 5em;
         text-align: center;
         color: #fff;
+        bottom: 0;
+    }
+    
+    .viewContent {
+        min-height: 80% !important;
+    }
+    
+    .navbar-fixed-bottom {
+        width: 80% !important;
     }
     
     .footerText {
@@ -434,15 +426,15 @@
     
     .footerProject,
     .footerTask {
-        width: 100%;
+        width: 71.5%;
+        position: fixed;
+        bottom: 0;
+        left: 26%;
         background: #369FC8;
         border-radius: 5px;
         height: 5em;
         text-align: center;
         color: #fff;
-        position: absolute;
-        bottom: 0;
-        left: 0;
     }
     /* comments */
     
@@ -586,4 +578,36 @@
     
     .uploadPhotoBtn {
         margin: 10px !important;
+    }
+    
+    .newsPage {
+        text-align: center;
+    }
+    
+    .newsHolder>.page-header p {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    
+    #lastChanges p {
+        font-size: 1.3em;
+    }
+    
+    .myNews p {
+        font-size: 1.1em !important;
+        color: #369FC8;
+        font-weight: bold;
+    }
+    
+    .myNews {
+        margin-left: 0px !important;
+    }
+    
+    .myLastChanges {
+        margin-top: -0px !important;
+    }
+    
+    .btnShowMine {
+        background: #369FC8;
+        color: white;
     }

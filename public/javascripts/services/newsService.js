@@ -4,8 +4,8 @@ angular.module('homeApp')
             getNews: function(userId) {
                 return $http.get('/api/getNews/' + userId);
             },
-            getUserNews: function(userId) {
-                return $http.get('/api/getUserNews/' + userId);
+            getUserNews: function() {
+                return $http.get('/api/getUserNews/');
             }
         }
     }])

@@ -109,12 +109,56 @@ angular.module('homeApp')
         // })
         Task.getTaskInfo($scope.taskId).then(function(res) {
             $scope.task = res.data[0];
+            if ($scope.task.comments.length == 0) {
+                $scope.commentSend = false;
+
+            }
             // pagination comments
             Task.getComments($scope.taskId).then(function(res) {
-                $scope.commentSend = false;
                 console.log(res)
                 $scope.comments = (res.data).reverse()
-                    // pagination comments
+                $scope.comments.forEach(function(comment) {
+                    var today = new Date()
+                    var dateCom = new Date(Number(comment.date));
+                    var minuteCom = dateCom.getMinutes();
+                    var hourCom = dateCom.getHours();
+                    var dayCom = dateCom.getDate();
+                    var monthCom = dateCom.getMonth() + 1;
+                    var yearCom = dateCom.getFullYear().toString().substring(2, 4)
+                    if (dayCom == today.getDate() && today.getMonth() + 1 == monthCom) {
+                        if (minuteCom < 10) {
+                            minuteCom = "0" + minuteCom;
+                        }
+                        var differnceTime = today.getHours() - hourCom;
+                        var differnceTimeMinutes = today.getMinutes() - minuteCom;
+                        if (differnceTime < 2) {
+                            if ((today.getMinutes() + 60 - minuteCom) < 60 && differnceTime == 1) {
+                                comment.createDateCom = today.getMinutes() + 60 - minuteCom + " minutes ago";
+
+                            } else {
+                                if ((today.getMinutes() - minuteCom) < 60 && differnceTime == 0) {
+                                    comment.createDateCom = today.getMinutes() - minuteCom + " minutes ago";
+
+                                } else {
+                                    comment.createDateCom = hourCom + ":" + minuteCom;
+                                }
+                            }
+
+                            if (differnceTimeMinutes == 0 && differnceTime == 0) {
+                                comment.createDateCom = "Just now";
+                            }
+                        } else {
+                            comment.createDateCom = hourCom + ":" + minuteCom;
+                        }
+                    } else {
+                        if (dayCom < 10) {
+                            dayCom = "0" + dayCom;
+                        }
+                        comment.createDateCom = dayCom + "." + monthCom + "." + yearCom;
+                    }
+                })
+
+                // pagination comments
                 $scope.filteredComments = [], $scope.currentPage = 1, $scope.numPerPage = 5, $scope.maxSize = 5;
                 $scope.numPages = function() {
                     return Math.ceil($scope.comments.length / $scope.numPerPage);
@@ -129,26 +173,26 @@ angular.module('homeApp')
                 $(".commentPagination > ul").addClass("pagination")
 
             });
-            $scope.dateCr = new Date(Number($scope.task.createDate));
-            $scope.minuteCr = $scope.dateCr.getMinutes();
-            if ($scope.minuteCr < 10) {
-                $scope.minuteCr = "0" + $scope.minuteCr;
+            var dateCr = new Date(Number($scope.task.createDate));
+            var minuteCr = dateCr.getMinutes();
+            if (minuteCr < 10) {
+                minuteCr = "0" + minuteCr;
             }
-            $scope.hourCr = $scope.dateCr.getHours();
-            $scope.dayCr = $scope.dateCr.getDate();
-            $scope.monthCr = $scope.dateCr.getMonth() + 1;
-            $scope.yearCr = $scope.dateCr.getFullYear();
-            $scope.createDate = $scope.dayCr + "." + $scope.monthCr + "." + $scope.yearCr + " " + $scope.hourCr + ":" + $scope.minuteCr
-            $scope.dateUp = new Date(Number($scope.task.updateDate));
-            $scope.minuteUp = $scope.dateUp.getMinutes();
-            if ($scope.minuteUp < 10) {
-                $scope.minuteUp = "0" + $scope.minuteUp;
+            var hourCr = dateCr.getHours();
+            var dayCr = dateCr.getDate();
+            var monthCr = dateCr.getMonth() + 1;
+            var yearCr = dateCr.getFullYear();
+            $scope.createDate = dayCr + "." + monthCr + "." + yearCr + " " + hourCr + ":" + minuteCr
+            var dateUp = new Date(Number($scope.task.updateDate));
+            var minuteUp = dateUp.getMinutes();
+            if (minuteUp < 10) {
+                minuteUp = "0" + minuteUp;
             }
-            $scope.hourUp = $scope.dateUp.getHours();
-            $scope.dayUp = $scope.dateUp.getDate();
-            $scope.monthUp = $scope.dateUp.getMonth() + 1;
-            $scope.yearUp = $scope.dateUp.getFullYear();
-            $scope.updateDate = $scope.dayUp + "." + $scope.monthUp + "." + $scope.yearUp + " " + $scope.hourUp + ":" + $scope.minuteUp;
+            var hourUp = dateUp.getHours();
+            var dayUp = dateUp.getDate();
+            var monthUp = dateUp.getMonth() + 1;
+            var yearUp = dateUp.getFullYear();
+            $scope.updateDate = dayUp + "." + monthUp + "." + yearUp + " " + hourUp + ":" + minuteUp;
         }).catch(function(err) {
             console.log(err.status)
         })
@@ -166,16 +210,6 @@ angular.module('homeApp')
             if (comment.commentText.length > 0) {
                 Task.addComment($scope.taskId, comment).then(function(req, res) {});
                 $scope.comment = comment;
-                $scope.dateCom = new Date(Number($scope.comment.date));
-                $scope.minuteCom = $scope.dateCom.getMinutes();
-                if ($scope.minuteCom < 10) {
-                    $scope.minuteCom = "0" + $scope.minuteCom;
-                }
-                $scope.hourCom = $scope.dateCom.getHours();
-                $scope.dayCom = $scope.dateCom.getDate();
-                $scope.monthCom = $scope.dateCom.getMonth() + 1;
-                $scope.yearCom = $scope.dateCom.getFullYear();
-                $scope.comment.createDateCom = $scope.dayCom + "." + $scope.monthCom + "." + $scope.yearCom + " " + $scope.hourCom + ":" + $scope.minuteCom
                 $(".addComment").hide();
                 $(".addCommentBtn").show();
                 $route.reload();

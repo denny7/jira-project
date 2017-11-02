@@ -29,7 +29,7 @@ router.post('/login', function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
     var users = db.get('users');
-    users.find({ name: username, password: sha1(password) }, { avatar: 0 }).then(function(data) {
+    users.find({ name: username, password: sha1(password) }, { avatar: 0, password: 0 }).then(function(data) {
         if (data.length > 0) {
             req.session.userId = data[0]._id;
             res.json(data);
@@ -93,7 +93,7 @@ router.get('/api/logged', function(req, res) {
     var user;
     if (req.session.userId != undefined) {
         var users = db.get('users');
-        users.find({ _id: req.session.userId }, { avatar: 0 }).then(function(data) {
+        users.find({ _id: req.session.userId }, { avatar: 0, password: 0 }).then(function(data) {
             user = data[0];
             res.json(user);
         })
@@ -196,19 +196,20 @@ router.put('/api/task/:taskId', function(req, res) {
     var news = db.get("news");
     tasks.update({ _id: taskId }, task).then(function(data) {
         res.json(data)
+        var newsToSend = {
+            userId: String(req.session.userId),
+            name: taskName,
+            updateDate: Date.now(),
+            projectId: projectId,
+            taskId: taskId,
+            change: "Updated"
+        }
+        console.log(newsToSend.taskId);
+        news.update({ taskId: taskId }, newsToSend).then(function(dataUpdate) {
+            console.log("Updated in news");
+        })
     })
-    var newsToSend = {
-        userId: userId,
-        name: taskName,
-        updateDate: Date.now(),
-        projectId: projectId,
-        taskId: taskId,
-        change: "Updated"
-    }
-    console.log(newsToSend.taskId);
-    news.update({ taskId: taskId }, newsToSend).then(function(dataUpdate) {
-        console.log("Updated in news");
-    })
+
 });
 
 router.put('/user/changePass', function(req, res) {
@@ -259,6 +260,7 @@ router.put('/api/task/assign/:taskId', function(req, res) {
     var taskId = req.params.taskId;
     var users = db.get("users");
     var projects = db.get("projects");
+    var users = db.get("users");
     users.find({ fullName: data.fullName }, {}).then(function(userInput) {
         if (userInput.length > 0) {
             var id = String(userInput[0]._id);
@@ -397,98 +399,105 @@ router.get('/api/accountSettings', function(req, res) {
         })
     }
 })
-router.get('/api/getUserNews/:userId', function(req, res) {
+router.get('/api/getUserNews/', function(req, res) {
     var news = db.get("news");
-    var userId = req.params.userId;
-
+    var userId = req.session.userId;
+    console.log(userId)
     news.find({ userId: String(userId) }, {}).then(function(data) {
-        if (data.length > 0) {
-            res.json(data)
-        }
+
+        res.json(data)
+
+        console.log(data)
     })
 })
 router.get('/api/getNews/:userId', function(req, res) {
-            var news;
-            var userId = req.params.userId;
-            db.get("news").find({}, {}).then(function(data) {
-                        news = data;
-                        // console.log(news)
-                        var projects = db.get("projects");
-                        var users;
-                        db.get("users").find({}, { fullName: 1, role: 1 }).then(function(userData) {
-                            users = userData;
-                            var newsForUser = [];
-                            var userRole = users.find(u => userId == u._id);
-                            news.forEach(function(modified) {
-                                // console.log(userRole)
-                                if (userRole.role == 'Admin') {
-                                    console.log("Admin!!!!")
-                                    var userName = users.find(user => String(user._id) == modified.userId)
-                                    console.log(userName)
-                                    newsForUser.push(modified);
-                                    newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
-                                    if (news.indexOf(modified) == news.length - 1) {
-                                        return res.json(newsForUser);
-                                    }
-                                } else {
-                                    console.log("Employee!!!")
-                                    projects.find({ _id: modified.projectId, users: { $elemMatch: { userId: userId } } }, {}).then(function(returnProjects) {
-                                        if (returnProjects.length > 0) {
-                                            var userName = users.find(user => String(user._id) == modified.userId)
-                                            newsForUser.push(modified);
-                                            newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
-                                            console.log(userName.fullName)
-                                        }
-                                        if (news.indexOf(modified) == news.length - 1) {
-                                            return res.json(newsForUser);
-                                        }
-                                    })
-                                }
-                            })
-                        })
-                        router.get('/forgottenPass/:email', function(req, res) {
-                            var email = req.params.email;
-                            console.log(email)
-                            var users = db.get('users');
-                            var newPass = Math.random().toString(36).slice(-8);
-                            users.findOneAndUpdate({ email: email }, { $set: { password: sha1(newPass) } }).then(function(data) {
-                                if (data) {
-                                    var mail = {
-                                        from: fromEmailAddress,
-                                        to: email,
-                                        subject: "Recover Password",
-                                        text: `Hello !  
+    var news;
+    var userId = req.params.userId;
+    db.get("news").find({}, {}).then(function(data) {
+        news = data;
+        // console.log(news)
+        var projects = db.get("projects");
+        var users;
+        db.get("users").find({}, { fullName: 1, role: 1 }).then(function(userData) {
+            users = userData;
+            var newsForUser = [];
+            var userRole = users.find(u => userId == u._id);
+            news.forEach(function(modified) {
+                // console.log(userRole)
+                if (userRole.role == 'Admin') {
+                    console.log("Admin!!!!")
+                    var userName = users.find(user => String(user._id) == modified.userId)
+                    console.log(userName)
+                    newsForUser.push(modified);
+                    newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
+                    if (news.indexOf(modified) == news.length - 1) {
+                        return res.json(newsForUser);
+                    }
+                } else {
+                    console.log("Employee!!!")
+                    projects.find({ _id: modified.projectId, users: { $elemMatch: { userId: userId } } }, {}).then(function(returnProjects) {
+                        if (returnProjects.length > 0) {
+                            var userName = users.find(user => String(user._id) == modified.userId)
+                            newsForUser.push(modified);
+                            newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
+                            console.log(userName.fullName)
+                            if (news.indexOf(modified) == news.length - 1) {
+                                return res.json(newsForUser);
+                            }
+                        }
+                        if (news.indexOf(modified) == news.length - 1) {
+                            console.log(newsForUser)
+                            return res.json(newsForUser);
+                        }
+                    })
+                }
+            })
+        })
+    })
+})
+router.get('/forgottenPass/:email', function(req, res) {
+    var email = req.params.email;
+    console.log(email)
+    var users = db.get('users');
+    var newPass = Math.random().toString(36).slice(-8);
+    users.findOneAndUpdate({ email: email }, { $set: { password: sha1(newPass) } }).then(function(data) {
+        if (data) {
+            var mail = {
+                from: fromEmailAddress,
+                to: email,
+                subject: "Recover Password",
+                text: `Hello !  
                                         This is your password - ${newPass} , please keep it in safe!!`,
-                                    }
-                                    transport.sendMail(mail, function(error, response) {
-                                        transport.close();
-                                    });
-                                    res.json({ text: 'success' })
-                                } else {
-                                    res.json({ err: 'There is no a user with this email!' })
-                                }
-                            })
-                        });
-                        router.get('/allUsers', function(req, res) {
-                            var users = db.get('users');
-                            users.find({}, { avatar: 0, password: 0 }).then(function(data) {
-                                res.json(data);
-                            })
-                        })
-                        router.put('/changeUserRole', function(req, res) {
-                            var userId = req.body.userId;
-                            var userRole = req.body.userRole;
-                            var users = db.get('users');
-                            users.update({ _id: userId }, { role: userRole }).then(function(data) {
-                                res.json({ status: 200 })
-                            })
-                        })
-                        router.delete('/removeUser/:userId', function(req, res) {
-                            var userId = req.params.userId;
-                            console.log(userId)
-                            var users = db.get('users');
-                            users.remove({ _id: userId }).then(function(data) {
-                                res.json(data);
-                            })
-                        })
-                        module.exports = router;
+            }
+            transport.sendMail(mail, function(error, response) {
+                transport.close();
+            });
+            res.json({ text: 'success' })
+        } else {
+            res.json({ err: 'There is no a user with this email!' })
+        }
+    })
+});
+router.get('/allUsers', function(req, res) {
+    var users = db.get('users');
+    users.find({}, { avatar: 0, password: 0 }).then(function(data) {
+        res.json(data);
+    })
+})
+router.put('/changeUserRole', function(req, res) {
+    var userId = req.body.userId;
+    var userRole = req.body.userRole;
+    var users = db.get('users');
+    users.update({ _id: userId }, { $set: { role: userRole } }).then(function(data) {
+        res.json({ status: 200 })
+    })
+})
+router.delete('/removeUser/:userId', function(req, res) {
+    var userId = req.params.userId;
+    console.log(userId)
+    var users = db.get('users');
+    users.remove({ _id: userId }).then(function(data) {
+        res.json(data);
+    })
+})
+module.exports = router;

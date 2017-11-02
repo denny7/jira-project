@@ -34,7 +34,7 @@
         <a href="/account">
             <div class="userIcon"><i class="fa fa-user  fa-2x"></i></div>
         </a>
-        <div ng-show="user.role=='Admin'" ng-click="createPr()" class="plusIcon"><i class="fa fa-plus fa-2x"></i></div>
+        <div ng-click="createPr()" class="plusIcon addPrBtn"><i class="fa fa-plus fa-2x"></i></div>
         <div class="home"><i class="fa fa-home fa-3x"></i></div>
     </div>
 
@@ -62,7 +62,7 @@
                     </div>
                     <div class="form-group">
                         <label style="color:#fff">Select type :</label>
-                        <select style="color:#369FC8" class="form-control reg show-tick" required ng-model="newProject.type">
+                        <select class="form-control reg show-tick" required ng-model="newProject.type">
                                 <option value=""  selected disabled >Select type</option>
                               <option value="Business"  >Business</option>
                               <option value="Software"  >Software</option>
@@ -90,7 +90,6 @@
             <div ng-if='projectt.type=="Service"'>
                 <img ng-src="../images/service-icon.png" alt="service" class="panelImg img-responsive center-block" />
             </div>
-            <!-- <img src="http://lorempixel.com/output/people-q-g-64-64-1.jpg" class="img-responsive center-block" alt="Logo"> -->
         </div>
 
         <br>
@@ -105,15 +104,14 @@
                     <span class="createTask"><i id="{{projectt._id}}"  ng-click="createTaskF($event)" class="fa fa-check"></i></span>
                 </div>
                 <br/>
-
                 <br/>
-                <li ng-if="user.role=='Admin'"><a ng-href="{{peoplePath}}">People</a></li>
+                <li ng-if="user.role!='Employee'"><a ng-href="{{peoplePath}}">People</a></li>
             </ul>
         </div>
     </div>
 
-    <div ng-view></div>
-    <footer>
+    <div ng-view class="viewContent"></div>
+    <footer class=" footer navbar-bottom">
         <p class="footerText">All rights reserved &#169</p>
     </footer>
     <script src="javascripts/homeRoutes.js"></script>

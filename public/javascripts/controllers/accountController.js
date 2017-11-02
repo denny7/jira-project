@@ -5,6 +5,8 @@ angular.module('homeApp')
         $scope.changePass = {};
         $scope.text = '';
         $scope.dataText = '';
+        $scope.news;
+        $scope.newsSend = true;
         $scope.logOutUser = function() {
             Main.logoutUser().then(function(res) {
                 $location.path('/');
@@ -26,6 +28,57 @@ angular.module('homeApp')
         }
         Users.getAllUsers().then(function(res) {
             $scope.allUsers = res.data;
+        })
+        $scope.news = [];
+        News.getUserNews().then(function(res) {
+            $scope.news = res.data;
+            console.log("Nqma")
+
+            if ($scope.news.length == 0) {
+                $scope.newsSend = false;
+            }
+            var today = new Date()
+            $scope.news.forEach(function(newChange) {
+                var dateCom = new Date(Number(newChange.updateDate));
+                var minuteCom = dateCom.getMinutes();
+                var hourCom = dateCom.getHours();
+                var dayCom = dateCom.getDate();
+                var monthCom = dateCom.getMonth() + 1;
+                var yearCom = dateCom.getFullYear().toString().substring(2, 4)
+                if (dayCom == today.getDate() && today.getMonth() + 1 == monthCom) {
+                    if (minuteCom < 10) {
+                        minuteCom = "0" + minuteCom;
+                    }
+                    var differnceTime = today.getHours() - hourCom;
+                    var differnceTimeMinutes = today.getMinutes() - minuteCom;
+                    if (differnceTime < 2) {
+                        if ((today.getMinutes() + 60 - minuteCom) < 60 && differnceTime == 1) {
+                            newChange.updateDateShow = today.getMinutes() + 60 - minuteCom + " minutes ago";
+
+                        } else {
+                            if ((today.getMinutes() - minuteCom) < 60 && differnceTime == 0) {
+                                newChange.updateDateShow = today.getMinutes() - minuteCom + " minutes ago";
+
+                            } else {
+                                newChange.updateDateShow = hourCom + ":" + minuteCom;
+                            }
+                        }
+
+                        if (differnceTimeMinutes == 0 && differnceTime == 0) {
+                            newChange.updateDateShow = "Just now";
+                        }
+                    } else {
+                        newChange.updateDateShow = hourCom + ":" + minuteCom;
+                    }
+                } else {
+                    if (dayCom < 10) {
+                        dayCom = "0" + dayCom;
+                    }
+                    newChange.updateDateShow = dayCom + "." + monthCom + "." + yearCom;
+                }
+                $scope.newsSend = false;
+            })
+
         })
         $scope.hidePeople = function() {
             $('#peoples').collapse('hide');
@@ -134,7 +187,5 @@ angular.module('homeApp')
         $(".logoutHolder").on("mouseleave", function() {
             $(".logOutText").hide();
         })
-        News.getUserNews($scope.user._id).then(function(res) {
-            console.log(res.data)
-        })
+
     }])

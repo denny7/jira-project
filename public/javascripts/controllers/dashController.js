@@ -1,7 +1,7 @@
 angular.module('homeApp')
     .controller('DashCtrl', ['$scope', '$rootScope', '$http', '$location', 'Main', 'Dashboard', "$timeout", '$route', function($scope, $rootScope, $http, $location, Main, Dashboard, $timeout, $route) {
         $('.parent').show();
-
+        $(".addPrBtn").hide()
         $rootScope.projects = [];
         console.log($rootScope.projects)
         $scope.projects = [];
@@ -13,6 +13,9 @@ angular.module('homeApp')
         // console.log('dashboard')
         // console.log(res.data)
         $scope.user = $rootScope.user;
+        if ($scope.user.role == "Admin") {
+            $(".addPrBtn").show()
+        }
         // $rootScope.user = res.data
         // console.log('dashboard user id ' + $scope.user._id)
         console.log($rootScope.user)
