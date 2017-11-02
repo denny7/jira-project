@@ -15,11 +15,21 @@ angular.module('homeApp')
             $(".pencilDescription").hide()
         })
         $(".desctriptionChange").on("click", function() {
-            $(".descriptionArea").show()
+            $(".descriptionArea").show();
+            $(".desctriptionChange").hide()
         })
         $(".descriptionArea").on("focusout", function() {
             $(".descriptionArea").hide();
+            $(".desctriptionChange").show()
             $scope.updateTask();
+        })
+        $(".descriptionArea").on("keydown", function(event) {
+            if (event.keyCode == 13) {
+                event.preventDefault()
+                $(".descriptionArea").hide();
+                $(".desctriptionChange").show()
+                $scope.updateTask();
+            }
         })
         $(".taskNameP").on("mouseover", function() {
             $(".pencilName").show()
@@ -43,6 +53,23 @@ angular.module('homeApp')
             $(".addComment").show();
             $(".addCommentBtn").hide()
         })
+        $(".commentArea").on("keydown", function(event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                $(".addCommentBtn").show();
+                $(".commentArea").hide()
+                $(".pressCommentBtn").hide()
+                $scope.addCommentTask()
+
+            }
+        })
+        $(".assignToInput").on("keydown", function(event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                $scope.assignTo();
+            }
+        })
+
         $scope.progressToDo = function() {
             $scope.task.progress = 'To do';
             $(".progressToDo").addClass("btn-blue")

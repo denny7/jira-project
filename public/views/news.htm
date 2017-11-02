@@ -4,21 +4,21 @@
         <div class="newsHolder">
             <div class="col-xs-12 row page-header">
                 <div class="col-xs-3 ">
-                    <p>By</p>
+                    <p class="colorBlue">By</p>
                 </div>
                 <div class="col-xs-3 ">
-                    <p>Modified</p>
+                    <p class="colorBlue">Modified</p>
                 </div>
                 <div class="col-xs-3 ">
-                    <p>Name</p>
+                    <p class="colorBlue">Name</p>
                 </div>
                 <div class="col-xs-3 ">
-                    <p>Date</p>
+                    <p class="colorBlue">Date</p>
                 </div>
             </div>
             <div ng-show="newsSend"><i class="fa fa-spinner fa-spin dashLoad"></i></div>
             <div ng-hide="newsSend" ng-repeat="new in news | orderBy : '-updateDate' ">
-                <div ng-if="new.taskId" class="newTask col-xs-12 row people">
+                <div ng-if="new.taskId" class="newTask col-xs-12 row people newsAll">
                     <a href="/project/task/{{new.taskId}}">
                         <div class="col-xs-3 ">
                             <p>{{new.userFullName}}</p>
@@ -34,7 +34,7 @@
                         </div>
                     </a>
                 </div>
-                <div ng-if="!new.taskId" class="newProject col-xs-12 row people">
+                <div ng-if="!new.taskId" class="newProject col-xs-12 row people newsAll">
                     <a href="/project/{{new.projectId}}">
                         <div class="col-xs-3 ">
                             <p>{{new.userFullName}}</p>

@@ -594,13 +594,20 @@
     }
     
     .myNews p {
+        padding-top: 7px;
         font-size: 1.1em !important;
-        color: #369FC8;
+        color: #fff;
         font-weight: bold;
     }
     
     .myNews {
         margin-left: 0px !important;
+        background: #369FC8;
+        border-radius: 10px;
+    }
+    
+    .myNews:hover p {
+        color: #369FC8
     }
     
     .myLastChanges {
@@ -610,4 +617,22 @@
     .btnShowMine {
         background: #369FC8;
         color: white;
+    }
+    
+    .newsAll {
+        background: rgb(167, 211, 228);
+        border-radius: 10px;
+    }
+    
+    .newsAll p {
+        padding-top: 7px;
+        color: white;
+    }
+    
+    .newsAll:hover p {
+        color: #369FC8;
+    }
+    
+    .colorBlue {
+        color: #369FC8;
     }
