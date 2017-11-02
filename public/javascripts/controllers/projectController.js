@@ -51,16 +51,27 @@ angular.module('homeApp')
 
         }
 
-        // if (projectId != undefined) {
-        //     $window.localStorage.setItem("projectId", JSON.stringify(projectId))
-
-        // }
-        // console.log(projectId)
-        // Main.getLoggedUserId().then(function(res) {
-        //     console.log(res.data)
-        //     $scope.user = res.data;
-        //     $scope.user.id = res.data._id;
-        // })
+        $scope.newMailModal = function(email) {
+            if ($scope.user.email != email) {
+                $scope.newMail = { to: email };
+                $('#createeMail').modal();
+                console.log(email)
+            }
+        }
+        $scope.sentNewMailTo = function() {
+            if ($scope.newMail.text.length > 0) {
+                Users.sendMail($scope.newMail).then(function(res) {
+                    if (!res.data.message) {
+                        $scope.mailTextT = 'The mail was sended !'
+                        $('#sendedMailTP').removeClass().addClass('text-success');
+                        $scope.mailText = {};
+                    } else {
+                        $scope.mailTextT = res.data.message;
+                        $('#sendedMailTP').removeClass().addClass('text-danger');
+                    }
+                })
+            }
+        }
         $scope.peopleFunc = function() {
             Project.getAllUsers(projectId).then(function(res) {
                 console.log(res.data)
@@ -145,7 +156,6 @@ angular.module('homeApp')
                     $scope.user = res.data;
                     $('#addUserT').removeClass().addClass('text-success')
                     $scope.addUserText = 'You successfully add this user!';
-
                 } else {
                     $('#addUserT').removeClass().addClass('text-danger')
                     $scope.addUserText = res.data.text;

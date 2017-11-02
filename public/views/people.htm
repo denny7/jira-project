@@ -3,7 +3,7 @@
     <div class="col-md-9 col-sm-8 main-content">
         <div class="welcomeText row">
             <div class="col-sm-2">
-                <h3 ng-click="addPeople()" class="addPeopleBtn">Add people</h3>
+                <h3 ng-if="user.role!='Employee'" ng-click="addPeople()" class="addPeopleBtn">Add people</h3>
             </div>
             <div class="col-sm-9">
                 <h1 class="letterDrop">PEOPLE</h1>
@@ -39,13 +39,41 @@
 
         </div>
         <div ng-repeat="man in people" class="row people">
-            <div class="col-md-4"> {{man.fullName}}</div>
-            <div class="col-md-4 "> {{man.email}}</div>
-            <div class="col-md-2"> {{man.role}}</div>
-            <div ng-click="removeUser($event)" ng-if="man.role !='Admin' " class="col-md-2"><span id="{{man._id}}" class="removeUserBtn">Remove</span> </div>
+            <div ng-click="newMailModal(man.email)" class="col-xs-10">
+                <div class="col-xs-4"> {{man.fullName}}</div>
+                <div class="col-xs-4 "> {{man.email}}</div>
+                <div class="col-xs-2"> {{man.role}}</div>
+
+            </div>
+            <div ng-click="removeUser($event)" ng-if="man.role !='Admin' && user.role!='Employee'" class="col-xs-2"><span id="{{man._id}}" class="removeUserBtn">Remove</span> </div>
         </div>
     </div>
+
 </div>
+<form name="mailData" class="modal fade" id="createeMail" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" id="createNewPr">
+            <div class="modal-header">
+                <h1 class="text-center white">Sent new mail</h1>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label style="color:#fff">To: </label>
+                    <input ng-model="newMail.to" type="email" class="form-control reg " placeholder="Email" required autofocus/>
+                </div>
+                <div class="form-group">
+                    <label style="color:#fff">Subject :</label>
+                    <input ng-model="newMail.subject" type="text" class="form-control reg " placeholder="Subject here" required/>
+                </div>
+                <div class="descriptionArea" ckeditor="options" ng-model="newMail.text" ready=""></div>
+                <div class="form-group text-center">
+                    <input ng-disabled="mailData.$invalid" ng-click="sentNewMailTo()" type="button" class="btn btn-primary btn-filled loginBtn sendMailBtn" value="Create" />
+                    <p id="sendedMailPT">{{mailTextT}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <div class="col-md-9 col-md-offset-3 col-sm-12 fixedFooter">
     <div class="footerProject ">
         <p class="footerText">All rights reserved &#169</p>
