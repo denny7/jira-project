@@ -6,7 +6,6 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('mongodb://jira:jira@ds115625.mlab.com:15625/jira');
 var nodemailer = require('nodemailer');
-
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 var smtpTransport = require('nodemailer-smtp-transport');
@@ -512,7 +511,8 @@ router.post('/sendMail', function(req, res) {
         to: dataEmail.to,
         subject: dataEmail.subject,
         text: dataEmail.text,
-        date: Date.now()
+        date: Date.now(),
+        read: false
     }
     users.update({ email: dataEmail.to }, { $push: { receivedMails: email } }).then(function(mailTo) {
         if (mailTo.nModified == 1) {

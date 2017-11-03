@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('AccountCtrl', ['$scope', '$rootScope', '$window', '$http', '$routeParams', '$location', 'Main', 'Users', '$route', "News", function($scope, $rootScope, $window, $http, $routeParams, $location, Main, Users, $route, News) {
+    .controller('AccountCtrl', ['$scope', '$rootScope', '$window', '$http', '$routeParams', '$location', 'Main', 'Users', '$route', "News", "$sce", function($scope, $rootScope, $window, $http, $routeParams, $location, Main, Users, $route, News, $sce) {
         $scope.user;
         $('footer').show();
         $scope.changePass = {};
@@ -23,11 +23,12 @@ angular.module('homeApp')
         $scope.newMail = {};
         $scope.sentNewMail = function() {
             if ($scope.newMail.text.length > 0) {
+                $scope.newMail.from = $scope.user.email;
                 Users.sendMail($scope.newMail).then(function(res) {
                     if (!res.data.message) {
                         $scope.mailText = 'The mail was sended !'
                         $('#sendedMailP').removeClass().addClass('text-success');
-                        $scope.mailText = {};
+                        $scope.newMail = {};
                     } else {
                         $scope.mailText = res.data.message;
                         $('#sendedMailP').removeClass().addClass('text-danger');
@@ -78,9 +79,9 @@ angular.module('homeApp')
                 date: date
             }
             console.log(date, index)
-                // Users.removeMFrom(send).then(function(res) {
-                //     $scope.user.receivedMails.splice(index, 1)
-                // })
+            Users.removeMFrom(send).then(function(res) {
+                $scope.user.receivedMails.splice(index, 1)
+            })
         }
         $scope.removeMailTo = function(date, index) {
             var send = {
@@ -218,6 +219,92 @@ angular.module('homeApp')
         }
         Main.accountSettings().then(function(res) {
             $scope.user = res.data;
+            var today = new Date(Date.now())
+            $scope.user.receivedMails.forEach(function(mail) {
+                if (mail.subject.length > 20) {
+                    mail.smallerSubject = mail.subject.slice(0, 20) + "...";
+                } else {
+                    mail.smallerSubject = mail.subject;
+                }
+                mail.text = $sce.trustAsHtml(mail.text);
+                var dateCom = new Date(Number(mail.date));
+                var minuteCom = dateCom.getMinutes();
+                var hourCom = dateCom.getHours();
+                var dayCom = dateCom.getDate();
+                var monthCom = dateCom.getMonth() + 1;
+                var yearCom = dateCom.getFullYear().toString().substring(2, 4)
+                if (dayCom == today.getDate() && today.getMonth() + 1 == monthCom) {
+                    if (minuteCom < 10) {
+                        minuteCom = "0" + minuteCom;
+                    }
+                    var differnceTime = today.getHours() - hourCom;
+                    var differnceTimeMinutes = today.getMinutes() - minuteCom;
+                    if (differnceTime < 2) {
+                        if ((today.getMinutes() + 60 - minuteCom) < 60 && differnceTime == 1) {
+                            mail.updateDateShow = today.getMinutes() + 60 - minuteCom + " minutes ago";
+                        } else {
+                            if ((today.getMinutes() - minuteCom) < 60 && differnceTime == 0) {
+                                mail.updateDateShow = today.getMinutes() - minuteCom + " minutes ago";
+                            } else {
+                                mail.updateDateShow = hourCom + ":" + minuteCom;
+                            }
+                        }
+                        if (differnceTimeMinutes == 0 && differnceTime == 0) {
+                            mail.updateDateShow = "Just now";
+                        }
+                    } else {
+                        mail.updateDateShow = hourCom + ":" + minuteCom;
+                    }
+                } else {
+                    if (dayCom < 10) {
+                        dayCom = "0" + dayCom;
+                    }
+                    mail.updateDateShow = dayCom + "." + monthCom + "." + yearCom;
+                }
+            })
+            $scope.user.sendedMails.forEach(function(mail) {
+                if (mail.subject.length > 20) {
+                    mail.smallerSubject = mail.subject.slice(0, 20) + "...";
+                } else {
+                    mail.smallerSubject = mail.subject;
+                }
+                mail.text = $sce.trustAsHtml(mail.text);
+                var dateCom = new Date(Number(mail.date));
+                var minuteCom = dateCom.getMinutes();
+                var hourCom = dateCom.getHours();
+                var dayCom = dateCom.getDate();
+                var monthCom = dateCom.getMonth() + 1;
+                var yearCom = dateCom.getFullYear().toString().substring(2, 4)
+                if (dayCom == today.getDate() && today.getMonth() + 1 == monthCom) {
+                    if (minuteCom < 10) {
+                        minuteCom = "0" + minuteCom;
+                    }
+                    var differnceTime = today.getHours() - hourCom;
+                    var differnceTimeMinutes = today.getMinutes() - minuteCom;
+                    if (differnceTime < 2) {
+                        if ((today.getMinutes() + 60 - minuteCom) < 60 && differnceTime == 1) {
+                            mail.updateDateShow = today.getMinutes() + 60 - minuteCom + " minutes ago";
+                        } else {
+                            if ((today.getMinutes() - minuteCom) < 60 && differnceTime == 0) {
+                                mail.updateDateShow = today.getMinutes() - minuteCom + " minutes ago";
+
+                            } else {
+                                mail.updateDateShow = hourCom + ":" + minuteCom;
+                            }
+                        }
+                        if (differnceTimeMinutes == 0 && differnceTime == 0) {
+                            mail.updateDateShow = "Just now";
+                        }
+                    } else {
+                        mail.updateDateShow = hourCom + ":" + minuteCom;
+                    }
+                } else {
+                    if (dayCom < 10) {
+                        dayCom = "0" + dayCom;
+                    }
+                    mail.updateDateShow = dayCom + "." + monthCom + "." + yearCom;
+                }
+            })
 
             $rootScope.user = res.data;
             $window.localStorage.setItem("current user", JSON.stringify(res.data))

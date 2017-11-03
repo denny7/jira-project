@@ -631,3 +631,8 @@
     .colorBlue {
         color: #369FC8;
     }
+    
+    .emailPar {
+        font-size: 1em !important;
+        width: 100%;
+    }

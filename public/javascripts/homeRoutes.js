@@ -1,4 +1,4 @@
-var app = angular.module('homeApp', ['ngRoute', 'ui.bootstrap', 'ckeditor']);
+var app = angular.module('homeApp', ['ngRoute', 'ui.bootstrap', 'ckeditor', 'ngSanitize']);
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/', {

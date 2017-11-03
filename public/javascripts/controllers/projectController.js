@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('ProjectCtrl', ['$scope', '$http', '$route', '$rootScope', '$routeParams', '$location', 'Main', 'Project', '$window', function($scope, $http, $route, $rootScope, $routeParams, $location, Main, Project, $window) {
+    .controller('ProjectCtrl', ['$scope', '$http', '$route', '$rootScope', '$routeParams', '$location', 'Main', 'Project', '$window', 'Users', function($scope, $http, $route, $rootScope, $routeParams, $location, Main, Project, $window, Users) {
         $(".logoutHolder").on("mouseover", function() {
             $(".logOutText").show();
         })
@@ -60,6 +60,7 @@ angular.module('homeApp')
         }
         $scope.sentNewMailTo = function() {
             if ($scope.newMail.text.length > 0) {
+                $scope.newMail.from = $scope.user.email;
                 Users.sendMail($scope.newMail).then(function(res) {
                     if (!res.data.message) {
                         $scope.mailTextT = 'The mail was sended !'

@@ -57,14 +57,14 @@
                 <div class="page-header row">
                     <button ng-click="hideSended()" type="button" class="btn btn-info col-xs-3 col-xs-offset-1" data-toggle="collapse" data-target="#sendedDetails">Sended</button>
                     <button ng-click="hideReceived()" type="button" class="btn btn-info col-xs-3 col-xs-offset-1" data-toggle="collapse" data-target="#receivedDetails">Received</button>
-                    <button ng-click="newMailModal()" type="button" class="btn btn-info col-xs-2 col-xs-offset-1">sent</button>
+                    <button ng-click="newMailModal()" type="button" class="btn btn-info col-xs-2 col-xs-offset-1">Send</button>
 
                     <!-- New Mail Modal -->
                     <form name="mailData" class="modal fade" id="createMail" role="dialog">
                         <div class="modal-dialog">
                             <div class="modal-content" id="createNewPr">
                                 <div class="modal-header">
-                                    <h1 class="text-center white">Sent new mail</h1>
+                                    <h1 class="text-center white">Send new mail</h1>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
@@ -92,10 +92,28 @@
                             <input type="text" class="searchTaskInput searchTaskInput2" placeholder="Search" ng-model='seachMail'>
                         </div>
                         <div ng-click="sortByTo()" class="col-xs-4 sortOptions">To <i class="fa fa-sort"></i></div>
-                        <div ng-click="sortBySubjectTo()" class="col-xs-5 sortOptions">Subject <i class="fa fa-sort"></i></div>
-                        <div ng-click="sortByDateTo()" class="col-xs-2 sortOptions">Date <i class="fa fa-sort"></i></div>
+                        <div ng-click="sortBySubjectTo()" class="col-xs-4 sortOptions">Subject <i class="fa fa-sort"></i></div>
+                        <div ng-click="sortByDateTo()" class="col-xs-3 sortOptions">Date <i class="fa fa-sort"></i></div>
                     </div>
                     <div ng-repeat="email in user.sendedMails | orderBy : sortingTo | filter : seachMailTo" class="row people text-left">
+                        <div type="button" class="row" data-toggle="collapse" data-target="#{{email.date}}">
+                            <div class="col-xs-4">
+                                <p class="emailPar text-center">{{email.to}} </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p class="emailPar text-center">{{email.smallerSubject}}</p>
+                            </div>
+                            <div class="col-xs-3">
+                                <p class="emailPar text-center">{{email.updateDateShow}}</p>
+                            </div>
+                            <div class="col-xs-1">
+                                <p class="emailPar text-center" ng-click="removeMailTo(email.date, $index)"><i class="fa fa-times deleteMail"></i></p>
+                            </div>
+                        </div>
+                        <div id="{{email.date}}" class="collapse">
+                            <p>Subject : {{email.subject}}</p>
+                            <div ng-bind-html="email.text"></div>
+                        </div>
                     </div>
                 </div>
                 <div id="receivedDetails" class="collapse  col-md-12 text-center">
@@ -104,23 +122,28 @@
                             <input type="text" class="searchTaskInput searchTaskInput2" placeholder="Search" ng-model='seachMailFrom'>
                         </div>
                         <div ng-click="sortByFrom()" class="col-xs-4 sortOptions">From <i class="fa fa-sort"></i></div>
-                        <div ng-click="sortBySubjectFrom()" class="col-xs-5 sortOptions">Subject <i class="fa fa-sort"></i></div>
-                        <div ng-click="sortByDateFrom()" class="col-xs-2 sortOptions">Date <i class="fa fa-sort"></i></div>
+                        <div ng-click="sortBySubjectFrom()" class="col-xs-4 sortOptions">Subject <i class="fa fa-sort"></i></div>
+                        <div ng-click="sortByDateFrom()" class="col-xs-3 sortOptions">Date <i class="fa fa-sort"></i></div>
                     </div>
                     <div id="divFrom" ng-repeat="email in user.receivedMails | orderBy : sortingFrom | filter : seachMailFrom" class="panel-group people text-left">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <a data-toggle="collapse" data-parent="#divFrom" ng-href="#{{email.date}}">
-                                    <span> {{email.from}}</span>
-                                    <p ng-click="removeMailFrom(email.date, $index)">X</p>
-                                </a>
-                                <button ng-click="newMailModal(email.from, email.subject)"> dasd </button>
+                        <div type="button" class="row" data-toggle="collapse" data-target="#{{email.date}}">
+                            <div class="col-xs-4">
+                                <p class="emailPar text-center">{{email.from}}</p>
                             </div>
-                            <div id="{{email.date}}" class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                    {{email.subject}}
-                                </div>
+                            <div class="col-xs-4">
+                                <p class="emailPar text-center">{{email.smallerSubject}}</p>
                             </div>
+                            <div class="col-xs-3">
+                                <p class="emailPar text-center">{{email.updateDateShow}}</p>
+                            </div>
+                            <div class="col-xs-1">
+                                <p class="emailPar text-center" ng-click="removeMailFrom(email.date, $index)"><i class="fa fa-times deleteMail"></i></p>
+                            </div>
+                        </div>
+                        <div id="{{email.date}}" class="collapse">
+                            <p class="subjectEmail">Subject : {{email.subject}}</p>
+                            <div ng-bind-html="email.text"></div>
+                            <button class="btn btn-primary" ng-click="newMailModal(email.from, email.subject)"> Answer </button>
                         </div>
                     </div>
                 </div>
