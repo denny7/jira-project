@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('ProjectCtrl', ['$scope', '$http', '$route', '$rootScope', '$routeParams', '$location', 'Main', 'Project', '$window', function($scope, $http, $route, $rootScope, $routeParams, $location, Main, Project, $window) {
+    .controller('ProjectCtrl', ['$scope', '$anchorScroll', '$route', '$rootScope', '$routeParams', '$location', 'Main', 'Project', '$window', function($scope, $anchorScroll, $route, $rootScope, $routeParams, $location, Main, Project, $window) {
         $(".logoutHolder").on("mouseover", function() {
             $(".logOutText").show();
         })
@@ -184,7 +184,9 @@ angular.module('homeApp')
         $scope.showMine = function() {
             $scope.seachTask = $rootScope.user.fullName
         }
-
+        $scope.toTopProjectPage = function() {
+            $anchorScroll('');
+        }
 
 
 

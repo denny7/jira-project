@@ -12,7 +12,15 @@ angular.module('homeApp')
                     if (!res.data.text) {
                         console.log('loged in')
                         console.log(res.data);
-                        // Main.getLoggedUserId().then(function(res) {
+                        Main.checkForMails().then(function(res) {
+                                if (res.data.forRead > 0) {
+                                    console.log('new message')
+                                    $rootScope.forRea = res.data.forRead;
+                                } else {
+                                    $rootScope.forRea = 0;
+                                }
+                            })
+                            // Main.getLoggedUserId().then(function(res) {
                         console.log('dashboard')
                         console.log(res.data)
                         $scope.user = res.data[0];
@@ -36,6 +44,8 @@ angular.module('homeApp')
                 console.log(red.data.text)
                 $window.sessionStorage.removeItem('currentUser');
                 $window.localStorage.removeItem('current user');
+                $rootScope.user = null;
+                $scope.user = null;
             })
         }
         $scope.regUser = function() {

@@ -39,6 +39,9 @@ angular.module('homeApp')
             },
             removeMTo: function(date) {
                 return $http.post('/removeMailFromSended', date)
+            },
+            readMail: function(date) {
+                return $http.post('/readMail', date)
             }
         }
     }])

@@ -86,7 +86,7 @@
                     </form>
                     <!--  -->
                 </div>
-                <div id="sendedDetails" class="collapse in  col-md-12 text-center">
+                <div id="sendedDetails" class="collapse  col-md-12 text-center">
                     <div class="row sortOptionsDiv">
                         <div class="col-xs-12">
                             <input type="text" class="searchTaskInput searchTaskInput2" placeholder="Search" ng-model='seachMail'>
@@ -98,7 +98,7 @@
                     <div ng-repeat="email in user.sendedMails | orderBy : sortingTo | filter : seachMailTo" class="row people text-left">
                     </div>
                 </div>
-                <div id="receivedDetails" class="collapse  col-md-12 text-center">
+                <div id="receivedDetails" class="collapse in col-md-12 text-center">
                     <div class="row sortOptionsDiv">
                         <div class="col-xs-12">
                             <input type="text" class="searchTaskInput searchTaskInput2" placeholder="Search" ng-model='seachMailFrom'>
@@ -112,13 +112,14 @@
                             <div class="panel-heading">
                                 <a data-toggle="collapse" data-parent="#divFrom" ng-href="#{{email.date}}">
                                     <span> {{email.from}}</span>
-                                    <p ng-click="removeMailFrom(email.date, $index)">X</p>
                                 </a>
+                                <p ng-click="removeMailFrom(email.date, $index)">X</p>
+                                <p ng-click="readMails(email.date,email.read,$index, $event)">Read</p>
                                 <button ng-click="newMailModal(email.from, email.subject)"> dasd </button>
                             </div>
                             <div id="{{email.date}}" class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                    {{email.subject}}
+                                <div class="panel-body" ng-html=' $sce.trustAsHtml(email.text)'>
+                                    {{email.text}}
                                 </div>
                             </div>
                         </div>

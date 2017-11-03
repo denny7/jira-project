@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('TaskCtrl', ['$scope', '$rootScope', '$http', '$routeParams', '$location', 'Main', 'Task', 'Project', '$route', '$timeout', '$window', function($scope, $rootScope, $http, $routeParams, $location, Main, Task, Project, $route, $timeout, $window) {
+    .controller('TaskCtrl', ['$scope', '$rootScope', '$anchorScroll', '$routeParams', '$location', 'Main', 'Task', 'Project', '$route', '$timeout', '$window', function($scope, $rootScope, $anchorScroll, $routeParams, $location, Main, Task, Project, $route, $timeout, $window) {
 
         $(".logoutHolder").on("mouseover", function() {
             $(".logOutText").show();
@@ -255,5 +255,8 @@ angular.module('homeApp')
             //     $scope.projectt = res.data[1][0];
             //     $rootScope.project = res.data[1][0];
             // })
+        $scope.toTopProjectPage = function() {
+            $anchorScroll('');
+        }
 
     }])

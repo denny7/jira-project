@@ -196,6 +196,7 @@ angular.module('homeApp')
             else
                 $scope.newMail.subject = '';
         }
+
         $scope.sorting = '';
         $scope.seachUser = '';
         $scope.sortByName = function() {
@@ -289,6 +290,16 @@ angular.module('homeApp')
                 getBase64(file)
             })
         })
+        $scope.readMails = function(date, read, index, event) {
+            if (!read) {
+                console.log(date + '  ' + read)
+                var send = { date: date, index: index }
+                Users.readMail(send).then(function(res) {
+                    $rootScope.forRea -= 1;
+                    // event.target.className = 'Readed'
+                })
+            }
+        }
 
         $(".logoutHolder").on("mouseover", function() {
             $(".logOutText").show();
