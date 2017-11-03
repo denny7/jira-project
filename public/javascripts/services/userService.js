@@ -30,6 +30,15 @@ angular.module('homeApp')
             },
             removeUser: function(userId) {
                 return $http.delete('/removeUser/' + userId);
+            },
+            sendMail: function(newMail) {
+                return $http.post('/sendMail', newMail);
+            },
+            removeMFrom: function(date) {
+                return $http.post('/removeMailFromReceived', date)
+            },
+            removeMTo: function(date) {
+                return $http.post('/removeMailFromSended', date)
             }
         }
     }])

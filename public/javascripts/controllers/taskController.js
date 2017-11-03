@@ -1,5 +1,6 @@
 angular.module('homeApp')
     .controller('TaskCtrl', ['$scope', '$rootScope', '$http', '$routeParams', '$location', 'Main', 'Task', 'Project', '$route', '$timeout', '$window', function($scope, $rootScope, $http, $routeParams, $location, Main, Task, Project, $route, $timeout, $window) {
+
         $(".logoutHolder").on("mouseover", function() {
             $(".logOutText").show();
         })
@@ -31,6 +32,7 @@ angular.module('homeApp')
                 $scope.updateTask();
             }
         })
+
         $(".taskNameP").on("mouseover", function() {
             $(".pencilName").show()
         })
@@ -121,6 +123,12 @@ angular.module('homeApp')
                 }
             })
         }
+        $scope.options = {
+            language: 'en',
+            allowedContent: true,
+            entities: false,
+
+        };
         $scope.task = "";
         $scope.user = $rootScope.user;
         // if (!$rootScope.user) {
@@ -220,12 +228,15 @@ angular.module('homeApp')
             var monthUp = dateUp.getMonth() + 1;
             var yearUp = dateUp.getFullYear();
             $scope.updateDate = dayUp + "." + monthUp + "." + yearUp + " " + hourUp + ":" + minuteUp;
+            // CKEDITOR.replace('taskArea');
         }).catch(function(err) {
             console.log(err.status)
         })
         $scope.updateTask = function() {
             $scope.task.updateDate = Date.now();
-            Task.updateTaskInfo($scope.taskId, $scope.task).then(function(res, req) {})
+            Task.updateTaskInfo($scope.taskId, $scope.task).then(function(res, req) {
+                console.log('updated')
+            })
         }
         $scope.commentText = '';
         $scope.addCommentTask = function() {
@@ -254,18 +265,25 @@ angular.module('homeApp')
         }
 
         $scope.createTaskF = function() {
-            var projectId = event.target.id;
-            var data = {
-                userId: $scope.user.id,
-                userFullName: $scope.user.fullName,
-                taskName: $scope.taskName,
+                var projectId = event.target.id;
+                var data = {
+                    userId: $scope.user.id,
+                    userFullName: $scope.user.fullName,
+                    taskName: $scope.taskName,
+                }
+                console.log($rootScope.projectId)
+                Project.createTask(projectId, data).then(function(res) {
+                    $scope.tasks.push(res.data);
+                    console.log(res.data)
+                    $scope.taskName = '';
+                    $route.reload();
+                })
             }
-            console.log($rootScope.projectId)
-            Project.createTask(projectId, data).then(function(res) {
-                $scope.tasks.push(res.data);
-                console.log(res.data)
-                $scope.taskName = '';
-                $route.reload();
-            })
-        }
+            // Project.getTasks($scope.projectId).then(function(res) {
+            //     console.log("resss data")
+            //     console.log(res.data)
+            //     $scope.projectt = res.data[1][0];
+            //     $rootScope.project = res.data[1][0];
+            // })
+
     }])

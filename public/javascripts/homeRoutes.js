@@ -1,6 +1,5 @@
-var app = angular.module('homeApp', ['ngRoute', 'ui.bootstrap']);
+var app = angular.module('homeApp', ['ngRoute', 'ui.bootstrap', 'ckeditor']);
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-
     $routeProvider
         .when('/', {
             templateUrl: '../views/home.htm',

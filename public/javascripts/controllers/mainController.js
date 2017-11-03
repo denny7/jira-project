@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', '$rootScope', '$route', '$window', '$timeout', function($scope, $http, $location, Main, $routeParams, Project, $rootScope, $route, $window, $timeout) {
+    .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', '$rootScope', '$route', '$window', '$timeout', 'Task', function($scope, $http, $location, Main, $routeParams, Project, $rootScope, $route, $window, $timeout, Task) {
         $scope.user;
         $rootScope.user;
         $scope.taskName = '';
@@ -23,7 +23,9 @@ angular.module('homeApp')
                 if ($scope.currentPath[4] && $scope.currentPath[4].match("^59")) {
                     $scope.projectId = $scope.currentPath[4];
                 }
-                if ($scope.currentPath[4] == 'task') {}
+                if ($scope.currentPath[4] == 'task') {
+                    $scope.taskId = $scope.currentPath[5];
+                }
                 if ($scope.currentPath[5] && $scope.currentPath[5].match("^59") && $scope.currentPath[4] != "task") {
                     $scope.projectId = $scope.currentPath[5]
                 }
@@ -62,25 +64,56 @@ angular.module('homeApp')
             // $route.reload();
             console.log('from main')
             console.log($scope.projectId)
-            Project.getTasks($scope.projectId).then(function(res) {
-                console.log("resss data")
-                console.log(res.data)
-                $scope.projectt = res.data[1][0];
-                $rootScope.project = res.data[1][0];
-                $rootScope.tasks = res.data[0];
-                console.log($rootScope.tasks);
-                $scope.projectPath = '/project/' + res.data[1][0]._id;
-                $scope.peoplePath = '/project/people/' + res.data[1][0]._id;
-                $scope.sprintsPath = '/project/activeSprints/' + res.data[1][0]._id;
-                Project.getAllUsers($scope.projectId).then(function(res) {
-                    console.log(res.data)
-                    $scope.people = res.data;
-                    $rootScope.people = res.data;
-                    console.log($scope.people)
-                        // $route.reload();
+            if ($scope.projectId == undefined) {
+                console.log('vutre sme')
+                Task.getTaskInfo($scope.taskId).then(function(task) {
+                    $scope.projectId = task.data[0].projectId;
+                    console.log($scope.projectId)
+                    Project.getTasks($scope.projectId).then(function(res) {
+                        console.log("resss data")
+                        console.log(res.data)
+                        $scope.projectt = res.data[1][0];
+                        $rootScope.project = res.data[1][0];
+                        $rootScope.tasks = res.data[0];
+                        console.log($rootScope.tasks);
+                        $scope.projectPath = '/project/' + res.data[1][0]._id;
+                        $scope.peoplePath = '/project/people/' + res.data[1][0]._id;
+                        $scope.sprintsPath = '/project/activeSprints/' + res.data[1][0]._id;
+                        Project.getAllUsers($scope.projectId).then(function(res) {
+                            console.log(res.data)
+                            $scope.people = res.data;
+                            $rootScope.people = res.data;
+                            console.log($scope.people)
+                                // $route.reload();
 
+                        })
+                    })
                 })
-            })
+            } else {
+
+                Project.getTasks($scope.projectId).then(function(res) {
+                    console.log("resss data")
+                    console.log(res.data)
+                    $scope.projectt = res.data[1][0];
+                    $rootScope.project = res.data[1][0];
+                    $rootScope.tasks = res.data[0];
+                    console.log($rootScope.tasks);
+                    $scope.projectPath = '/project/' + res.data[1][0]._id;
+                    $scope.peoplePath = '/project/people/' + res.data[1][0]._id;
+                    $scope.sprintsPath = '/project/activeSprints/' + res.data[1][0]._id;
+                    Project.getAllUsers($scope.projectId).then(function(res) {
+                        console.log(res.data)
+                        $scope.people = res.data;
+                        $rootScope.people = res.data;
+                        console.log($scope.people)
+                            // $route.reload();
+
+                    })
+                })
+
+
+            }
+
         }
         $scope.createPr = function() {
             $('#createProject').modal();

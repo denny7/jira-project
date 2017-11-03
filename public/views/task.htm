@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="col-sm-6 ">
-                    <h3 id="{{task.projectId}}" class="taskName prId">{{task.name}}</h3>
+                    <h3 data-ng-init="getProjecttt()" id="{{task.projectId}}" class="taskName prId">{{task.name}}</h3>
                 </div>
 
             </div>
@@ -53,7 +53,7 @@
                             <option value="Middle" ng-model="task.priority" ng-change="updateTask()">Middle</option>
                             <option value="Low" ng-model="task.priority" ng-change="updateTask()">Low</option>
                         </select>
-                        <p class="bolder">{{task.progress}}</p>
+                        <p class="assignTo">{{task.progress}}</p>
                     </div>
                     <div class="col-sm-6">
                         <p class="bolder">Name</p>
@@ -63,12 +63,15 @@
                 </div>
                 <hr>
                 <h1 class="descriptionTask">Description</h1>
-                <div class="desctriptionChange">
+                <button ng-click="updateTask()" class="btn btn-primary">Update</button>
+                <!-- <div class="desctriptionChange">
                     <p class="addDescription">{{task.description}} <i class="fa fa-pencil pencilDescription" aria-hidden="true"></i></p>
-                </div>
-                <textarea ng-model="task.description" class="descriptionArea" autofocus>
+                </div> -->
+                <!-- <textarea name="taskArea" ng-model="task.description" class="descriptionArea" autofocus>
                     {{task.description}}
-                </textarea>
+                </textarea> -->
+                <div class="descriptionArea" ckeditor="options" ng-model="task.description" ready=""></div>
+
                 <hr>
                 <h1 class="commentsTask">Comments</h1>
                 <button class="btn btn-primary addCommentBtn">Add Comment</button>
@@ -117,7 +120,7 @@
                 <h1 class="peopleTaskh1">People</h1>
                 <h3 class="lightBlue">Assignee:</h3>
                 <p ng-model="task.assignee"><i class="fa fa-user userIconTask"></i> {{task.assignee}}</p>
-                <p class="assignToMe" ng-if='task.assignee!=user.fullName' ng-model="task.assignee" ng-click="assignToMeF()">Assign to me</p>
+                <p class="assignTo" ng-if='task.assignee!=user.fullName' ng-model="task.assignee" ng-click="assignToMeF()">Assign to me</p>
                 <p class="assignTo" ng-click="assignToF()">Assign to:</p>
                 <div class="assignToDiv">
                     <input placeholder="Enter fullname" class="assignToInput" type="text" ng-model="inputValue"><i class="fa fa-check checkAssign" aria-hidden="true"></i>

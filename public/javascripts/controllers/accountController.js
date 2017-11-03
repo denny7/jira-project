@@ -14,10 +14,100 @@ angular.module('homeApp')
             });
         }
         $scope.allUsers;
-        $scope.updateMan = function(id, role) {
+        $scope.options = {
+            language: 'en',
+            allowedContent: true,
+            entities: false,
+
+        };
+        $scope.newMail = {};
+        $scope.sentNewMail = function() {
+            if ($scope.newMail.text.length > 0) {
+                Users.sendMail($scope.newMail).then(function(res) {
+                    if (!res.data.message) {
+                        $scope.mailText = 'The mail was sended !'
+                        $('#sendedMailP').removeClass().addClass('text-success');
+                        $scope.mailText = {};
+                    } else {
+                        $scope.mailText = res.data.message;
+                        $('#sendedMailP').removeClass().addClass('text-danger');
+                    }
+                })
+            }
+        }
+        $scope.sortingTo = '';
+        $scope.sortByTo = function() {
+            if ($scope.sortingTo == 'to')
+                $scope.sortingTo = '-to'
+            else
+                $scope.sortingTo = 'to'
+        }
+        $scope.sortBySubjectTo = function() {
+            if ($scope.sortingTo == 'subject')
+                $scope.sortingTo = '-subject'
+            else
+                $scope.sortingTo = 'subject'
+        }
+        $scope.sortByDateTo = function() {
+            if ($scope.sortingTo == 'date')
+                $scope.sortingTo = '-date'
+            else
+                $scope.sortingTo = 'date'
+        }
+        $scope.sortingFrom = '';
+        $scope.sortByFrom = function() {
+            if ($scope.sortingFrom == 'from')
+                $scope.sortingFrom = '-from'
+            else
+                $scope.sortingFrom = 'from'
+        }
+        $scope.sortBySubjectFrom = function() {
+            if ($scope.sortingFrom == 'subject')
+                $scope.sortingFrom = '-subject'
+            else
+                $scope.sortingFrom = 'subject'
+        }
+        $scope.sortByDateFrom = function() {
+            if ($scope.sortingFrom == 'date')
+                $scope.sortingFrom = '-date'
+            else
+                $scope.sortingFrom = 'date'
+        }
+        $scope.removeMailFrom = function(date, index) {
+            var send = {
+                date: date
+            }
+            console.log(date, index)
+                // Users.removeMFrom(send).then(function(res) {
+                //     $scope.user.receivedMails.splice(index, 1)
+                // })
+        }
+        $scope.removeMailTo = function(date, index) {
+            var send = {
+                date: date
+            }
+            Users.removeMTo(send).then(function(res) {
+                $scope.user.sendedMails.splice(index, 1)
+            })
+        }
+        $scope.seachMailFrom = '';
+        $scope.seachMailTo = '';
+        $scope.updateMan = function(id, role, index) {
             console.log(id + '  ' + role)
             var sendData = { userId: id, userRole: role }
-            Users.changeUserRole(sendData).then(function(res) {})
+            if (role == 'Admin') {
+                if (confirm(`You will make this user Admin!
+               Are you sure?`)) {
+                    Users.changeUserRole(sendData).then(function(res) {})
+                } else {
+                    $scope.allUsers[index].role = 'CANCELED'
+                }
+
+            } else {
+                Users.changeUserRole(sendData).then(function(res) {})
+            }
+
+
         }
         $scope.removeUser = function(id, index) {
             console.log(index)
@@ -85,7 +175,26 @@ angular.module('homeApp')
         }
         $scope.hideChanges = function() {
             $('#lastChanges').collapse('hide');
-
+        }
+        $scope.hideMail = function() {
+            $('#mailDetails').collapse('hide');
+        }
+        $scope.hideAccount = function() {
+            $('#accountDetails').collapse('hide');
+        }
+        $scope.hideSended = function() {
+            $('#receivedDetails').collapse('hide');
+        }
+        $scope.hideReceived = function() {
+            $('#sendedDetails').collapse('hide');
+        }
+        $scope.newMailModal = function(to, subject) {
+            $('#createMail').modal();
+            $scope.newMail.to = to || '';
+            if (subject)
+                $scope.newMail.subject = 'RE: ' + subject
+            else
+                $scope.newMail.subject = '';
         }
         $scope.sorting = '';
         $scope.seachUser = '';

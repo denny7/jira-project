@@ -9,10 +9,10 @@
     <link rel='stylesheet' href='stylesheets/style.css' />
     <link rel='stylesheet' href='stylesheets/css.css' />
     <script src="bower_components/angular/angular.min.js"></script>
-    <!-- <script data-require="chart.js@0.2.0" data-semver="0.2.0" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.js"></script>
-     -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="bower_components/ckeditor/ckeditor.js"></script>
+    <script src="bower_components/chart.js/dist/Chart.min.js"></script>
     <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-ckeditor/angular-ckeditor.min.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <link rel='stylesheet' href='bower_components/bootstrap/dist/css/bootstrap.min.css' />
@@ -105,10 +105,11 @@
                 </div>
                 <br/>
                 <br/>
-                <li ng-if="user.role!='Employee'"><a ng-href="{{peoplePath}}">People</a></li>
+                <li><a ng-href="{{peoplePath}}">People</a></li>
             </ul>
         </div>
     </div>
+
 
     <div ng-view class="viewContent"></div>
     <footer class=" footer navbar-bottom">
