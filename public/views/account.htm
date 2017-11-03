@@ -126,7 +126,7 @@
                         <div ng-click="sortByDateFrom()" class="col-xs-3 sortOptions">Date <i class="fa fa-sort"></i></div>
                     </div>
                     <div id="divFrom" ng-repeat="email in user.receivedMails | orderBy : sortingFrom | filter : seachMailFrom" class="panel-group people text-left">
-                        <div type="button" class="row" data-toggle="collapse" data-target="#{{email.date}}">
+                        <div type="button" class="row" data-toggle="collapse" data-target="#{{email.date}}" ng-click="readMails(email.date, email.read, $index, $event)">
                             <div class="col-xs-4">
                                 <p class="emailPar text-center">{{email.from}}</p>
                             </div>

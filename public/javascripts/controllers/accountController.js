@@ -36,7 +36,7 @@ angular.module('homeApp')
                 })
             }
         }
-        $scope.sortingTo = '';
+        $scope.sortingTo = '-date';
         $scope.sortByTo = function() {
             if ($scope.sortingTo == 'to')
                 $scope.sortingTo = '-to'
@@ -55,7 +55,7 @@ angular.module('homeApp')
             else
                 $scope.sortingTo = 'date'
         }
-        $scope.sortingFrom = '';
+        $scope.sortingFrom = '-date';
         $scope.sortByFrom = function() {
             if ($scope.sortingFrom == 'from')
                 $scope.sortingFrom = '-from'
