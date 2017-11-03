@@ -22,20 +22,30 @@ angular.module('homeApp')
         };
         $scope.newMail = {};
         $scope.sentNewMail = function() {
-            if ($scope.newMail.text.length > 0) {
+            if ($scope.newMail.text.length > 0 && $scope.newMail.text.length < 200 && $scope.newMail.subject.length < 50) {
                 $scope.newMail.from = $scope.user.email;
                 Users.sendMail($scope.newMail).then(function(res) {
                     if (!res.data.message) {
                         $scope.mailText = 'The mail was sended !'
                         $('#sendedMailP').removeClass().addClass('text-success');
+                        $scope.newMail.date = Date.now();
+                        $scope.newMail.smallerSubject = $scope.newMail.subject.slice(0, 20) + "...";
+                        $scope.newMail.updateDateShow = 'Just now';
+                        $scope.user.sendedMails.push($scope.newMail);
+                        console.log($scope.newMail)
                         $scope.newMail = {};
                     } else {
                         $scope.mailText = res.data.message;
                         $('#sendedMailP').removeClass().addClass('text-danger');
                     }
                 })
+            } else {
+                $scope.mailText = 'Too long Email!';
+                $('#sendedMailP').removeClass().addClass('text-danger');
             }
         }
+        $scope.mailCLass = ['panel-group', 'people', 'mail', 'mail', 'text-left'];
+
         $scope.sortingTo = '-date';
         $scope.sortByTo = function() {
             if ($scope.sortingTo == 'to')
@@ -222,6 +232,10 @@ angular.module('homeApp')
             $scope.user = res.data;
             var today = new Date(Date.now())
             $scope.user.receivedMails.forEach(function(mail) {
+                mail.class = 'panel-group people mail text-left';
+                if (!mail.read) {
+                    mail.class = 'panel-group people forReading mail text-left';
+                }
                 if (mail.subject.length > 20) {
                     mail.smallerSubject = mail.subject.slice(0, 20) + "...";
                 } else {
@@ -377,13 +391,28 @@ angular.module('homeApp')
                 getBase64(file)
             })
         })
+        $scope.closeOtherMails = function(index) {
+            $scope.user.sendedMails.forEach((mail, i) => {
+                if (i != index) {
+                    $('#' + mail.date).collapse('hide');
+                }
+            })
+        }
         $scope.readMails = function(date, read, index, event) {
+            $scope.user.receivedMails.forEach((mail, i) => {
+                if (i != index) {
+                    $('#' + mail.date).collapse('hide');
+                }
+            })
             if (!read) {
                 console.log(date + '  ' + read)
                 var send = { date: date, index: index }
                 Users.readMail(send).then(function(res) {
                     $rootScope.forRea -= 1;
-                    // event.target.className = 'Readed'
+                    console.log($(event)[0].target.closest('#divFrom'))
+                    var div = $(event)[0].target.closest('#divFrom');
+                    $(div).removeClass('forReading')
+                    $scope.user.receivedMails[index].class = $scope.mailCLass;
                 })
             }
         }

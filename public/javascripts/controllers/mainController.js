@@ -59,9 +59,10 @@ angular.module('homeApp')
             if ($window.sessionStorage.getItem('currentUser')) {
                 console.log('interval')
                 Main.checkForMails().then(function(res) {
+                    console.log($location.path())
                     if (res.data.forRead > 0) {
-                        console.log('new message')
                         $rootScope.forRea = res.data.forRead;
+
                     } else {
                         $rootScope.forRea = 0;
                     }

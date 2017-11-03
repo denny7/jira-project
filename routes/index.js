@@ -569,13 +569,15 @@ router.post('/readMail', function(req, res) {
     console.log(userId)
     db.get('users').find({ _id: userId }, { receivedMails: 1 }).then(function(data) {
         var mails = data[0].receivedMails;
-        mails[index].read = true;
+        mails.forEach(m => {
+            if (m.date == idDate) {
+                m.read = true;
+            }
+        })
         db.get('users').update({ _id: userId }, { $set: { receivedMails: mails } }).then(function(d) {
             console.log(data)
             res.json({ message: 'success' })
         })
-
-
     })
 })
 module.exports = router;

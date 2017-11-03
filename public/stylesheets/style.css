@@ -174,8 +174,8 @@
     }
     
     .homepage {
-        background-image: url("../images/homepage.jpg");
-        background-size: cover;
+        background-image: url("../images/homepage.jpg") !important;
+        background-size: cover !important;
     }
     
     .jumbo {
@@ -288,17 +288,17 @@
         bottom: 0;
     }
     
+    .footerText {
+        font-size: 1.5em;
+        line-height: 3em;
+    }
+    
     .viewContent {
         min-height: 80% !important;
     }
     
     .navbar-fixed-bottom {
         width: 80% !important;
-    }
-    
-    .footerText {
-        font-size: 1.5em;
-        line-height: 3em;
     }
     
     .headerTask {
@@ -426,7 +426,7 @@
         position: fixed;
         bottom: 0;
         left: 26%;
-        background: rgba(54, 159, 200, 0.5);
+        /* background: rgba(54, 159, 200, 0.5); */
         border-radius: 5px;
         height: 5em;
         text-align: center;

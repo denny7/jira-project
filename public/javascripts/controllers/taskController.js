@@ -131,17 +131,9 @@ angular.module('homeApp')
         };
         $scope.task = "";
         $scope.user = $rootScope.user;
-        // if (!$rootScope.user) {
-        //     $scope.user = JSON.parse($window.localStorage.getItem("current user"))
-        //     $rootScope.user = JSON.parse($window.localStorage.getItem("current user"))
-        // }
         $scope.user.id = $rootScope.user._id;
         $scope.taskId = $routeParams.taskId;
         console.log('task id ' + JSON.stringify($scope.taskId))
-
-        // Main.getLoggedUserId().then(function(res) {
-        //     $scope.user = res.data;
-        // })
         Task.getTaskInfo($scope.taskId).then(function(res) {
             $scope.task = res.data[0];
             if ($scope.task.comments.length == 0) {
@@ -198,6 +190,7 @@ angular.module('homeApp')
                 $scope.numPages = function() {
                     return Math.ceil($scope.comments.length / $scope.numPerPage);
                 };
+
                 $scope.$watch('currentPage + numPerPage', function() {
                     var begin = (($scope.currentPage - 1) * $scope.numPerPage),
                         end = begin + $scope.numPerPage;

@@ -344,12 +344,16 @@
     span.toTop:hover {
         color: #369FC8;
         cursor: pointer;
+        background: rgb(224, 243, 235);
+        border: 1px solid #369FC8;
     }
     
     span.toTop {
-        padding: 3px 8px;
+        padding: 10px 14px;
         float: right;
         margin: 5px 10px 10px 5px;
+        border-radius: 50%;
+        background: #369FC8;
     }
     
     span.toTopPage {
@@ -377,4 +381,30 @@
     .UpdateBtn {
         position: relative;
         top: 70px;
+    }
+    
+    .mail {
+        border: 1px solid #369FC8;
+        border-radius: 10px;
+    }
+    
+    .forReading {
+        background: #92C01F;
+    }
+    
+    .mailHead {
+        padding-top: 5px;
+        padding-bottom: 0;
+        margin-bottom: -10px;
+    }
+    
+    .mailText {
+        padding: 15px;
+        font-size: 0.5em;
+    }
+    
+    span.subjectMail {
+        border-bottom: 1px solid #fff;
+        border-radius: 8px;
+        padding: 3px;
     }
