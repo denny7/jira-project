@@ -13,6 +13,9 @@
                 },
                 accountSettings: function() {
                     return $http.get('/api/accountSettings');
+                },
+                checkForMails: function() {
+                    return $http.get('/checkForMails');
                 }
             }
         }])

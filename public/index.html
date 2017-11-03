@@ -36,7 +36,7 @@
             <div class="userIcon"><i class="fa fa-user  fa-2x"></i></div>
         </a>
         <div ng-click="createPr()" class="plusIcon addPrBtn"><i class="fa fa-plus fa-2x"></i></div>
-        <div class="home"><i class="fa fa-home fa-3x"></i></div>
+        <div class="home"><i class="fa fa-home fa-3x"></i><span style="background:#92C01F" ng-if="$root.forRea >0" class="badge">{{$root.forRea}}</span></div>
     </div>
 
     <div ng-if="currentPath[3] == 'dashboard' || currentPath[3] == 'account' || currentPath[3] == 'news'" class="welcomeText row">
@@ -114,7 +114,7 @@
 
     <div ng-view class="viewContent"></div>
     <footer class=" footer navbar-bottom">
-        <p class="footerText">All rights reserved &#169</p>
+        <p class="footerText">All rights reserved &#169 <span class="toTopPage" ng-click="toTopOfPage()"><i class="fa fa-arrow-up fa-2x" aria-hidden="true"></i></span></p>
     </footer>
     <script src="javascripts/homeRoutes.js"></script>
     <script src="javascripts/services/mainService.js"></script>

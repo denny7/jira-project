@@ -103,9 +103,9 @@ router.get('/api/logged', function(req, res) {
 
 router.get('/logout', function(req, res) {
     req.session.destroy(function(err) {
-            res.status(200).json({ message: "loged out" })
-        })
-        // req.session = null
+        res.status(200).json({ message: "loged out" })
+    })
+    req.session = null
 });
 
 router.post('/dashboard', function(req, res) {
@@ -540,6 +540,42 @@ router.post('/removeMailFromSended', function(req, res) {
     var users = db.get("users");
     users.update({ _id: userId }, { $pull: { sendedMails: { date: date } } }).then(function(data) {
         res.json({ message: 'You deleted comment from send Mail' })
+    })
+})
+router.get('/checkForMails', function(req, res) {
+    var userId = req.session.userId;
+    if (userId) {
+        db.get('users').find({ _id: userId }, { receivedMails: 1 }).then(function(data) {
+            var mails = data[0].receivedMails;
+            console.log(mails)
+            if (mails.length > 0) {
+                var newMails = mails.filter(m => m.read == false);
+                if (newMails.length > 0) {
+                    res.json({ forRead: newMails.length })
+                } else
+                    res.json({ forRead: 0 })
+            } else
+                res.json({ forRead: 0 })
+        })
+    } else {
+        res.json({ forRead: 0 })
+    }
+})
+router.post('/readMail', function(req, res) {
+    var idDate = req.body.date;
+    var index = req.body.index;
+    var userId = req.session.userId;
+    console.log(idDate)
+    console.log(userId)
+    db.get('users').find({ _id: userId }, { receivedMails: 1 }).then(function(data) {
+        var mails = data[0].receivedMails;
+        mails[index].read = true;
+        db.get('users').update({ _id: userId }, { $set: { receivedMails: mails } }).then(function(d) {
+            console.log(data)
+            res.json({ message: 'success' })
+        })
+
+
     })
 })
 module.exports = router;

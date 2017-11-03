@@ -1,5 +1,5 @@
 angular.module('homeApp')
-    .controller('MainCtrl', ['$scope', '$http', '$location', 'Main', '$routeParams', 'Project', '$rootScope', '$route', '$window', '$timeout', 'Task', function($scope, $http, $location, Main, $routeParams, Project, $rootScope, $route, $window, $timeout, Task) {
+    .controller('MainCtrl', ['$scope', '$anchorScroll', '$location', 'Main', '$routeParams', 'Project', '$rootScope', '$route', '$window', '$timeout', 'Task', '$interval', function($scope, $anchorScroll, $location, Main, $routeParams, Project, $rootScope, $route, $window, $timeout, Task, $interval) {
         $scope.user;
         $rootScope.user;
         $scope.taskName = '';
@@ -17,6 +17,14 @@ angular.module('homeApp')
         $scope.newProject = {};
         $scope.$on('$locationChangeStart', function(event, next, current) {
                 $scope.currentPath = next.split('/');
+                Main.checkForMails().then(function(res) {
+                    if (res.data.forRead > 0) {
+                        console.log('new message')
+                        $rootScope.forRea = res.data.forRead;
+                    } else {
+                        $rootScope.forRea = 0;
+                    }
+                })
                 if (!$window.sessionStorage.getItem('currentUser')) {
                     $location.path('/')
                 }
@@ -40,26 +48,31 @@ angular.module('homeApp')
                 $window.sessionStorage.removeItem('currentUser');
                 $window.localStorage.removeItem('current user');
                 $rootScope.projects = {};
-                $rootScope.user = {};
                 $location.path('/');
-                $scope.user = {};
+                $rootScope.user = null;
+                $scope.user = null;
+                $scope.forRead = 0;
+                $rootScope.forRea = 0;
             });
         }
+        $interval(function() {
+            if ($window.sessionStorage.getItem('currentUser')) {
+                console.log('interval')
+                Main.checkForMails().then(function(res) {
+                    if (res.data.forRead > 0) {
+                        console.log('new message')
+                        $rootScope.forRea = res.data.forRead;
+                    } else {
+                        $rootScope.forRea = 0;
+                    }
+                })
+            } else {
+                $rootScope.forRea = 0;
+            }
+        }, 20000)
 
-        // Main.getLoggedUserId().then(function(res) {
-        //     $scope.user = res.data;
-        //     $rootScope.user = res.data;
-        //     console.log(res.data)
-        //     console.log($scope.user);
-        // });
 
 
-        // $scope.logOutUser = function() {
-        //     Main.logoutUser().then(function(res) {
-        //         $location.path('/');
-        //         $scope.user = {};
-        //     });
-        // }
         $scope.getProject = function() {
             // $route.reload();
             console.log('from main')
@@ -114,6 +127,9 @@ angular.module('homeApp')
 
             }
 
+        }
+        $scope.toTopOfPage = function() {
+            $anchorScroll('');
         }
         $scope.createPr = function() {
             $('#createProject').modal();
