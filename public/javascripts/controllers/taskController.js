@@ -42,10 +42,17 @@ angular.module('homeApp')
         })
         $(".taskNameP").on("click", function() {
             $(".nameEdit").show()
+
         })
         $(".nameEdit").on("focusout", function() {
             $(".nameEdit").hide();
             $scope.updateTask();
+        })
+        $(".nameEdit").on("keypress", function(event) {
+            if (event.keyCode == 13) {
+                $(".nameEdit").hide();
+                $scope.updateTask();
+            }
         })
         $(".checkAssign").on("click", function() {
             $scope.assignTo()
@@ -150,7 +157,6 @@ angular.module('homeApp')
             }
             // pagination comments
             Task.getComments($scope.taskId).then(function(res) {
-                console.log(res)
                 $scope.comments = (res.data).reverse()
                 $scope.comments.forEach(function(comment) {
                     var today = new Date()
@@ -196,14 +202,15 @@ angular.module('homeApp')
                 // pagination comments
                 $scope.filteredComments = [], $scope.currentPage = 1, $scope.numPerPage = 5, $scope.maxSize = 5;
                 $scope.numPages = function() {
+
                     return Math.ceil($scope.comments.length / $scope.numPerPage);
                 };
                 $scope.$watch('currentPage + numPerPage', function() {
                     var begin = (($scope.currentPage - 1) * $scope.numPerPage),
                         end = begin + $scope.numPerPage;
-
                     $scope.filteredComments = $scope.comments.slice(begin, end);
                 });
+
                 $scope.commentSend = false;
                 $(".commentPagination > ul").addClass("pagination")
 

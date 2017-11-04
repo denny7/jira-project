@@ -1,6 +1,6 @@
 <div class="row" ng-controller="TaskCtrl">
-    <div class="col-sm-3 col-sm-4 nav "></div>
-    <div class="col-sm-9 col-sm-8 main-content taskPage">
+    <div class="col-sm-3 col-xs-4 nav "></div>
+    <div class="col-sm-9 col-xs-8 main-content taskPage">
         <div class="welcomeText row">
             <div class="col-sm-11">
                 <div class="col-sm-3">
@@ -36,42 +36,53 @@
                 <hr>
                 <h1 class="detailsTask">Details</h1>
                 <div class="row">
-                    <div class="col-sm-3">
-                        <p class="bolder">Type</p>
-                        <p class="bolder">Priority</p>
-                        <p class="bolder">Status</p>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <p class="bolder">Type</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <select class="selectpicker show-tick" ng-model="task.type" ng-change="updateTask()">
+                                        <option value="task" class="taskOption" ng-model="task.type" ng-change="updateTask()">Task</option>   
+                                        <option value="epic" class="epicOption" ng-model="task.type" ng-change="updateTask()">Epic</option>
+                                        <option value="bug" class="bugOption" ng-model="task.type" ng-change="updateTask()">Bug</option>
+                                        <option value="story" class="storyOption" ng-model="task.type" ng-change="updateTask()">Story</option>        
+                                    </select>
+                        </div>
+                        <div class="col-xs-4">
+                            <p class="bolder">Name</p>
+                        </div>
                     </div>
-                    <div class="col-sm-3">
-                        <select class="selectpicker show-tick" ng-model="task.type" ng-change="updateTask()">
-                            <option value="task" class="taskOption" ng-model="task.type" ng-change="updateTask()">Task</option>   
-                            <option value="epic" class="epicOption" ng-model="task.type" ng-change="updateTask()">Epic</option>
-                            <option value="bug" class="bugOption" ng-model="task.type" ng-change="updateTask()">Bug</option>
-                            <option value="story" class="storyOption" ng-model="task.type" ng-change="updateTask()">Story</option>        
-                        </select>
-                        <select class="selectpicker show-tick" ng-model="task.priority" ng-change="updateTask()">
-                            <option value="High" ng-model="task.priority" ng-change="updateTask()">High</option>
-                            <option value="Middle" ng-model="task.priority" ng-change="updateTask()">Middle</option>
-                            <option value="Low" ng-model="task.priority" ng-change="updateTask()">Low</option>
-                        </select>
-                        <p class="taskProgress">{{task.progress}}</p>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <p class="bolder">Priority</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <select class="selectpicker show-tick" ng-model="task.priority" ng-change="updateTask()">
+                                        <option value="High" ng-model="task.priority" ng-change="updateTask()">High</option>
+                                        <option value="Middle" ng-model="task.priority" ng-change="updateTask()">Middle</option>
+                                        <option value="Low" ng-model="task.priority" ng-change="updateTask()">Low</option>
+                                    </select>
+                        </div>
+                        <div class="col-xs-4">
+                            <p class="taskNameP">{{task.name}} <i class="fa fa-pencil pencilName" aria-hidden="true"></i></p>
+                        </div>
                     </div>
-                    <div class="col-sm-6">
-                        <p class="bolder">Name</p>
-                        <p class="taskNameP">{{task.name}} <i class="fa fa-pencil pencilName" aria-hidden="true"></i></p>
-                        <input type="text" ng-model="task.name" class="nameEdit" />
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <p class="bolder">Status</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <p class="taskProgress">{{task.progress}}</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" ng-model="task.name" class="nameEdit" autofocus maxlength="25" />
+                        </div>
                     </div>
                 </div>
                 <hr>
                 <h1 class="descriptionTask">Description</h1>
                 <button ng-click="updateTask()" class="btn btn-primary UpdateBtn">Update</button>
-                <!-- <div class="desctriptionChange">
-                    <p class="addDescription">{{task.description}} <i class="fa fa-pencil pencilDescription" aria-hidden="true"></i></p>
-                </div> -->
-                <!-- <textarea name="taskArea" ng-model="task.description" class="descriptionArea" autofocus>
-                    {{task.description}}
-                </textarea> -->
                 <div class="descriptionArea" ckeditor="options" ng-model="task.description" ready=""></div>
-
                 <hr>
                 <h1 class="commentsTask">Comments</h1>
                 <button class="btn btn-primary addCommentBtn">Add Comment</button>
@@ -91,7 +102,6 @@
                             <div class="item">
                                 <div class="image">
                                     <div>
-                                        <!-- <p>{{comment.avatar}} cscscssc</p> -->
                                         <img ng-src="{{comment.avatar}}" alt="avatar" />
                                     </div>
                                 </div>
@@ -107,13 +117,13 @@
                                         </div>
                                         <hr>
                                         <p>{{comment.commentText}}</p>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="commentPagination" data-pagination="" data-num-pages="numPages()" data-current-page="currentPage" data-max-size="maxSize" data-boundary-links="true"></div>
                     </div>
+                    <div class="commentPagination" data-pagination="" data-num-pages="numPages()" data-current-page="currentPage" data-max-size="maxSize" data-boundary-links="true"></div>
+
                 </div>
             </div>
             <div class="col-md-4 col-sm-5 peopleTask">
@@ -127,7 +137,7 @@
                 </div>
                 <p class="text-danger errMsgText">{{errMsg}}</p>
                 <h3 class="lightBlue">Reporter</h3>
-                <p>{{task.userFullName}}</p>
+                <p><i class="fa fa-user userIconTask"> </i> {{task.userFullName}}</p>
                 <h3 class="lightBlue">Dates</h3>
                 <p>Created</p>
                 <p>{{createDate}}</p>

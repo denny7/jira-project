@@ -536,7 +536,10 @@
     }
     
     .commentArea {
-        width: 33em;
+        width: 538px;
+        max-width: 538px;
+        min-width: 538px;
+        min-height: 50px;
         border: 1px solid #369FC8;
         border-radius: 6px;
         text-align: center;
@@ -600,6 +603,7 @@
         margin-left: 0px !important;
         background: #369FC8;
         border-radius: 10px;
+        border: 1px solid #fff;
     }
     
     .myNews:hover p {
@@ -616,8 +620,11 @@
     }
     
     .newsAll {
-        background: rgb(167, 211, 228);
+        padding: 5px;
+        margin: 5px 0;
+        cursor: pointer;
         border-radius: 10px;
+        border: 1px solid #fff;
     }
     
     .newsAll p {
@@ -625,8 +632,8 @@
         color: white;
     }
     
-    .newsAll:hover p {
-        color: #369FC8;
+    .fixNews {
+        margin-bottom: 20px;
     }
     
     .colorBlue {
@@ -636,4 +643,32 @@
     .emailPar {
         font-size: 1em !important;
         width: 100%;
+    }
+    
+    .poepleHolder {
+        height: 45px;
+        border: 1px solid #fff;
+        border-radius: 10px;
+        background: #5ac45a;
+        color: #fff !important;
+    }
+    
+    .poepleHolder:hover {
+        color: #369FC8 !important;
+    }
+    
+    .odd {
+        background: rgba(54, 159, 200, 0.5) !important;
+    }
+    
+    .even {
+        background: rgba(54, 159, 200, 1) !important;
+    }
+    
+    .odd:hover {
+        box-shadow: 3px 3px 5px rgba(54, 159, 200, 1);
+    }
+    
+    .even:hover {
+        box-shadow: 3px 3px 5px rgba(54, 159, 200, 1);
     }

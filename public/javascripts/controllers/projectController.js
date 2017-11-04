@@ -18,6 +18,7 @@ angular.module('homeApp')
         $scope.taskName = "";
         $scope.project;
         $scope.seachTask = '';
+        $scope.searchPeople = '';
         $scope.removeUser = function(event) {
             var userId = {};
             userId.id = event.target.id;

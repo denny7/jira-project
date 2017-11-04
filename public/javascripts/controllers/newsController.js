@@ -2,6 +2,8 @@ angular.module('homeApp')
     .controller('NewsCtrl', ['$scope', 'News', '$location', 'Main', '$rootScope', function($scope, News, $location, Main, $rootScope) {
         var userId = $rootScope.user._id;
         $scope.news;
+        $scope.odd = 'odd';
+        $scope.even = 'even';
         $scope.newsSend = true;
         var today = new Date(Date.now())
         News.getNews(userId).then(function(res) {

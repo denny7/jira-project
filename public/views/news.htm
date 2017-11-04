@@ -18,7 +18,7 @@
             </div>
             <div ng-show="newsSend"><i class="fa fa-spinner fa-spin dashLoad"></i></div>
             <div ng-hide="newsSend" ng-repeat="new in news | orderBy : '-updateDate' ">
-                <div ng-if="new.taskId" class="newTask col-xs-12 row people newsAll">
+                <div ng-if="new.taskId" class="newTask col-xs-12 row newsAll" ng-class="$even ? 'odd' : 'even'">
                     <a href="/project/task/{{new.taskId}}">
                         <div class="col-xs-3 ">
                             <p>{{new.userFullName}}</p>
@@ -34,7 +34,7 @@
                         </div>
                     </a>
                 </div>
-                <div ng-if="!new.taskId" class="newProject col-xs-12 row people newsAll">
+                <div ng-if="!new.taskId" class="newProject col-xs-12 row newsAll" ng-class="$even ? 'odd' : 'even'">
                     <a href="/project/{{new.projectId}}">
                         <div class="col-xs-3 ">
                             <p>{{new.userFullName}}</p>
@@ -50,7 +50,12 @@
                         </div>
                     </a>
                 </div>
+
             </div>
+
         </div>
+    </div>
+    <div class="col-xs-2 fixNews">
+
     </div>
 </div>

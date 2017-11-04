@@ -289,7 +289,7 @@ router.get('/api/project/people/:projectId', function(req, res) {
             peopleIds.push(man.userId)
         })
         var users = db.get('users')
-        users.find({ _id: { $in: peopleIds } }, {}).then(function(data) {
+        users.find({ _id: { $in: peopleIds } }, { fullName: 1, role: 1, email: 1 }).then(function(data) {
             res.json(data)
 
         })
@@ -565,13 +565,10 @@ router.post('/readMail', function(req, res) {
     var idDate = req.body.date;
     var index = req.body.index;
     var userId = req.session.userId;
-    console.log(idDate)
-    console.log(userId)
     db.get('users').find({ _id: userId }, { receivedMails: 1 }).then(function(data) {
         var mails = data[0].receivedMails;
         mails[index].read = true;
         db.get('users').update({ _id: userId }, { $set: { receivedMails: mails } }).then(function(d) {
-            console.log(data)
             res.json({ message: 'success' })
         })
 
