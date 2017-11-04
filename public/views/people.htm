@@ -57,7 +57,7 @@
     <div class="modal-dialog">
         <div class="modal-content" id="createNewPr">
             <div class="modal-header">
-                <h1 class="text-center white">Sent new mail</h1>
+                <h1 class="text-center white">Send new mail</h1>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -70,7 +70,7 @@
                 </div>
                 <div class="descriptionArea" ckeditor="options" ng-model="newMail.text" ready=""></div>
                 <div class="form-group text-center">
-                    <input ng-disabled="mailData.$invalid" ng-click="sentNewMailTo()" type="button" class="btn btn-primary btn-filled loginBtn sendMailBtn" value="Create" />
+                    <input ng-disabled="mailData.$invalid" ng-click="sentNewMailTo()" type="button" class="btn btn-primary btn-filled loginBtn sendMailBtn" value="Send" />
                     <p id="sendedMailPT">{{mailTextT}}</p>
                 </div>
             </div>
@@ -79,6 +79,7 @@
 </form>
 <div class="col-md-9 col-md-offset-3 col-sm-12 fixedFooter">
     <div class="footerProject ">
-        <p class="footerText">All rights reserved &#169 <span class="toTop" ng-click="toTopProjectPage()"><i class="fa fa-arrow-up fa-2x" aria-hidden="true"></i></span></p>
+        <p> <span class="toTop" ng-click="toTopProjectPage()"><i class="fa fa-arrow-up fa-2x" aria-hidden="true"></i></span>
+        </p>
     </div>
 </div>

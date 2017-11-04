@@ -79,7 +79,7 @@
                                     </div>
                                     <div class="descriptionArea" ckeditor="options" ng-model="newMail.text" ready=""></div>
                                     <div class="form-group text-center">
-                                        <input ng-disabled="mailData.$invalid" ng-click="sentNewMail()" type="button" class="btn btn-primary btn-filled loginBtn sendMailBtn" value="Create" />
+                                        <input ng-disabled="mailData.$invalid" ng-click="sentNewMail()" type="button" class="btn btn-primary btn-filled loginBtn sendMailBtn" value="Send" />
                                         <p id="sendedMailP">{{mailText}}</p>
                                     </div>
                                 </div>
@@ -97,7 +97,7 @@
                         <div ng-click="sortBySubjectTo()" class="col-xs-4 sortOptions">Subject <i class="fa fa-sort"></i></div>
                         <div ng-click="sortByDateTo()" class="col-xs-3 sortOptions">Date <i class="fa fa-sort"></i></div>
                     </div>
-                    <div ng-repeat="email in user.sendedMails | orderBy : sortingTo | filter : seachMailTo" class="row people text-left">
+                    <div ng-repeat="email in user.sendedMails | orderBy : sortingTo | filter : seachMailTo" ng-click="closeOtherMails($index)" class="row people mail text-left">
                         <div type="button" class="row" data-toggle="collapse" data-target="#{{email.date}}">
                             <div class="col-xs-4">
                                 <p class="emailPar text-center">{{email.to}} </p>
@@ -113,8 +113,9 @@
                             </div>
                         </div>
                         <div id="{{email.date}}" class="collapse">
-                            <p>Subject : {{email.subject}}</p>
-                            <div ng-bind-html="email.text"></div>
+                            <hr>
+                            <p class="emailPar text-center">Subject : <span class="subjectMail">{{email.subject}} </span></p>
+                            <div class="text-left mailText" ng-bind-html="email.text"></div>
                         </div>
                     </div>
                 </div>
@@ -127,8 +128,8 @@
                         <div ng-click="sortBySubjectFrom()" class="col-xs-4 sortOptions">Subject <i class="fa fa-sort"></i></div>
                         <div ng-click="sortByDateFrom()" class="col-xs-3 sortOptions">Date <i class="fa fa-sort"></i></div>
                     </div>
-                    <div id="divFrom" ng-repeat="email in user.receivedMails | orderBy : sortingFrom | filter : seachMailFrom" class="panel-group people text-left">
-                        <div type="button" class="row" data-toggle="collapse" data-target="#{{email.date}}" ng-click="readMails(email.date, email.read, $index, $event)">
+                    <div id="divFrom" ng-repeat="email in user.receivedMails | orderBy : sortingFrom | filter : seachMailFrom" ng-class="email.class">
+                        <div type="button" class="row mailHead" data-toggle="collapse" data-target="#{{email.date}}" ng-click="readMails(email.date, email.read, $index, $event)">
                             <div class="col-xs-4">
                                 <p class="emailPar text-center">{{email.from}}</p>
                             </div>
@@ -142,9 +143,11 @@
                                 <p class="emailPar text-center" ng-click="removeMailFrom(email.date, $index)"><i class="fa fa-times deleteMail"></i></p>
                             </div>
                         </div>
-                        <div id="{{email.date}}" class="collapse">
-                            <p class="subjectEmail">Subject : {{email.subject}}</p>
-                            <div ng-bind-html="email.text"></div>
+
+                        <div id="{{email.date}}" class="collapse mailBody text-center">
+                            <hr>
+                            <p class="emailPar text-center">Subject : <span class="subjectMail">{{email.subject}} </span> </p>
+                            <div class="text-left mailText" ng-bind-html="email.text"></div>
                             <button class="btn btn-primary" ng-click="newMailModal(email.from, email.subject)"> Answer </button>
                         </div>
                     </div>
