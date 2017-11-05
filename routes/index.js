@@ -320,10 +320,13 @@ router.post('/createProject', function(req, res) {
 router.put('/api/project/removeProject', function(req, res) {
     var projectId = String(req.body._id);
     var projects = db.get('projects');
+    var news = db.get('news')
     projects.remove({ _id: projectId }, {}).then(function(data) {
         var tasks = db.get('tasks');
         tasks.remove({ projectId: projectId }, {}).then(function(r) {
-            res.json({ message: 'seccess' })
+            news.remove({ projectId: projectId }, {}).then(function(rr) {
+                res.json({ message: 'seccess' })
+            })
         })
     })
 });
@@ -427,8 +430,11 @@ router.put('/api/task/assign/:taskId', function(req, res) {
 router.put('/api/project/removeTask', function(req, res) {
     var taskId = req.body.id;
     var tasks = db.get('tasks');
+    var news = db.get('news')
     tasks.remove({ _id: taskId }, {}).then(function(data) {
-        res.json({ message: 'seccess' })
+        news.remove({ taskId: taskId }, {}).then(function(rr) {
+            res.json({ message: 'seccess' })
+        })
     })
 })
 router.put('/api/task/comment/:taskId', function(req, res) {

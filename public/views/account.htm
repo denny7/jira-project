@@ -240,7 +240,8 @@
                                     <option value="Admin" class="taskOption" ng-model="allUsers[$index].role" >Admin</option>   
                                     <option value="Employee" class="epicOption" ng-model="allUsers[$index].role">Employee</option>
                                     <option value="Manager" class="bugOption" ng-model="allUsers[$index].role">Manager</option>       
-                                </select>
+                        </select>
+                        <span ng-show="man.role=='Admin'"> Admin</span>
                     </div>
                     <div ng-hide="man.role=='Admin'" ng-click="removeUser(man._id, $index)" class="col-md-2 centerText"><span class="btn btn-warning">Remove</span> </div>
                 </div>

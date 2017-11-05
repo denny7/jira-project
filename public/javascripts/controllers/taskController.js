@@ -8,30 +8,30 @@ angular.module('homeApp')
             $(".logOutText").hide();
         })
         $("footer").hide()
-        $(".pencilDescription").hide()
-        $(".desctriptionChange").on("mouseover", function() {
-            $(".pencilDescription").show()
-        })
-        $(".desctriptionChange").on("mouseout", function() {
-            $(".pencilDescription").hide()
-        })
-        $(".desctriptionChange").on("click", function() {
-            $(".descriptionArea").show();
-            $(".desctriptionChange").hide()
-        })
-        $(".descriptionArea").on("focusout", function() {
-            $(".descriptionArea").hide();
-            $(".desctriptionChange").show()
-            $scope.updateTask();
-        })
-        $(".descriptionArea").on("keydown", function(event) {
-            if (event.keyCode == 13) {
-                event.preventDefault()
-                $(".descriptionArea").hide();
-                $(".desctriptionChange").show()
-                $scope.updateTask();
-            }
-        })
+            // $(".pencilDescription").hide()
+            // $(".desctriptionChange").on("mouseover", function() {
+            //     $(".pencilDescription").show()
+            // })
+            // $(".desctriptionChange").on("mouseout", function() {
+            //     $(".pencilDescription").hide()
+            // })
+            // $(".desctriptionChange").on("click", function() {
+            //     $(".descriptionArea").show();
+            //     $(".desctriptionChange").hide()
+            // })
+            // $(".descriptionArea").on("focusout", function() {
+            //     $(".descriptionArea").hide();
+            //     $(".desctriptionChange").show()
+            //     $scope.updateTask();
+            // })
+            // $(".descriptionArea").on("keydown", function(event) {
+            //     if (event.keyCode == 13) {
+            //         event.preventDefault()
+            //         $(".descriptionArea").hide();
+            //         $(".desctriptionChange").show()
+            //         $scope.updateTask();
+            //     }
+            // })
 
         $(".taskNameP").on("mouseover", function() {
             $(".pencilName").show()
@@ -142,8 +142,6 @@ angular.module('homeApp')
                 $scope.commentSend = false;
                 $(".commentPagination > ul").hide()
 
-            } else {
-                $(".commentPagination > ul").show();
             }
             // pagination comments
             Task.getComments($scope.taskId).then(function(res) {
