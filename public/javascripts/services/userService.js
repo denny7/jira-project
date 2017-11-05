@@ -10,6 +10,9 @@ angular.module('homeApp')
             register: function(userData) {
                 return $http.post('/register', userData);
             },
+            authentication: function(userData) {
+                return $http.post('/authentication', userData);
+            },
             changePass: function(changeThisUserPassword) {
                 return $http.put('/user/changePass', changeThisUserPassword);
             },

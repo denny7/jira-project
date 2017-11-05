@@ -408,3 +408,7 @@
         border-radius: 8px;
         padding: 3px;
     }
+    
+    #authenticatioForm {
+        display: none;
+    }

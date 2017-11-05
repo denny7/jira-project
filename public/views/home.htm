@@ -37,19 +37,21 @@
                     <h1 class="text-center white">Sing up</h1>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group registerForm">
                         <input ng-model="regData.username" type="text" class="form-control reg " placeholder="Username" required autofocus/>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group registerForm">
                         <input ng-model="regData.password" type="password" class="form-control reg " placeholder="Password" required />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group registerForm">
                         <input ng-model="regData.repeatPassword" type="password" class="form-control reg" placeholder="Password" required />
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-group registerForm">
+                        <input ng-model="regData.phone" type="number" class="form-control reg " placeholder="Phone number" required />
+                    </div>
+                    <div class="form-group registerForm">
                         <input ng-model="regData.email" type="email" class="form-control reg " placeholder="E-mail" required />
                     </div>
 
@@ -61,7 +63,25 @@
             </div>
         </div>
     </form>
-
+    <!-- Authentication -->
+    <form name="AuthenticationData" ng-controller="UserCtrl" class="modal fade" id="Authentication" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" id="registerForm">
+                <div class="modal-header">
+                    <h1 class="text-center white">Authentication</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input ng-model="authData.code" type="number" class="form-control reg " placeholder="Sms code" maxlength='4' required autofocus/>
+                    </div>
+                    <div class="form-group text-center">
+                        <input ng-disabled="AuthenticationData.$invalid" ng-click="regAuthentication()" type="button" class="btn btn-primary btn-filled loginBtn" value="Send" /> <i ng-show="authSend" class="fa fa-spinner fa-spin homeLoad"></i>
+                        <p class="text-danger">{{AuthenticationErr}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
     <!-- Forgotten password -->
     <form name="forgottenData" ng-controller="UserCtrl" class="modal fade" id="forgottenPass" role="dialog">
         <div class="modal-dialog">

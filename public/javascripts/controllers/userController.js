@@ -49,32 +49,68 @@ angular.module('homeApp')
             })
         }
         $scope.regUser = function() {
+            $scope.regData.tel = String($scope.regData.phone);
             var patt = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/g;
             if ($scope.regData.username.length >= 4) {
                 if ($scope.regData.password == $scope.regData.repeatPassword) {
                     if (patt.test($scope.regData.password)) {
-                        Users.register($scope.regData).then(function(res) {
-                            if (res.data.register == true) {
-                                console.log('registered')
-                                console.log($scope.regData)
-                                console.log(res.data);
-                                // $location.path('/login');
-                                $('#signUp').modal('hide');
-                                $('#signIn').modal();
-                            } else {
-                                $scope.err = res.data.text;
-                                console.log($scope.err)
-                            }
-                        })
+                        if ($scope.regData.tel.length == 9) {
+                            $scope.regData.tel = '359' + $scope.regData.phone;
+                            console.log($scope.regData.phone)
+
+                            Users.register($scope.regData).then(function(res) {
+                                console.log(res)
+                                if (!res.data.text) {
+                                    console.log('registered')
+                                    console.log($scope.regData)
+                                    console.log(res.data);
+                                    // $location.path('/login');
+                                    $rootScope.authData = {};
+                                    $('#signUp').modal('hide');
+                                    $('#Authentication').modal();
+                                    $rootScope.authData.username = $scope.regData.username;
+                                    $rootScope.authData.password = $scope.regData.password;
+                                    $rootScope.authData.email = $scope.regData.email;
+                                    $rootScope.authData.phone = $scope.regData.phone;
+                                    console.log(res.data)
+                                    console.log($scope.authData)
+                                } else {
+                                    $scope.err = res.data.text;
+                                    console.log($scope.err)
+                                }
+                            })
+                        } else {
+                            $scope.err = "Phone number is not correct!";
+                        }
                     } else {
                         $scope.err = "Password must be at least 5 symbols, and must contain at least one number!";
                     }
                 } else {
-                    $scope.err = "Repeated password is incorrect!";
+
                 }
             } else {
                 $scope.err = "Username must be at least 4 symbols!";
             }
+
+        }
+        $scope.authSend = false;
+        $scope.regAuthentication = function() {
+            $scope.authSend = true;
+            console.log($rootScope.authData)
+            console.log($scope.authData)
+            Users.authentication($scope.authData).then(function(res) {
+                console.log(res)
+                if (res.data.register == true) {
+                    console.log('registered')
+                    console.log($scope.regData)
+                    console.log(res.data);
+                    $scope.regData = {};
+                    $('#Authentication').modal('hide');
+                } else {
+                    $scope.AuthenticationErr = res.data.err;
+                    console.log($scope.AuthenticationErr)
+                }
+            })
         }
         $scope.forgotten = {};
         $scope.forgotPass = function() {

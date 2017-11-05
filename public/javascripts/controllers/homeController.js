@@ -12,4 +12,9 @@ angular.module('homeApp')
         $scope.regModal = function() {
             $('#signUp').modal();
         }
+        $scope.regUser = function() {
+            $('#signUp').modal('hide');
+            // $('#registerFrom').hide();
+            // $('#authenticatioForm').css('display', 'block');
+        }
     }])
