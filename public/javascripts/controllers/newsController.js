@@ -1,7 +1,10 @@
 angular.module('homeApp')
     .controller('NewsCtrl', ['$scope', 'News', '$location', 'Main', '$rootScope', function($scope, News, $location, Main, $rootScope) {
+        $('footer').show();
         var userId = $rootScope.user._id;
         $scope.news;
+        $scope.odd = 'odd';
+        $scope.even = 'even';
         $scope.newsSend = true;
         var today = new Date(Date.now())
         News.getNews(userId).then(function(res) {
@@ -22,16 +25,13 @@ angular.module('homeApp')
                     if (differnceTime < 2) {
                         if ((today.getMinutes() + 60 - minuteCom) < 60 && differnceTime == 1) {
                             newChange.updateDateShow = today.getMinutes() + 60 - minuteCom + " minutes ago";
-
                         } else {
                             if ((today.getMinutes() - minuteCom) < 60 && differnceTime == 0) {
                                 newChange.updateDateShow = today.getMinutes() - minuteCom + " minutes ago";
-
                             } else {
                                 newChange.updateDateShow = hourCom + ":" + minuteCom;
                             }
                         }
-
                         if (differnceTimeMinutes == 0 && differnceTime == 0) {
                             newChange.updateDateShow = "Just now";
                         }
@@ -47,5 +47,4 @@ angular.module('homeApp')
             })
             $scope.newsSend = false;
         })
-        $('footer').show();
     }])

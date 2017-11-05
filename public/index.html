@@ -18,6 +18,7 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <link rel='stylesheet' href='bower_components/bootstrap/dist/css/bootstrap.min.css' />
     <link rel='stylesheet' href='bower_components/components-font-awesome//css/font-awesome.min.css' />
+
     <script src="javascripts/menu.js"></script>
     <script data-require="angular-ui-bootstrap@0.3.0" data-semver="0.3.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.3.0.min.js"></script>
     <title>Jira Project</title>
@@ -33,7 +34,7 @@
             <div class="listIcon"><i class="fa fa-list  fa-2x"></i></div>
         </a>
         <a href="/account">
-            <div class="userIcon"><i class="fa fa-user  fa-2x"></i></div>
+            <div class="userIcon"><i class="fa fa-user  fa-2x"></i><span style="background:#92C01F" ng-if="$root.forRea >0" class="badge">{{$root.forRea}}</span></div>
         </a>
         <div ng-click="createPr()" class="plusIcon addPrBtn"><i class="fa fa-plus fa-2x"></i></div>
         <div class="home"><i class="fa fa-home fa-3x"></i><span style="background:#92C01F" ng-if="$root.forRea >0" class="badge">{{$root.forRea}}</span></div>
@@ -41,13 +42,13 @@
 
     <div ng-if="currentPath[3] == 'dashboard' || currentPath[3] == 'account' || currentPath[3] == 'news'" class="welcomeText row">
         <div class="col-sm-11">
-            <h1 ng-if="currentPath[3] == 'dashboard'" class="letterDrop"> WELCOME to your PROJECTS</h1>
-            <h1 ng-if="currentPath[3] == 'account'" class="letterDrop"> ACCOUNT SETTINGS</h1>
-            <h1 ng-if="currentPath[3] == 'news'" class="letterDrop"> NEWS</h1>
+            <h1 ng-if="currentPath[3] == 'dashboard'" class="letterDrop letterDropWelcome"> WELCOME to your PROJECTS</h1>
+            <h1 ng-if="currentPath[3] == 'account'" class="letterDrop letterDropAccountSettings"> ACCOUNT SETTINGS</h1>
+            <h1 ng-if="currentPath[3] == 'news'" class="letterDrop letterDropNews"> NEWS</h1>
         </div>
-        <div class="col-sm-1 logoutHolder">
-            <div class="logOutBtn" ng-click="logoutUser()"><i class="fa fa-times"></i></div>
-            <div class="logOutText">Log Out</div>
+        <div class="col-sm-1 logoutHolder logoutHeaderDash">
+            <div class="logOutBtn logOutBtnDash" ng-click="logoutUser()"><i class="fa fa-times"></i></div>
+            <div class="logOutText logOutTextDash">Log Out</div>
         </div>
     </div>
 
@@ -98,12 +99,12 @@
         <br>
         <div class="left-navigation">
             <ul class="list">
-                <h3 class="text-center" ng-if="projectt"><strong>{{projectt.name}}dsds</strong></h3>
+                <h3 class="text-center nameProject" ng-if="projectt"><strong>{{projectt.name}}</strong></h3>
                 <li><a ng-href="{{projectPath}}">All Tasks</a></li>
                 <li><a ng-href="{{sprintsPath}}">Active Sprints</a></li>
-                <li style="cursor:pointer" data-toggle="collapse" data-target="#demo">Create new task</li>
+                <li style="cursor:pointer" data-toggle="collapse" data-target="#demo" class="centerCreateTask">Create new task</li>
                 <div id="demo" class="collapse liInput ">
-                    <input type="text" ng-model="taskName" placeholder="What's need to be done"> </input>
+                    <input type="text" ng-model="taskName" placeholder="What's need to be done" class="createTaskInput" maxlength="25"> </input>
                     <span class="createTask"><i id="{{projectt._id}}"  ng-click="createTaskF($event)" class="fa fa-check"></i></span>
                 </div>
                 <br/>

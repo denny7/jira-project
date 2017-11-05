@@ -2,8 +2,10 @@
     <div class=" col-md-6 ">
         <div class="jumbotron jumbo accountRight ">
             <div class="page-header row">
-                <button ng-click="hideMail()" type="button" class="btn btn-info col-xs-4 col-xs-offset-1" data-toggle="collapse" data-target="#accountDetails">Account details</button>
-                <button ng-click="hideAccount()" type="button" class="btn btn-info col-xs-4 col-xs-offset-1" data-toggle="collapse" data-target="#mailDetails">Mails</button>
+                <div class="col-xs-6"> <button ng-click="hideMail()" type="button" class="btn btn-info col-xs-8 col-xs-offset-2" data-toggle="collapse" data-target="#accountDetails"><span class="btnTextacc">Account details</span></button>
+                </div>
+                <div class="col-xs-6"> <button ng-click="hideAccount()" type="button" class="btn btn-info col-xs-8 col-xs-offset-2" data-toggle="collapse" data-target="#mailDetails"><span class="btnTextacc">Mails<span style="background:#92C01F ; color:#fff" ng-if="$root.forRea >0" class="badge">{{$root.forRea}}</span></span></button>
+                </div>
             </div>
             <div id="accountDetails" class="collapse in col-md-12 text-center">
                 <form class="firstForm">
@@ -14,13 +16,13 @@
                         <input id="uploadPhoto" type="file" name="picture" file-model="myFile" accept="application/x-zip-compressed,image/*">
                         <p id="changeAvatarP" class="text-danger"></p>
                     </div>
-                    <hr>
-                    <div class="form-group row">
-                        <label for="userFullname" class="col-sm-2 userLabel">Fullname :</label>
+                    <hr class="hrAcc">
+                    <div class="form-group row col-sm-12">
+                        <label for="userFullname" class="col-sm-3 userLabel">Fullname :</label>
                         <input id="userFullname" ng-model="userData.fullName" type="text" class="userData col-sm-9" placeholder="{{user.fullName}}" />
                     </div>
-                    <div class="form-group row">
-                        <label for="userMail" class="col-sm-2 userLabel">E-mail :</label>
+                    <div class="form-group row col-sm-12">
+                        <label for="userMail" class="col-sm-3 userLabel">E-mail :</label>
                         <input id="userMail" ng-model="userData.email" type="email" class="userData col-sm-9" ng-init="userData.email" placeholder="{{user.email}}" />
                     </div>
                     <div class="col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 text-center">
@@ -28,24 +30,24 @@
                         <p class="text-success">{{dataText}}</p>
                     </div>
                 </form>
-                <form>
+                <form class="col-sm-12">
                     <h3 class="text-center page-header">Profile details</h3>
                     <div class="form-group row">
-                        <label class="col-sm-3  userLabel">Username :     {{user.name}} </label>
+                        <label class="col-sm-12  userLabel">Username :{{user.name}} </label>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3  userLabel">Role :     {{user.role}} </label>
+                        <label class="col-sm-12  userLabel">Role :{{user.role}} </label>
                     </div>
                 </form>
-                <form name="userPassChange">
+                <form name="userPassChange" class="col-sm-12">
                     <h3 class="text-center page-header">Change Password</h3>
                     <div class="form-group row">
-                        <label for="userPassword" class="col-sm-2 userLabel">Old :</label>
-                        <input id="userPassword" ng-model="changePass.old" type="password" class="userData col-sm-9" placeholder="Enter old password" required/>
+                        <label for="userPassword" class="col-sm-2 col-xs-12 userLabel">Old :</label>
+                        <input id="userPassword" ng-model="changePass.old" type="password" class="userData col-sm-9 col-xs-12" placeholder="Enter old password" required/>
                     </div>
                     <div class="form-group row">
-                        <label for="userNewPass" class="col-sm-2 userLabel">New :</label>
-                        <input id="userNewPass" ng-model="changePass.new" type="password" class="userData col-sm-9" placeholder="Enter new password" required/>
+                        <label for="userNewPass" class="col-sm-2 userLabel col-xs-12">New :</label>
+                        <input id="userNewPass" ng-model="changePass.new" type="password" class="userData col-sm-9 col-xs-12" placeholder="Enter new password" required/>
                     </div>
                     <div class="col-md-12 col-md-offset-0 col-sm-4 col-sm-offset-4 text-center">
                         <input ng-disabled="userPassChange.$invalid" ng-click="changePassword()" type="button" class="btn btn-primary btn-filled loginBtn" value="Change password" />
@@ -55,9 +57,9 @@
             </div>
             <div id="mailDetails" class="collapse  col-md-12 text-center">
                 <div class="page-header row">
-                    <button ng-click="hideSended()" type="button" class="btn btn-info col-xs-3 col-xs-offset-1" data-toggle="collapse" data-target="#sendedDetails">Sended</button>
-                    <button ng-click="hideReceived()" type="button" class="btn btn-info col-xs-3 col-xs-offset-1" data-toggle="collapse" data-target="#receivedDetails">Received</button>
-                    <button ng-click="newMailModal()" type="button" class="btn btn-info col-xs-2 col-xs-offset-1">Send</button>
+                    <button ng-click="hideSended()" type="button" class="btn btn-info col-xs-3 col-xs-offset-1" data-toggle="collapse" data-target="#sendedDetails"><span class="btnTextSm">Sended</span></button>
+                    <button ng-click="hideReceived()" type="button" class="btn btn-info col-xs-3 col-xs-offset-1" data-toggle="collapse" data-target="#receivedDetails"><span class="btnTextSm">Received</span><span style="background:#92C01F ; color:#fff" ng-if="$root.forRea >0" class="badge">{{$root.forRea}}</span></button>
+                    <button ng-click="newMailModal()" type="button" class="btn btn-primary col-xs-2 col-xs-offset-1"><span class="btnTextSm">Write</span></button>
 
                     <!-- New Mail Modal -->
                     <form name="mailData" class="modal fade" id="createMail" role="dialog">
@@ -88,25 +90,27 @@
                 </div>
                 <div id="sendedDetails" class="collapse  col-md-12 text-center">
                     <div class="row sortOptionsDiv">
+                        <p>Sended Mails</p>
+
                         <div class="col-xs-12">
                             <input type="text" class="searchTaskInput searchTaskInput2" placeholder="Search" ng-model='seachMail'>
                         </div>
-                        <div ng-click="sortByTo()" class="col-xs-4 sortOptions">To <i class="fa fa-sort"></i></div>
-                        <div ng-click="sortBySubjectTo()" class="col-xs-4 sortOptions">Subject <i class="fa fa-sort"></i></div>
-                        <div ng-click="sortByDateTo()" class="col-xs-3 sortOptions">Date <i class="fa fa-sort"></i></div>
+                        <div ng-click="sortByTo()" class="col-sm-4 col-xs-12 sortOptions">To <i class="fa fa-sort"></i></div>
+                        <div ng-click="sortBySubjectTo()" class="col-sm-4 col-xs-12 sortOptions">Subject <i class="fa fa-sort"></i></div>
+                        <div ng-click="sortByDateTo()" class="col-sm-3 col-xs-12 sortOptions">Date <i class="fa fa-sort"></i></div>
                     </div>
                     <div ng-repeat="email in user.sendedMails | orderBy : sortingTo | filter : seachMailTo" ng-click="closeOtherMails($index)" class="row people mail text-left">
                         <div type="button" class="row" data-toggle="collapse" data-target="#{{email.date}}">
-                            <div class="col-xs-4">
+                            <div class="col-sm-4 col-xs-12">
                                 <p class="emailPar text-center">{{email.to}} </p>
                             </div>
-                            <div class="col-xs-4">
+                            <div class="col-sm-4 col-xs-12">
                                 <p class="emailPar text-center">{{email.smallerSubject}}</p>
                             </div>
-                            <div class="col-xs-3">
-                                <p class="emailPar text-center">{{email.updateDateShow}}</p>
+                            <div class="col-sm-3 col-xs-10">
+                                <p class="emailPar text-center dateMail">{{email.updateDateShow}}</p>
                             </div>
-                            <div class="col-xs-1">
+                            <div class="col-sm-1 col-xs-2">
                                 <p class="emailPar text-center" ng-click="removeMailTo(email.date, $index)"><i class="fa fa-times deleteMail"></i></p>
                             </div>
                         </div>
@@ -119,25 +123,26 @@
                 </div>
                 <div id="receivedDetails" class="collapse in col-md-12 text-center">
                     <div class="row sortOptionsDiv">
+                        <p>Received Mails</p>
                         <div class="col-xs-12">
                             <input type="text" class="searchTaskInput searchTaskInput2" placeholder="Search" ng-model='seachMailFrom'>
                         </div>
-                        <div ng-click="sortByFrom()" class="col-xs-4 sortOptions">From <i class="fa fa-sort"></i></div>
-                        <div ng-click="sortBySubjectFrom()" class="col-xs-4 sortOptions">Subject <i class="fa fa-sort"></i></div>
-                        <div ng-click="sortByDateFrom()" class="col-xs-3 sortOptions">Date <i class="fa fa-sort"></i></div>
+                        <div ng-click="sortByFrom()" class="col-sm-4 col-xs-12 sortOptions">From <i class="fa fa-sort"></i></div>
+                        <div ng-click="sortBySubjectFrom()" class="col-sm-4 col-xs-12 sortOptions">Subject <i class="fa fa-sort"></i></div>
+                        <div ng-click="sortByDateFrom()" class="col-sm-3 col-xs-12 sortOptions">Date <i class="fa fa-sort"></i></div>
                     </div>
                     <div id="divFrom" ng-repeat="email in user.receivedMails | orderBy : sortingFrom | filter : seachMailFrom" ng-class="email.class">
                         <div type="button" class="row mailHead" data-toggle="collapse" data-target="#{{email.date}}" ng-click="readMails(email.date, email.read, $index, $event)">
-                            <div class="col-xs-4">
+                            <div class="col-sm-4 col-xs-12">
                                 <p class="emailPar text-center">{{email.from}}</p>
                             </div>
-                            <div class="col-xs-4">
+                            <div class="col-sm-4 col-xs-12">
                                 <p class="emailPar text-center">{{email.smallerSubject}}</p>
                             </div>
-                            <div class="col-xs-3">
-                                <p class="emailPar text-center">{{email.updateDateShow}}</p>
+                            <div class="col-sm-3 col-xs-10">
+                                <p class="emailPar text-center dateMail">{{email.updateDateShow}}</p>
                             </div>
-                            <div class="col-xs-1">
+                            <div class="col-sm-1 col-xs-2">
                                 <p class="emailPar text-center" ng-click="removeMailFrom(email.date, $index)"><i class="fa fa-times deleteMail"></i></p>
                             </div>
                         </div>
@@ -157,8 +162,14 @@
     <div class="col-md-6 ">
         <div class="jumbotron jumbo accountRight row">
             <div class="page-header row" ng-show="user.role == 'Admin'">
-                <button ng-click="hidePeople()" type="button" class="btn btn-info col-xs-4 col-xs-offset-1" data-toggle="collapse" data-target="#lastChanges">Last Changes</button>
-                <button ng-click="hideChanges()" type="button" class="btn btn-info col-xs-4 col-xs-offset-1" data-toggle="collapse" data-target="#peoples">People</button>
+                <div class="col-xs-6">
+                    <button ng-click="hidePeople()" type="button" class="btn btn-info col-xs-8 col-xs-offset-2 " data-toggle="collapse" data-target="#lastChanges"> <span class="btnTextSm">Last Changes</span></button>
+                </div>
+                <div class="col-xs-6">
+                    <button ng-click="hideChanges()" type="button" class="btn btn-info col-xs-8 col-xs-offset-2 " data-toggle="collapse" data-target="#peoples"><span class="btnTextSm">People</span></button>
+
+                </div>
+
             </div>
             <div ng-hide="user.role == 'Admin'">
                 <h3 class="myLastChanges text-center page-header">My last changes</h3>
@@ -217,21 +228,21 @@
                     <div class="col-xs-12">
                         <input type="text" class="searchTaskInput  searchTaskInput2" placeholder="Search" ng-model='seachUser'>
                     </div>
-                    <div ng-click="sortByName()" class="col-xs-4 sortOptions">Name <i class="fa fa-sort"></i></div>
-                    <div ng-click="sortByEmail()" class="col-xs-4 sortOptions">E-mail <i class="fa fa-sort"></i></div>
-                    <div ng-click="sortByRole()" class="col-xs-2 sortOptions">Role <i class="fa fa-sort"></i></div>
+                    <div ng-click="sortByName()" class="col-sm-4 col-xs-12 sortOptions">Name <i class="fa fa-sort"></i></div>
+                    <div ng-click="sortByEmail()" class="col-sm-4 col-xs-12 sortOptions">E-mail <i class="fa fa-sort"></i></div>
+                    <div ng-click="sortByRole()" class="col-sm-2 col-xs-12 sortOptions">Role <i class="fa fa-sort"></i></div>
                 </div>
                 <div ng-repeat="man in allUsers | orderBy : sorting | filter : seachUser" class="row people text-left">
-                    <div class="col-md-4"> {{man.fullName}}</div>
-                    <div class="col-md-4 "> {{man.email}}</div>
-                    <div class="col-md-2 text-center">{{man.role}}
+                    <div class="col-md-4 centerText"> {{man.fullName}}</div>
+                    <div class="col-md-4 centerText"> {{man.email}}</div>
+                    <div class="col-md-2 centerText text-center selectPeople">
                         <select ng-hide="man.role=='Admin'" class="selectpicker show-tick" ng-model="man.role" ng-change="updateMan(man._id, man.role, $index)">
                                     <option value="Admin" class="taskOption" ng-model="allUsers[$index].role" >Admin</option>   
                                     <option value="Employee" class="epicOption" ng-model="allUsers[$index].role">Employee</option>
                                     <option value="Manager" class="bugOption" ng-model="allUsers[$index].role">Manager</option>       
                                 </select>
                     </div>
-                    <div ng-hide="man.role=='Admin'" ng-click="removeUser(man._id, $index)" class="col-md-2"><span class="removeUserBtn">Remove</span> </div>
+                    <div ng-hide="man.role=='Admin'" ng-click="removeUser(man._id, $index)" class="col-md-2 centerText"><span class="btn btn-warning">Remove</span> </div>
                 </div>
 
             </div>

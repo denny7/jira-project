@@ -1,8 +1,10 @@
 angular.module('homeApp')
     .controller('HomeCtrl', ['$scope', '$http', '$location', 'Main', function($scope, $http, $location, Main) {
+        //Events
         $('.parent').hide();
         $("footer").hide();
         $('body').addClass('homepage');
+
         $scope.regForgotten = function() {
             $('#forgottenPass').modal();
         }
