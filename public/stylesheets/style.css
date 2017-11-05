@@ -106,7 +106,7 @@
     .letterDrop {
         font-family: 'Raleway';
         font-weight: 400;
-        font-size: 2.4em;
+        font-size: 2.2em;
         color: white;
         text-align: center;
         text-transform: uppercase;
@@ -671,4 +671,251 @@
     
     .even:hover {
         box-shadow: 3px 3px 5px rgba(54, 159, 200, 1);
+    }
+    
+    .deleteMail:hover {
+        font-size: 1.4em;
+        color: #d81313;
+    }
+    
+    .commentsTitle {
+        margin-left: -250px;
+    }
+    
+    @media screen and (max-width:1260px) {
+        .createTaskInput {
+            width: 140px;
+        }
+    }
+    
+    @media screen and (max-width:991px) {
+        .commentArea {
+            width: 200px !important;
+            margin-left: 100px;
+        }
+        .createTaskInput {
+            width: 110px;
+        }
+        .taskPage,
+        .projectPage,
+        .sprintsPage,
+        .peoplePage {
+            margin-top: 10px;
+            width: 75% !important;
+            margin-left: 25% !important;
+        }
+        .sprints {
+            margin-right: 15px !important;
+        }
+        .letterDropWelcome {
+            margin-left: 70px !important;
+        }
+    }
+    
+    @media screen and (max-width:900px) {
+        .createTaskInput {
+            width: auto !important;
+        }
+        .liInput {
+            text-align: center;
+        }
+        .centerCreateTask {
+            text-align: center
+        }
+        .UpdateBtn {
+            margin-left: 250px !important;
+        }
+        .commentsTitle {
+            margin-left: 0 !important;
+        }
+        .tasksByTypes {
+            display: block;
+        }
+        .btnShowMine {
+            margin-bottom: 10px !important;
+        }
+        .navHolder {
+            display: none;
+        }
+        .hrAcc {
+            display: none;
+        }
+        .sprints {
+            margin-right: 20px !important;
+        }
+        .sidebar1 {
+            left: 0 !important;
+            width: 100% !important;
+        }
+        .sortOptionsDiv {
+            display: block;
+        }
+        .sortOptions {
+            text-align: left;
+        }
+        .faSort {
+            display: none !important;
+        }
+        .searchTaskInput {
+            width: 100% !important;
+        }
+        .taskPage,
+        .projectPage,
+        .sprintsPage,
+        .peoplePage {
+            width: 100% !important;
+            margin-left: 0 !important;
+        }
+    }
+    
+    @media screen and (max-width:767px) {
+        .UpdateBtn {
+            float: right;
+            margin-top: -35px !important;
+        }
+        .letterDrop {
+            font-size: 1em;
+            margin-left: 70px;
+        }
+        .letterDropTask {
+            margin-top: -65px;
+            margin-left: 10px;
+            font-size: 1.5em;
+        }
+        .letterDropPeople {
+            margin-top: -65px;
+            margin-left: 10px;
+            font-size: 1.5em;
+        }
+        .logoutHolder {
+            margin-left: -10px !important;
+            margin-top: -3px;
+        }
+        .logoutHolderTask {
+            margin-top: -35px;
+        }
+        .removeProjectBtn {
+            margin-top: 20px !important;
+        }
+        .logOutBtn {
+            margin-top: 50px;
+            display: block;
+        }
+        .logOutBtn>.fa-times {
+            padding-top: 25px;
+            display: block;
+        }
+        .logOutText {
+            padding-top: 40px;
+        }
+        .sidebar1 {
+            width: 100% !important;
+        }
+        .nameProject {
+            margin-left: 55px !important;
+        }
+        .searchTaskInput {
+            width: 100%;
+        }
+        .btnShowMine {
+            width: 100% !important;
+            margin-bottom: 20px !important;
+        }
+        .btnRemoveTaskWar {
+            width: 100% !important;
+        }
+        .btnText {
+            font-size: 0.8em;
+            margin-left: -10px;
+        }
+        .projectPageTasks {
+            font-size: 0.9em;
+            text-align: left;
+        }
+        .logoutDiv {
+            margin-top: -26px !important;
+        }
+        footer {
+            margin-top: 15px;
+            width: 112%;
+            margin-left: -15px !important;
+        }
+        .colorBlue {
+            font-size: 1.1em !important;
+        }
+        .letterDropNews {
+            font-size: 1.5em;
+            margin-left: -10px;
+        }
+        .letterDropAccountSettings {
+            margin-left: 50px;
+            font-size: 1em;
+        }
+        .btnTextacc {
+            margin-left: -5px;
+            font-size: 0.8em !important;
+        }
+        .dateMail {
+            text-align: left !important;
+        }
+        .deleteMail {
+            margin-left: -10px !important;
+        }
+        .selectPeople {
+            margin: 5px 0 5px 0;
+        }
+        .centerText {
+            text-align: center;
+        }
+        .btnTextSm {
+            margin-left: -6px;
+        }
+        .commentArea {
+            margin-left: 0px;
+            min-width: 100%;
+            max-width: 100% !important;
+        }
+        .details {
+            margin-left: -25px !important;
+        }
+        .navHolder {
+            display: none;
+        }
+        .leftForXs {
+            text-align: left;
+            font-size: 0.9em;
+        }
+        .rightForXs {
+            text-align: right;
+            font-size: 0.9em;
+        }
+        .removeBtnText {
+            font-size: 0.9em !important;
+            margin-left: -5px !important;
+        }
+        .btnRemovePeopleXs {
+            margin-left: -20px !important;
+            width: 60px;
+        }
+        .sortOptionsDiv {
+            display: block;
+        }
+        .sortOptions {
+            text-align: center !important;
+        }
+        .logoutHeaderDash {
+            position: absolute !important;
+            top: 25px !important;
+            left: 75.5% !important;
+        }
+        .logOutBtnDash {
+            margin-top: 0px;
+        }
+        .logOutTextDash {
+            margin-top: -100px;
+        }
+        .letterDropWelcome {
+            width: 50%;
+            margin-left: 70px !important;
+        }
     }

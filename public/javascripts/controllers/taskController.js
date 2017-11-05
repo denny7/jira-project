@@ -1,6 +1,6 @@
 angular.module('homeApp')
     .controller('TaskCtrl', ['$scope', '$rootScope', '$anchorScroll', '$routeParams', '$location', 'Main', 'Task', 'Project', '$route', '$timeout', '$window', function($scope, $rootScope, $anchorScroll, $routeParams, $location, Main, Task, Project, $route, $timeout, $window) {
-
+        //Events
         $(".logoutHolder").on("mouseover", function() {
             $(".logOutText").show();
         })
@@ -78,7 +78,6 @@ angular.module('homeApp')
                 $scope.assignTo();
             }
         })
-
         $scope.progressToDo = function() {
             $scope.task.progress = 'To do';
             $(".progressToDo").addClass("btn-blue")
@@ -100,26 +99,23 @@ angular.module('homeApp')
             $(".progressDone").addClass("btn-blue")
             $scope.updateTask();
         }
-        $scope.assignToMeF = function() {
-            $scope.task.assignee = $scope.user.fullName;
-            $scope.updateTask();
-        }
         $(".assignToDiv").hide()
         $scope.assignToF = function() {
             $(".assignToDiv").show()
         }
+        $scope.assignToMeF = function() {
+            $scope.task.assignee = $scope.user.fullName;
+            $scope.updateTask();
+        }
+
         $scope.inputValue = '';
         $scope.commentSend = true;
-        // console.log("projectIdinTask " + $rootScope.project._id)
-
         $scope.assignTo = function() {
             var objToSend = {
                 projectId: $rootScope.projectId,
                 fullName: $scope.inputValue
             }
-            console.log(objToSend)
             Task.assignToUser($scope.taskId, objToSend).then(function(req, res) {
-                console.log(req)
                 if (!req.data.message) {
                     $scope.task.assignee = $scope.inputValue;
                     $scope.updateTask();
@@ -140,16 +136,19 @@ angular.module('homeApp')
         $scope.user = $rootScope.user;
         $scope.user.id = $rootScope.user._id;
         $scope.taskId = $routeParams.taskId;
-        console.log('task id ' + JSON.stringify($scope.taskId))
         Task.getTaskInfo($scope.taskId).then(function(res) {
             $scope.task = res.data[0];
             if ($scope.task.comments.length == 0) {
                 $scope.commentSend = false;
+                $(".commentPagination > ul").hide()
 
+            } else {
+                $(".commentPagination > ul").show();
             }
             // pagination comments
             Task.getComments($scope.taskId).then(function(res) {
                 $scope.comments = (res.data).reverse()
+
                 $scope.comments.forEach(function(comment) {
                     var today = new Date()
                     var dateCom = new Date(Number(comment.date));
@@ -228,15 +227,10 @@ angular.module('homeApp')
             var monthUp = dateUp.getMonth() + 1;
             var yearUp = dateUp.getFullYear();
             $scope.updateDate = dayUp + "." + monthUp + "." + yearUp + " " + hourUp + ":" + minuteUp;
-            // CKEDITOR.replace('taskArea');
-        }).catch(function(err) {
-            console.log(err.status)
-        })
+        }).catch(function(err) {})
         $scope.updateTask = function() {
             $scope.task.updateDate = Date.now();
-            Task.updateTaskInfo($scope.taskId, $scope.task).then(function(res, req) {
-                console.log('updated')
-            })
+            Task.updateTaskInfo($scope.taskId, $scope.task).then(function(res, req) {})
         }
         $scope.commentText = '';
         $scope.addCommentTask = function() {
@@ -244,17 +238,13 @@ angular.module('homeApp')
             comment.userId = $scope.user._id;
             comment.date = Date.now();
             comment.commentText = $scope.commentText;
-            console.log(comment)
             if (comment.commentText.length > 0) {
                 Task.addComment($scope.taskId, comment).then(function(req, res) {});
                 $scope.comment = comment;
                 $(".addComment").hide();
                 $(".addCommentBtn").show();
                 $route.reload();
-                console.log("reloaded")
-
             }
-
         }
         $scope.deleteComment = function($event) {
             var commentId = {}
@@ -263,28 +253,23 @@ angular.module('homeApp')
                 $route.reload();
             })
         }
-
         $scope.createTaskF = function() {
+            if ($scope.taskName.length >= 3) {
+
                 var projectId = event.target.id;
                 var data = {
                     userId: $scope.user.id,
                     userFullName: $scope.user.fullName,
                     taskName: $scope.taskName,
+                    description: "<p>Click to add description</p>"
                 }
-                console.log($rootScope.projectId)
                 Project.createTask(projectId, data).then(function(res) {
                     $scope.tasks.push(res.data);
-                    console.log(res.data)
                     $scope.taskName = '';
                     $route.reload();
                 })
             }
-            // Project.getTasks($scope.projectId).then(function(res) {
-            //     console.log("resss data")
-            //     console.log(res.data)
-            //     $scope.projectt = res.data[1][0];
-            //     $rootScope.project = res.data[1][0];
-            // })
+        }
         $scope.toTopProjectPage = function() {
             $anchorScroll('');
         }

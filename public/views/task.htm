@@ -1,6 +1,6 @@
 <div class="row" ng-controller="TaskCtrl">
-    <div class="col-sm-3 col-xs-4 nav "></div>
-    <div class="col-sm-9 col-xs-8 main-content taskPage">
+    <div class="col-sm-3 col-xs-0 navHolder "></div>
+    <div class="col-sm-9 col-xs-12 main-content taskPage">
         <div class="welcomeText row">
             <div class="col-sm-11">
                 <div class="col-sm-3">
@@ -22,7 +22,7 @@
                 </div>
 
             </div>
-            <div class="col-sm-1 logoutHolder">
+            <div class="col-sm-1 logoutHolder logoutHolderTask">
                 <div class="logOutBtn" ng-click="logoutUser()"><i class="fa fa-times"></i></div>
                 <div class="logOutText">Exit</div>
             </div>
@@ -30,9 +30,9 @@
 
         <div class="row">
             <div class="col-md-8 col-sm-7 ">
-                <button type="button" class="btn btnProgress progressToDo" ng-model="progress" ng-click="progressToDo()">To do</button>
-                <button type="button" class="btn btnProgress progressInProgress" ng-model="progress" ng-click="progressInProgress()">In progress</button>
-                <button type="button" class="btn btnProgress progressDone" ng-model="progress" ng-click="progressDone()">Done</button>
+                <button type="button" class="btn btnProgress progressToDo" ng-model="progress" ng-click="progressToDo()"><span class="btnTextSm">To do</span></button>
+                <button type="button" class="btn btnProgress progressInProgress" ng-model="progress" ng-click="progressInProgress()"><span class="btnTextSm">In progress</span></button>
+                <button type="button" class="btn btnProgress progressDone" ng-model="progress" ng-click="progressDone()"><span class="btnTextSm">Done</span></button>
                 <hr>
                 <h1 class="detailsTask">Details</h1>
                 <div class="row">
@@ -84,47 +84,7 @@
                 <button ng-click="updateTask()" class="btn btn-primary UpdateBtn">Update</button>
                 <div class="descriptionArea" ckeditor="options" ng-model="task.description" ready=""></div>
                 <hr>
-                <h1 class="commentsTask">Comments</h1>
-                <button class="btn btn-primary addCommentBtn">Add Comment</button>
-                <div class="addComment">
-                    <p></p>
-                    <textarea autofocus ng-model="commentText" name="commentArea" class="commentArea" cols="30" rows="3" placeholder="Enter e comment"></textarea>
-                    <p></p>
-                    <button class="btn btn-primary pressCommentBtn" ng-click="addCommentTask()">Send</button>
-                </div>
-                <div ng-show="commentSend"><i class="fa fa-spinner fa-spin dashLoad"></i></div>
-                <div ng-hide="commentSend && task.comments.length <1">
-                    <div ng-if="task.comments.length == 0">
-                        <h1 class="noComment">No comments yet</h1>
-                    </div>
-                    <div ng-if=" task.comments.length > 0">
-                        <div ng-repeat="comment in filteredComments">
-                            <div class="item">
-                                <div class="image">
-                                    <div>
-                                        <img ng-src="{{comment.avatar}}" alt="avatar" />
-                                    </div>
-                                </div>
-                                <div class="details">
-                                    <div class="commentHolder">
-                                        <div class="row">
-                                            <div class="col-xs-7 userFullName">
-                                                <p>{{comment.userFullName}}</p>
-                                            </div>
-                                            <div class="col-xs-5 userDate">
-                                                <p>{{comment.createDateCom}} <span class="deleteComment" id="{{comment.date}}" ng-click="deleteComment($event)" ng-if="'comment.userFullName==user.fullName' || 'user.role==`Admin`'"><i class="fa fa-times"></i></span></p>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <p>{{comment.commentText}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="commentPagination" data-pagination="" data-num-pages="numPages()" data-current-page="currentPage" data-max-size="maxSize" data-boundary-links="true"></div>
 
-                </div>
             </div>
             <div class="col-md-4 col-sm-5 peopleTask">
                 <h1 class="peopleTaskh1">People</h1>
@@ -146,6 +106,50 @@
             </div>
         </div>
 
+        <div class="commentsHolder col-xs-12">
+            <div class="commentsTitle">
+                <h1 class="commentsTask">Comments</h1>
+                <button class="btn btn-primary addCommentBtn">Add Comment</button>
+                <div class="addComment">
+                    <p></p>
+                    <textarea autofocus ng-model="commentText" name="commentArea" class="commentArea" cols="30" rows="3" placeholder="Enter e comment"></textarea>
+                    <p></p>
+                    <button class="btn btn-primary pressCommentBtn" ng-click="addCommentTask()">Send</button>
+                </div>
+            </div>
+            <div ng-show="commentSend"><i class="fa fa-spinner fa-spin dashLoad"></i></div>
+            <div ng-hide="commentSend && task.comments.length <1">
+                <div ng-if="task.comments.length == 0" class="col-md-8">
+                    <h1 class="noComment">No comments yet</h1>
+                </div>
+                <div ng-if=" task.comments.length > 0">
+                    <div ng-repeat="comment in filteredComments">
+                        <div class="item">
+                            <div class="image">
+                                <div>
+                                    <img ng-src="{{comment.avatar}}" alt="avatar" />
+                                </div>
+                            </div>
+                            <div class="details">
+                                <div class="commentHolder">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-7 userFullName">
+                                            <p>{{comment.userFullName}}</p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-5 userDate">
+                                            <p>{{comment.createDateCom}} <span class="deleteComment" id="{{comment.date}}" ng-click="deleteComment($event)" ng-if="'comment.userFullName==user.fullName' || 'user.role==`Admin`'"><i class="fa fa-times"></i></span></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <p>{{comment.commentText}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="commentPagination" data-pagination="" data-num-pages="numPages()" data-current-page="currentPage" data-max-size="maxSize" data-boundary-links="false"></div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="col-md-9 col-md-offset-3 col-sm-12">

@@ -1,5 +1,6 @@
 angular.module('homeApp')
     .controller('ProjectCtrl', ['$scope', '$anchorScroll', '$route', '$rootScope', '$routeParams', '$location', 'Main', 'Project', '$window', 'Users', function($scope, $anchorScroll, $route, $rootScope, $routeParams, $location, Main, Project, $window, Users) {
+        //Events
         $(".logoutHolder").on("mouseover", function() {
             $(".logOutText").show();
         })
@@ -7,8 +8,7 @@ angular.module('homeApp')
             $(".logOutText").hide();
         })
         $("footer").hide()
-        console.log("+++++++++++++++++++++++++++++++++++")
-        console.log($rootScope.user)
+
         var projectId = $routeParams.projectId;
         $rootScope.projectId = $routeParams.projectId
         $scope.projectSend = true;
@@ -23,7 +23,6 @@ angular.module('homeApp')
             var userId = {};
             userId.id = event.target.id;
             Project.removeUser(projectId, userId).then(function(res) {
-                console.log('ready');
                 $route.reload();
             })
         }
@@ -32,31 +31,23 @@ angular.module('homeApp')
                     YOU WILL DELETE THE PROJECT AND ALL ISSUES IN IT !!
                     ARE YOU SURE ?`)) {
                 Project.removeProject($scope.project).then(function(res) {
-                    console.log('projects removed!')
                     $location.path('/dashboard');
                 })
             }
-
         }
         $scope.removeTask = function(event) {
             var taskId = {};
             taskId.id = event.target.id;
-            console.log('task id')
-            console.log(taskId.id)
             if (confirm('Are you sure that you want to delete this issue?')) {
                 Project.removeTask(taskId).then(function(res) {
-                    console.log('ready');
                     $route.reload();
                 })
             }
-
         }
-
         $scope.newMailModal = function(email) {
             if ($scope.user.email != email) {
                 $scope.newMail = { to: email };
                 $('#createeMail').modal();
-                console.log(email)
             }
         }
         $scope.sentNewMailTo = function() {
@@ -76,12 +67,9 @@ angular.module('homeApp')
         }
         $scope.peopleFunc = function() {
             Project.getAllUsers(projectId).then(function(res) {
-                console.log(res.data)
                 $scope.people = res.data;
-                console.log($scope.people)
             })
         }
-
         Project.getTasks(projectId).then(function(res) {
             $scope.projectSend = false;
             $rootScope.projectId = $routeParams.projectId;
@@ -89,7 +77,6 @@ angular.module('homeApp')
             $scope.project = res.data[1][0]
             $scope.peopleFunc()
             if (document.getElementById("chart")) {
-                console.log($scope.tasks)
                 var toDo = $scope.tasks.filter(task => task.progress == 'To Do');
                 var inProgress = $scope.tasks.filter(task => task.progress == 'In Progress');
                 var done = $scope.tasks.filter(task => task.progress == 'Done');
@@ -130,30 +117,30 @@ angular.module('homeApp')
                         }
                     }
                 });
-
             }
         })
         $scope.createTaskF = function(event) {
-            var projectId = event.target.id;
-            console.log(projectId)
-            var data = {
-                userId: $scope.user.id,
-                userFullName: $scope.user.fullName,
-                taskName: $scope.taskName,
+            if ($scope.taskName.length >= 3) {
+
+                var projectId = event.target.id;
+                var data = {
+                    userId: $scope.user.id,
+                    userFullName: $scope.user.fullName,
+                    taskName: $scope.taskName,
+                    description: "<p>Click to add description</p>"
+                }
+                Project.createTask(projectId, data).then(function(res) {
+                    $scope.tasks.push(res.data);
+                    $scope.taskName = '';
+                    $route.reload();
+                })
             }
-            Project.createTask(projectId, data).then(function(res) {
-                $scope.tasks.push(res.data);
-                console.log(res.data)
-                $scope.taskName = '';
-                $route.reload();
-            })
         }
         $scope.addPeople = function() {
             $('#addPeople').modal();
         }
         $scope.addNewUserF = function() {
             Project.addUser($scope.project._id, $scope.newUser).then(function(res) {
-                console.log($scope.newUser)
                 if (!res.data.text) {
                     $scope.user = res.data;
                     $('#addUserT').removeClass().addClass('text-success')
@@ -189,9 +176,4 @@ angular.module('homeApp')
         $scope.toTopProjectPage = function() {
             $anchorScroll('');
         }
-
-
-
-
-
     }])

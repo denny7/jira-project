@@ -1,7 +1,15 @@
 angular.module('homeApp')
     .controller('AccountCtrl', ['$scope', '$rootScope', '$window', '$http', '$routeParams', '$location', 'Main', 'Users', '$route', "News", "$sce", function($scope, $rootScope, $window, $http, $routeParams, $location, Main, Users, $route, News, $sce) {
-        $scope.user;
+        // Events
         $('footer').show();
+        $(".logoutHolder").on("mouseover", function() {
+            $(".logOutText").show();
+        })
+        $(".logoutHolder").on("mouseleave", function() {
+            $(".logOutText").hide();
+        })
+
+        $scope.user;
         $scope.changePass = {};
         $scope.text = '';
         $scope.dataText = '';
@@ -32,7 +40,6 @@ angular.module('homeApp')
                         $scope.newMail.smallerSubject = $scope.newMail.subject.slice(0, 20) + "...";
                         $scope.newMail.updateDateShow = 'Just now';
                         $scope.user.sendedMails.push($scope.newMail);
-                        console.log($scope.newMail)
                         $scope.newMail = {};
                     } else {
                         $scope.mailText = res.data.message;
@@ -88,7 +95,6 @@ angular.module('homeApp')
             var send = {
                 date: date
             }
-            console.log(date, index)
             Users.removeMFrom(send).then(function(res) {
                 $scope.user.receivedMails.splice(index, 1)
             })
@@ -104,7 +110,6 @@ angular.module('homeApp')
         $scope.seachMailFrom = '';
         $scope.seachMailTo = '';
         $scope.updateMan = function(id, role, index) {
-            console.log(id + '  ' + role)
             var sendData = { userId: id, userRole: role }
             if (role == 'Admin') {
                 if (confirm(`You will make this user Admin!
@@ -121,8 +126,6 @@ angular.module('homeApp')
 
         }
         $scope.removeUser = function(id, index) {
-            console.log(index)
-
             Users.removeUser(id).then(function(res) {
                 $scope.allUsers.splice(index, 1)
             })
@@ -133,8 +136,6 @@ angular.module('homeApp')
         $scope.news = [];
         News.getUserNews().then(function(res) {
             $scope.news = res.data;
-            console.log("Nqma")
-
             if ($scope.news.length == 0) {
                 $scope.newsSend = false;
             }
@@ -342,12 +343,9 @@ angular.module('homeApp')
             $scope.changePassword = function() {
                     var patt = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/g;
                     var changeThisUserPassword = [];
-                    console.log('new')
-                    console.log($scope.changePass)
                     if (patt.test($scope.changePass.new)) {
                         changeThisUserPassword.push($scope.user, $scope.changePass)
                         Users.changePass(changeThisUserPassword).then(function(res) {
-                            console.log(res.data)
                             if (!res.data.text) {
                                 $('#changePassP').removeClass().addClass('text-success')
                                 $scope.text = 'You successfully changed your password !';
@@ -381,9 +379,7 @@ angular.module('homeApp')
                                 $route.reload();
                             });
                         };
-                        reader.onerror = function(error) {
-                            console.log('Error: ', error);
-                        };
+                        reader.onerror = function(error) {};
                     } else {
                         $('#changeAvatarP').text("Too large photo! Photo must be up to 1MB!");
                     }
@@ -405,23 +401,19 @@ angular.module('homeApp')
                 }
             })
             if (!read) {
-                console.log(date + '  ' + read)
                 var send = { date: date, index: index }
                 Users.readMail(send).then(function(res) {
                     $rootScope.forRea -= 1;
-                    console.log($(event)[0].target.closest('#divFrom'))
                     var div = $(event)[0].target.closest('#divFrom');
                     $(div).removeClass('forReading')
                     $scope.user.receivedMails[index].class = $scope.mailCLass;
+                    $scope.user.receivedMails.forEach((mail, i) => {
+                        if (date == mail.date) {
+                            mail.read = true;
+                        }
+                    })
+
                 })
             }
         }
-
-        $(".logoutHolder").on("mouseover", function() {
-            $(".logOutText").show();
-        })
-        $(".logoutHolder").on("mouseleave", function() {
-            $(".logOutText").hide();
-        })
-
     }])

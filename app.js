@@ -15,8 +15,6 @@ var index = require('./routes/index');
 var fileUpload = require('express-fileupload');
 
 
-
-
 var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,20 +34,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json({ limit: '50mb' }));
-// app.use(function(req, res, next) {
-//     req.db = db;
-//     next();
-// })
-
-// function requireLogin(req, res, next) {
-//     if (req.session.userId != undefined) {
-//         next();
-//     } else {
-//         res.redirect('/')
-//     }
-// }
 app.use('/', index);
-
 app.get('*', function(req, res) {
     res.sendFile('index.html', { root: path.join(__dirname, 'public/') });
 });

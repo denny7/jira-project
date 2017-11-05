@@ -5,14 +5,13 @@
             <h1>YOU DONT HAVE PROJECTS YET</h1>
         </div>
         <div ng-show="projects.length>0" class="col-md-12">
-            <input ng-model='seachProject' id="search" type="text" placeholder="Търсене..">
+            <input ng-model='seachProject' id="search" type="text" placeholder="Search...">
         </div>
         <div ng-repeat="p in projects | filter : seachProject" class="col-lg-3 col-md-6">
             <div class="panel">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <!-- <i class="fa fa-tasks fa-5x"></i> -->
                             <div ng-if='p.type=="Software"'>
                                 <img ng-src="../images/software-icon.png" alt="soft" class="panelImg" />
                             </div>

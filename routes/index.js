@@ -23,7 +23,7 @@ var transport = nodemailer.createTransport(smtpTransport({
             pass: mailAccountPassword
         }
     }))
-    // --------------------------------------------------
+    // User
 router.post('/login', function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
@@ -38,8 +38,8 @@ router.post('/login', function(req, res, next) {
         }
     })
 });
-router.post('/register', function(req, res, next) {
 
+router.post('/register', function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
     var repeatPassword = req.body.repeatPassword;
@@ -90,6 +90,88 @@ router.post('/register', function(req, res, next) {
         }
     })
 });
+
+router.put('/user/changePass', function(req, res) {
+    var sendUser = req.body[0];
+    var passwords = req.body[1];
+    if (sendUser.password == sha1(passwords.old)) {
+        var users = db.get('users');
+        users.update({ _id: sendUser._id }, { $set: { password: sha1(passwords.new) } }).then(function(data) {
+            res.json({ changedPass: true })
+        })
+    } else {
+        res.json({ text: 'The old password is invalid !' })
+    }
+});
+
+router.get('/forgottenPass/:email', function(req, res) {
+    var email = req.params.email;
+    var users = db.get('users');
+    var newPass = Math.random().toString(36).slice(-8);
+    users.findOneAndUpdate({ email: email }, { $set: { password: sha1(newPass) } }).then(function(data) {
+        if (data) {
+            var mail = {
+                from: fromEmailAddress,
+                to: email,
+                subject: "Recover Password",
+                text: `Hello !  
+                                        This is your password - ${newPass} , please keep it in safe!!`,
+            }
+            transport.sendMail(mail, function(error, response) {
+                transport.close();
+            });
+            res.json({ text: 'success' })
+        } else {
+            res.json({ err: 'There is no a user with this email!' })
+        }
+    })
+});
+
+router.put('/user/changeData', function(req, res) {
+    var sendUser = req.body[0];
+    var data = req.body[1];
+    var users = db.get('users');
+    users.update({ _id: sendUser._id }, { $set: { fullName: data.fullName, email: data.email } }).then(function(data) {
+        res.json({ changedData: true })
+    })
+});
+
+router.put('/user/changeAvatar', function(req, res) {
+    var users = db.get("users")
+    var id = String(req.body.userId);
+    users.update({ _id: id }, { $set: { avatar: req.body.avatar } }).then(function(data) {
+        res.json({ changedData: true })
+    })
+});
+
+router.get('/api/accountSettings', function(req, res) {
+    var user;
+    if (req.session.userId != undefined) {
+        var users = db.get('users');
+        users.find({ _id: req.session.userId }, { password: 0 }).then(function(data) {
+            user = data[0];
+            res.json(user);
+        })
+    }
+});
+
+router.put('/changeUserRole', function(req, res) {
+    var userId = req.body.userId;
+    var userRole = req.body.userRole;
+    var users = db.get('users');
+    users.update({ _id: userId }, { $set: { role: userRole } }).then(function(data) {
+        res.json({ status: 200 })
+    })
+});
+
+router.delete('/removeUser/:userId', function(req, res) {
+    var userId = req.params.userId;
+    var users = db.get('users');
+    users.remove({ _id: userId }).then(function(data) {
+        res.json(data);
+    })
+});
+
 router.get('/api/logged', function(req, res) {
     var user;
     if (req.session.userId != undefined) {
@@ -99,7 +181,7 @@ router.get('/api/logged', function(req, res) {
             res.json(user);
         })
     }
-})
+});
 
 router.get('/logout', function(req, res) {
     req.session.destroy(function(err) {
@@ -124,6 +206,15 @@ router.post('/dashboard', function(req, res) {
     }
 });
 
+router.get('/allUsers', function(req, res) {
+    var users = db.get('users');
+    users.find({}, { avatar: 0, password: 0, receivedMails: 0, sendedMails: 0 }).then(function(data) {
+        res.json(data);
+    })
+});
+
+
+// Project
 router.get('/api/project/:projectId', function(req, res) {
     var izprati = [];
     var projectId = String(req.params.projectId);
@@ -137,20 +228,12 @@ router.get('/api/project/:projectId', function(req, res) {
     })
 });
 
-router.get('/api/task/:taskId', function(req, res) {
-    var taskId = req.params.taskId;
-    var tasks = db.get('tasks');
-    tasks.find({ _id: taskId }, {}).then(function(data) {
-        res.json(data)
-    })
-});
-
 router.post('/api/project/:projectId', function(req, res) {
     var projectId = req.params.projectId;
-    console.log(req.params)
     var userId = req.body.userId;
     var userFullName = req.body.userFullName;
     var taskName = req.body.taskName;
+    var description = req.body.description;
     var tasks = db.get('tasks');
     var news = db.get("news");
     var task = {
@@ -163,7 +246,7 @@ router.post('/api/project/:projectId', function(req, res) {
         priority: "Middle",
         priorityNumber: 2,
         assignee: "not assigned",
-        description: "Click to add description",
+        description: description,
         type: "task",
         progress: "To Do",
         comments: []
@@ -177,14 +260,89 @@ router.post('/api/project/:projectId', function(req, res) {
             taskId: data._id.toString(),
             change: "Create new task"
         }
-        news.insert(newsToSend).then(function(dataNews) {
-            console.log("Inserted in news")
-        })
+        news.insert(newsToSend).then(function(dataNews) {})
         res.json({ createdTask: true })
     })
-
-
 });
+
+router.post('/createProject', function(req, res) {
+    var newProject = req.body;
+    var projects = db.get('projects');
+    var news = db.get("news")
+    projects.insert(newProject).then(function(data) {
+        var newsToSend = {
+            userId: data.userId,
+            name: data.name,
+            updateDate: Date.now(),
+            projectId: data._id.toString(),
+            change: "Create new project"
+        }
+        news.insert(newsToSend).then(function(dataNews) {})
+        res.json({ text: 'You successfully add new Project!' })
+    })
+});
+
+router.put('/api/project/removeProject', function(req, res) {
+    var projectId = String(req.body._id);
+    var projects = db.get('projects');
+    projects.remove({ _id: projectId }, {}).then(function(data) {
+        var tasks = db.get('tasks');
+        tasks.remove({ projectId: projectId }, {}).then(function(r) {
+            res.json({ message: 'seccess' })
+        })
+    })
+});
+
+router.get('/api/project/people/:projectId', function(req, res) {
+    var projectId = req.params.projectId;
+    var projects = db.get('projects');
+    projects.find({ _id: projectId }, { users: 1 }).then(function(data) {
+        var peopleIds = [];
+        data[0].users.map(man => {
+            peopleIds.push(man.userId)
+        })
+        var users = db.get('users')
+        users.find({ _id: { $in: peopleIds } }, { fullName: 1, role: 1, email: 1 }).then(function(data) {
+            res.json(data)
+        })
+    })
+});
+
+router.put('/api/project/addUser/:projectId', function(req, res) {
+    var projectId = req.params.projectId;
+    var newUserName = req.body.name;
+
+    var users = db.get('users');
+    users.find({ fullName: newUserName }, {}).then(function(userData) {
+        if (userData.length > 0) {
+            var id = userData[0]._id;
+            var id = String(id);
+            var projects = db.get('projects');
+            projects.update({ _id: projectId }, { $push: { users: { userId: id } } }).then(function(projectData) {
+                res.json({ message: 'success' })
+            })
+        } else {
+            res.json({ text: 'User with this name dont exist' })
+        }
+    })
+});
+
+router.put('/api/project/removeUser/:projectId', function(req, res) {
+    var projectId = req.params.projectId;
+    var projects = db.get('projects');
+    projects.update({ _id: projectId }, { $pull: { users: { userId: req.body.id } } }).then(function(data) {
+        res.json({ message: 'seccess' })
+    })
+});
+//Task
+router.get('/api/task/:taskId', function(req, res) {
+    var taskId = req.params.taskId;
+    var tasks = db.get('tasks');
+    tasks.find({ _id: taskId }, {}).then(function(data) {
+        res.json(data)
+    })
+});
+
 router.put('/api/task/:taskId', function(req, res) {
     var taskId = req.params.taskId;
     var task = req.body;
@@ -205,57 +363,9 @@ router.put('/api/task/:taskId', function(req, res) {
             taskId: taskId,
             change: "Updated"
         }
-        console.log(newsToSend.taskId);
-        news.update({ taskId: taskId }, newsToSend).then(function(dataUpdate) {
-            console.log("Updated in news");
-            console.log(dataUpdate)
-        })
+        news.update({ taskId: taskId }, newsToSend).then(function(dataUpdate) {})
     })
-
 });
-
-router.put('/user/changePass', function(req, res) {
-    var sendUser = req.body[0];
-    var passwords = req.body[1];
-    if (sendUser.password == sha1(passwords.old)) {
-        var users = db.get('users');
-        users.update({ _id: sendUser._id }, { $set: { password: sha1(passwords.new) } }).then(function(data) {
-            res.json({ changedPass: true })
-        })
-    } else {
-        res.json({ text: 'The old password is invalid !' })
-    }
-})
-
-router.put('/user/changeData', function(req, res) {
-    var sendUser = req.body[0];
-    var data = req.body[1];
-    var users = db.get('users');
-    users.update({ _id: sendUser._id }, { $set: { fullName: data.fullName, email: data.email } }).then(function(data) {
-        res.json({ changedData: true })
-    })
-})
-
-router.post('/createProject', function(req, res) {
-    var newProject = req.body;
-    var projects = db.get('projects');
-    var news = db.get("news")
-    projects.insert(newProject).then(function(data) {
-        var newsToSend = {
-            userId: data.userId,
-            name: data.name,
-            updateDate: Date.now(),
-            projectId: data._id.toString(),
-            change: "Create new project"
-        }
-        news.insert(newsToSend).then(function(dataNews) {
-            console.log("Inserted in news")
-        })
-        res.json({ text: 'You successfully add new Project!' })
-    })
-
-})
-
 
 router.put('/api/task/assign/:taskId', function(req, res) {
     var data = req.body;
@@ -273,52 +383,9 @@ router.put('/api/task/assign/:taskId', function(req, res) {
                     res.json({ message: "There is not such user in this project" })
                 }
             })
-
         } else {
-
             res.json({ message: "Invalid user" });
         }
-    })
-})
-router.get('/api/project/people/:projectId', function(req, res) {
-    var projectId = req.params.projectId;
-    var projects = db.get('projects');
-    projects.find({ _id: projectId }, { users: 1 }).then(function(data) {
-        var peopleIds = [];
-        data[0].users.map(man => {
-            peopleIds.push(man.userId)
-        })
-        var users = db.get('users')
-        users.find({ _id: { $in: peopleIds } }, { fullName: 1, role: 1, email: 1 }).then(function(data) {
-            res.json(data)
-
-        })
-    })
-})
-router.put('/api/project/addUser/:projectId', function(req, res) {
-    var projectId = req.params.projectId;
-    var newUserName = req.body.name;
-
-    var users = db.get('users');
-    users.find({ fullName: newUserName }, {}).then(function(userData) {
-        if (userData.length > 0) {
-            var id = userData[0]._id;
-            var id = String(id);
-            var projects = db.get('projects');
-            projects.update({ _id: projectId }, { $push: { users: { userId: id } } }).then(function(projectData) {
-                res.json({ message: 'success' })
-            })
-        } else {
-            res.json({ text: 'User with this name dont exist' })
-        }
-    })
-})
-
-router.put('/api/project/removeUser/:projectId', function(req, res) {
-    var projectId = req.params.projectId;
-    var projects = db.get('projects');
-    projects.update({ _id: projectId }, { $pull: { users: { userId: req.body.id } } }).then(function(data) {
-        res.json({ message: 'seccess' })
     })
 })
 
@@ -342,18 +409,8 @@ router.put('/api/task/comment/:taskId', function(req, res) {
         change: "Add comment"
     }
     news.update({ taskId: taskId }, { $set: newsToSend }).then(function(updateComment) {})
-
-
-
-})
-router.put('/api/task/deleteComment/:taskId', function(req, res) {
-    var taskId = req.params.taskId;
-    var commentToDelete = Number(req.body.id)
-    var tasks = db.get("tasks");
-    tasks.update({ _id: taskId }, { $pull: { comments: { date: commentToDelete } } }).then(function(data) {
-        res.json({ message: 'success' })
-    })
 });
+
 router.get('/api/task/getComments/:taskId', function(req, res) {
     var taskId = req.params.taskId;
     var tasks = db.get("tasks");
@@ -369,47 +426,26 @@ router.get('/api/task/getComments/:taskId', function(req, res) {
                     commentsArr[commentsArr.length - 1].avatar = user.avatar;
                 })
                 res.json(commentsArr)
-
             })
         }
     })
-})
-router.put('/api/project/removeProject', function(req, res) {
-    var projectId = String(req.body._id);
-    var projects = db.get('projects');
-    projects.remove({ _id: projectId }, {}).then(function(data) {
-        var tasks = db.get('tasks');
-        tasks.remove({ projectId: projectId }, {}).then(function(r) {
-            res.json({ message: 'seccess' })
-        })
+});
+
+router.put('/api/task/deleteComment/:taskId', function(req, res) {
+    var taskId = req.params.taskId;
+    var commentToDelete = Number(req.body.id)
+    var tasks = db.get("tasks");
+    tasks.update({ _id: taskId }, { $pull: { comments: { date: commentToDelete } } }).then(function(data) {
+        res.json({ message: 'success' })
     })
-})
-router.put('/user/changeAvatar', function(req, res) {
-    var users = db.get("users")
-    var id = String(req.body.userId);
-    users.update({ _id: id }, { $set: { avatar: req.body.avatar } }).then(function(data) {
-        res.json({ changedData: true })
-    })
-})
-router.get('/api/accountSettings', function(req, res) {
-    var user;
-    if (req.session.userId != undefined) {
-        var users = db.get('users');
-        users.find({ _id: req.session.userId }, { password: 0 }).then(function(data) {
-            user = data[0];
-            res.json(user);
-        })
-    }
-})
+});
+
+// News
 router.get('/api/getUserNews/', function(req, res) {
     var news = db.get("news");
     var userId = req.session.userId;
-    console.log(userId)
     news.find({ userId: String(userId) }, {}).then(function(data) {
-
         res.json(data)
-
-        console.log(data)
     })
 })
 router.get('/api/getNews/:userId', function(req, res) {
@@ -417,7 +453,6 @@ router.get('/api/getNews/:userId', function(req, res) {
     var userId = req.params.userId;
     db.get("news").find({}, {}).then(function(data) {
         news = data;
-        // console.log(news)
         var projects = db.get("projects");
         var users;
         db.get("users").find({}, { fullName: 1, role: 1 }).then(function(userData) {
@@ -425,30 +460,24 @@ router.get('/api/getNews/:userId', function(req, res) {
             var newsForUser = [];
             var userRole = users.find(u => userId == u._id);
             news.forEach(function(modified) {
-                // console.log(userRole)
                 if (userRole.role == 'Admin') {
-                    console.log("Admin!!!!")
                     var userName = users.find(user => String(user._id) == modified.userId)
-                    console.log(userName)
                     newsForUser.push(modified);
                     newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
                     if (news.indexOf(modified) == news.length - 1) {
                         return res.json(newsForUser);
                     }
                 } else {
-                    console.log("Employee!!!")
                     projects.find({ _id: modified.projectId, users: { $elemMatch: { userId: userId } } }, {}).then(function(returnProjects) {
                         if (returnProjects.length > 0) {
                             var userName = users.find(user => String(user._id) == modified.userId)
                             newsForUser.push(modified);
                             newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
-                            console.log(userName.fullName)
                             if (news.indexOf(modified) == news.length - 1) {
                                 return res.json(newsForUser);
                             }
                         }
                         if (news.indexOf(modified) == news.length - 1) {
-                            console.log(newsForUser)
                             return res.json(newsForUser);
                         }
                     })
@@ -456,52 +485,9 @@ router.get('/api/getNews/:userId', function(req, res) {
             })
         })
     })
-})
-router.get('/forgottenPass/:email', function(req, res) {
-    var email = req.params.email;
-    console.log(email)
-    var users = db.get('users');
-    var newPass = Math.random().toString(36).slice(-8);
-    users.findOneAndUpdate({ email: email }, { $set: { password: sha1(newPass) } }).then(function(data) {
-        if (data) {
-            var mail = {
-                from: fromEmailAddress,
-                to: email,
-                subject: "Recover Password",
-                text: `Hello !  
-                                        This is your password - ${newPass} , please keep it in safe!!`,
-            }
-            transport.sendMail(mail, function(error, response) {
-                transport.close();
-            });
-            res.json({ text: 'success' })
-        } else {
-            res.json({ err: 'There is no a user with this email!' })
-        }
-    })
 });
-router.get('/allUsers', function(req, res) {
-    var users = db.get('users');
-    users.find({}, { avatar: 0, password: 0, receivedMails: 0, sendedMails: 0 }).then(function(data) {
-        res.json(data);
-    })
-})
-router.put('/changeUserRole', function(req, res) {
-    var userId = req.body.userId;
-    var userRole = req.body.userRole;
-    var users = db.get('users');
-    users.update({ _id: userId }, { $set: { role: userRole } }).then(function(data) {
-        res.json({ status: 200 })
-    })
-})
-router.delete('/removeUser/:userId', function(req, res) {
-    var userId = req.params.userId;
-    console.log(userId)
-    var users = db.get('users');
-    users.remove({ _id: userId }).then(function(data) {
-        res.json(data);
-    })
-})
+
+//Mails
 router.post('/sendMail', function(req, res) {
     var dataEmail = req.body;
     var fromId = req.session.userId;
@@ -516,16 +502,15 @@ router.post('/sendMail', function(req, res) {
     }
     users.update({ email: dataEmail.to }, { $push: { receivedMails: email } }).then(function(mailTo) {
         if (mailTo.nModified == 1) {
-
             users.update({ _id: fromId }, { $push: { sendedMails: email } }).then(function(userData) {
                 res.json({ success: "You successfully send message" })
             })
         } else {
             res.json({ message: "Invalid user" });
         }
-
     })
-})
+});
+
 router.post('/removeMailFromReceived', function(req, res) {
     var date = req.body.date;
     var userId = req.session.userId;
@@ -533,7 +518,8 @@ router.post('/removeMailFromReceived', function(req, res) {
     users.update({ _id: userId }, { $pull: { receivedMails: { date: date } } }).then(function(data) {
         res.json({ message: 'You deleted comment from receive Mail' })
     })
-})
+});
+
 router.post('/removeMailFromSended', function(req, res) {
     var date = req.body.date;
     var userId = req.session.userId;
@@ -541,13 +527,13 @@ router.post('/removeMailFromSended', function(req, res) {
     users.update({ _id: userId }, { $pull: { sendedMails: { date: date } } }).then(function(data) {
         res.json({ message: 'You deleted comment from send Mail' })
     })
-})
+});
+
 router.get('/checkForMails', function(req, res) {
     var userId = req.session.userId;
     if (userId) {
         db.get('users').find({ _id: userId }, { receivedMails: 1 }).then(function(data) {
             var mails = data[0].receivedMails;
-            console.log(mails)
             if (mails.length > 0) {
                 var newMails = mails.filter(m => m.read == false);
                 if (newMails.length > 0) {
@@ -560,7 +546,8 @@ router.get('/checkForMails', function(req, res) {
     } else {
         res.json({ forRead: 0 })
     }
-})
+});
+
 router.post('/readMail', function(req, res) {
     var idDate = req.body.date;
     var index = req.body.index;
@@ -576,5 +563,5 @@ router.post('/readMail', function(req, res) {
             res.json({ message: 'success' })
         })
     })
-})
+});
 module.exports = router;
