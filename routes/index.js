@@ -503,19 +503,24 @@ router.get('/api/getNews/:userId', function(req, res) {
             news.forEach(function(modified) {
                 if (userRole.role == 'Admin') {
                     var userName = users.find(user => String(user._id) == modified.userId)
-                    newsForUser.push(modified);
-                    newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
-                    if (news.indexOf(modified) == news.length - 1) {
-                        return res.json(newsForUser);
+                    if (userName) {
+                        newsForUser.push(modified);
+                        console.log(userName);
+                        newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
+                        if (news.indexOf(modified) == news.length - 1) {
+                            return res.json(newsForUser);
+                        }
                     }
                 } else {
                     projects.find({ _id: modified.projectId, users: { $elemMatch: { userId: userId } } }, {}).then(function(returnProjects) {
                         if (returnProjects.length > 0) {
                             var userName = users.find(user => String(user._id) == modified.userId)
-                            newsForUser.push(modified);
-                            newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
-                            if (news.indexOf(modified) == news.length - 1) {
-                                return res.json(newsForUser);
+                            if (userName) {
+                                newsForUser.push(modified);
+                                newsForUser[newsForUser.length - 1].userFullName = userName.fullName;
+                                if (news.indexOf(modified) == news.length - 1) {
+                                    return res.json(newsForUser);
+                                }
                             }
                         }
                         if (news.indexOf(modified) == news.length - 1) {

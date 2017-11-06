@@ -272,4 +272,5 @@ angular.module('homeApp')
             $anchorScroll('');
         }
 
+
     }])

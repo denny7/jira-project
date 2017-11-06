@@ -91,7 +91,7 @@
                 <h3 class="lightBlue">Assignee:</h3>
                 <p ng-model="task.assignee"><i class="fa fa-user userIconTask"></i> {{task.assignee}}</p>
                 <p class="assignTo" ng-if='task.assignee!=user.fullName' ng-model="task.assignee" ng-click="assignToMeF()">Assign to me</p>
-                <p class="assignTo" ng-click="assignToF()">Assign to:</p>
+                <p class="assignTo" ng-click="assignToF()" ng-if="$root.user.role!='Employee'">Assign to:</p>
                 <div class="assignToDiv">
                     <input placeholder="Enter fullname" class="assignToInput" type="text" ng-model="inputValue"><i class="fa fa-check checkAssign" aria-hidden="true"></i>
                 </div>
@@ -117,7 +117,7 @@
                     <button class="btn btn-primary pressCommentBtn" ng-click="addCommentTask()">Send</button>
                 </div>
             </div>
-            <div ng-show="commentSend"><i class="fa fa-spinner fa-spin dashLoad"></i></div>
+            <div ng-show="commentSend"><i class="fa fa-spinner fa-spin dashLoad taskPageSpinner"></i></div>
             <div ng-hide="commentSend && task.comments.length <1">
                 <div ng-if="task.comments.length == 0" class="col-md-8">
                     <h1 class="noComment">No comments yet</h1>

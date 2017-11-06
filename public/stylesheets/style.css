@@ -682,6 +682,14 @@
         margin-left: -250px;
     }
     
+    .taskPageSpinner {
+        margin-left: 120px !important;
+    }
+    
+    .commentPagination {
+        margin-left: -240px !important;
+    }
+    
     @media screen and (max-width:1260px) {
         .createTaskInput {
             width: 140px;
@@ -689,6 +697,9 @@
     }
     
     @media screen and (max-width:991px) {
+        .commentPagination {
+            margin-left: 0px !important;
+        }
         .commentArea {
             width: 200px !important;
             margin-left: 100px;
@@ -778,7 +789,7 @@
             margin-left: 70px;
         }
         .letterDropTask {
-            margin-top: -65px;
+            margin-top: -55px !important;
             margin-left: 10px;
             font-size: 1.5em;
         }
@@ -793,6 +804,9 @@
         }
         .logoutHolderTask {
             margin-top: -35px;
+        }
+        .logOutHolderPr {
+            margin-top: -15px;
         }
         .removeProjectBtn {
             margin-top: 20px !important;
